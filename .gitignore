@@ -49,3 +49,9 @@ ios/Runner.xcodeproj/
 android/
 android/app/google-services.json
 android/key.properties
+
+#project specific
+.metadata
+arbor___offsets___mvp___v_15.iml
+ios/
+test/
