@@ -6,15 +6,17 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/huge_package_heh_heh_item_widget.dart';
+//import 'dart:html';
+
+//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/huge_package_heh_heh_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/hybrid_button_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/long_flight_item_widget.dart';
+/*import 'package:arbor___offsets___mvp___v_15/dashboard_widget/long_flight_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/medium_flight_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/medium_package_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/sedan_button_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/short_flight_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/small_package_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/suvbutton_item_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/suvbutton_item_widget.dart';*/
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -27,59 +29,6 @@ class CartItem {
 
   CartItem({this.header, this.description, this.imageText, this.imageIcon});
 }
-
-/*
-var itemlist = <CartItem>[
-  CartItem(
-    header: 'Eliminate Fuel Impact:',
-    description: "Remove climate impact from an average tank of gas for:",
-    imageIcon: "assets/images/icons8-gas-station-100.png",
-    imageText: "Hybrid",
-  ),
-  CartItem(
-    header: 'Eliminate Fuel Impact:',
-    description: "Remove climate impact from an average tank of gas for:",
-    imageIcon: "assets/images/icons8-gas-station-100.png",
-    imageText: "Hybrid",
-  ),
-  CartItem(
-    header: 'Eliminate Fuel Impact:',
-    description: "Remove climate impact from an average tank of gas for:",
-    imageIcon: "assets/images/icons8-gas-station-100.png",
-    imageText: "Hybrid",
-  ),
-  CartItem(
-    header: 'Eliminate Travel Impact:',
-    description: "Remove climate impact from an average flight between:",
-    itembuilder: (context, index) => ShortFlightItemWidget(),
-  ),
-  CartItem(
-    header: 'Eliminate Travel Impact:',
-    description: "Remove climate impact from an average flight between:",
-    itembuilder: (context, index) => ShortFlightItemWidget(),
-  ),
-  CartItem(
-    header: 'Eliminate Travel Impact:',
-    description: "Remove climate impact from an average flight between:",
-    itembuilder: (context, index) => ShortFlightItemWidget(),
-  ),
-  CartItem(
-    header: 'Eliminate Package Delivery:"',
-    description: "Remove climate impact from a typical shipment that is:",
-    itembuilder: (context, index) => SmallPackageItemWidget(),
-  ),
-  CartItem(
-    header: 'Eliminate Package Delivery:"',
-    description: "Remove climate impact from a typical shipment that is:",
-    itembuilder: (context, index) => SmallPackageItemWidget(),
-  ),
-  CartItem(
-    header: 'Eliminate Package Delivery:"',
-    description: "Remove climate impact from a typical shipment that is:",
-    itembuilder: (context, index) => SmallPackageItemWidget(),
-  ),
-];
-*/
 
 class DashboardWidget extends StatelessWidget {
   void onItemPressed(BuildContext context) {}
@@ -110,10 +59,6 @@ class DashboardWidget extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 65, 127, 69),
       ),
       body: ListView(
-        //constraints: BoxConstraints.expand(),
-        //decoration: BoxDecoration(
-        //  color: Color.fromARGB(255, 237, 236, 228),
-        //),
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,7 +91,6 @@ class DashboardWidget extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            //margin: EdgeInsets.only(left: 100, right: 100),
             child: AutoSizeText(
               "Checkout",
               textAlign: TextAlign.center,
@@ -209,7 +153,6 @@ class DashboardWidget extends StatelessWidget {
             height: 108,
             margin: EdgeInsets.only(left: 14, top: 9),
             child: GridView.builder(
-              itemCount: 3,
               scrollDirection: Axis.horizontal,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 108,
@@ -224,65 +167,103 @@ class DashboardWidget extends StatelessWidget {
     );
   }
 
-  /*Container buildOffsetPurchaseListContainer() {
-    return Container(
-      height: 601,
-      margin: EdgeInsets.only(left: 1, top: 16, right: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildGeneralAreaContainer(
-              header: "Eliminate Fuel Impact:",
-              description:
-                  "Remove climate impact from an average tank of gas for:",
-              itemBuilder: (context, index) => HybridButtonItemWidget()),
-          buildGeneralAreaContainer(
-              header: "Eliminate Travel Impact:",
-              description:
-                  "Remove climate impact from an average flight between:",
-              itemBuilder: (context, index) => ShortFlightItemWidget()),
-          buildGeneralAreaContainer(
-              header: "Eliminate Package Delivery:",
-              description:
-                  "Remove climate impact from a typical shipment that is:",
-              itemBuilder: (context, index) => SmallPackageItemWidget()),
-        ],
-      ),
-    );
-  }*/
-
   Container buildOffsetPurchaseListContainer() {
     return Container(
       height: 601,
       margin: EdgeInsets.only(left: 1, top: 16, right: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: purchaseItemLlist(),
+        children: purchaseItemList(),
       ),
     );
   }
 
-  List<Widget> purchaseItemLlist() {
-    return [
-      buildGeneralAreaContainer(
-          header: "Eliminate Fuel Impact:",
-          description: "Remove climate impact from an average tank of gas for:",
-          itemBuilder: (context, index) => generalButtonItemWidget(
-              "assets/images/icons8-gas-station-100.png", 'Hybrid')),
-      buildGeneralAreaContainer(
-          header: "Eliminate Travel Impact:",
-          description: "Remove climate impact from an average flight between:",
-          itemBuilder: (context, index) => generalButtonItemWidget(
-              "assets/images/icons8-airplane-take-off-100-copy.png",
-              'New York & Chicago (2 hrs)')),
-      buildGeneralAreaContainer(
-          header: "Eliminate Package Delivery:",
-          description: "Remove climate impact from a typical shipment that is:",
-          itemBuilder: (context, index) => generalButtonItemWidget(
-              "assets/images/icons8-in-transit-100-copy-3.png",
-              'Small (under 5lbs)')),
-    ];
+  Widget buildGeneralButtonItemWidget(BuildContext context, int index,
+      int startIndex, List<CartItem> cartList, String header) {
+    //keep returning widgets until the headers don't match
+
+    if (((startIndex + index) < cartList.length) &&
+        (cartList[startIndex + index].header == header))
+      return generalButtonItemWidget(cartList[startIndex + index].imageIcon,
+          cartList[startIndex + index].imageText);
+    else
+      return null;
   }
+
+  List<Widget> purchaseItemList() {
+    List<Widget> returnList = new List();
+    Widget tempWidget;
+
+    for (var i = 0; i < purchaseItemListTest.length; i++) {
+      //check to see that headers don't match, if so make another area in the cart
+      //always do the first one
+      if (i == 0 ||
+          (purchaseItemListTest[i].header !=
+              purchaseItemListTest[i - 1].header)) {
+        tempWidget = (buildGeneralAreaContainer(
+            header: purchaseItemListTest[i].header,
+            description: purchaseItemListTest[i].description,
+            itemBuilder: (context, index) => buildGeneralButtonItemWidget(
+                context,
+                index,
+                i,
+                purchaseItemListTest,
+                purchaseItemListTest[i].header)));
+
+        returnList.add(tempWidget);
+      }
+    }
+
+    return returnList;
+  }
+
+  List<CartItem> purchaseItemListTest = [
+    CartItem(
+        header: "Eliminate Fuel Impact:",
+        description: "Remove climate impact from an average tank of gas for:",
+        imageIcon: "assets/images/icons8-gas-station-100.png",
+        imageText: 'Hybrid 0'),
+    CartItem(
+        header: "Eliminate Fuel Impact:",
+        description: "Remove climate impact from an average tank of gas for:",
+        imageIcon: "assets/images/icons8-gas-station-100.png",
+        imageText: 'Hybrid 1'),
+    CartItem(
+        header: "Eliminate Fuel Impact:",
+        description: "Remove climate impact from an average tank of gas for:",
+        imageIcon: "assets/images/icons8-gas-station-100.png",
+        imageText: 'Hybrid 2'),
+    CartItem(
+        header: "Eliminate Travel Impact:",
+        description: "Remove climate impact from an average flight between:",
+        imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+        imageText: 'New York & Chicago (2 hrs)'),
+    CartItem(
+        header: "Eliminate Travel Impact:",
+        description: "Remove climate impact from an average flight between:",
+        imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+        imageText: 'New York & Chicago (4 hrs)'),
+    CartItem(
+        header: "Eliminate Travel Impact:",
+        description: "Remove climate impact from an average flight between:",
+        imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+        imageText: 'New York & Chicago (6 hrs)'),
+    CartItem(
+        header: "Eliminate Package Delivery:",
+        description: "Remove climate impact from a typical shipment that is:",
+        imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+        imageText: 'Small (under 5lbs)'),
+    CartItem(
+        header: "Eliminate Package Delivery:",
+        description: "Remove climate impact from a typical shipment that is:",
+        imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+        imageText: 'Medium (under 5lbs)'),
+    CartItem(
+        header: "Eliminate Package Delivery:",
+        description: "Remove climate impact from a typical shipment that is:",
+        imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+        imageText: 'Large (under 5lbs)'),
+  ];
 
   Align buildLiveClimatePositveAlign() {
     return Align(
@@ -500,8 +481,6 @@ class DashboardWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          //height: 30,
-                          //width: 50,
                           margin: EdgeInsets.all(5),
                           child: AutoSizeText(
                             "9 trees earned this month.",
@@ -514,14 +493,10 @@ class DashboardWidget extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          //alignment: Alignment.center,
                           child: Container(
-                            //height: 30,
-                            //width: 50,
                             margin: EdgeInsets.all(5),
                             child: AutoSizeText(
                               "38 all-time!",
-                              //minFontSize: 12,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 250, 195, 21),

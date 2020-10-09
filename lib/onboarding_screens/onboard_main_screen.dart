@@ -86,17 +86,17 @@ class MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = <Widget>[
     new ConstrainedBox(
       constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(colors: Colors.blue),
-    ),
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child:
-          new FlutterLogo(style: FlutterLogoStyle.stacked, colors: Colors.red),
+      child: new FlutterLogo(textColor: Colors.blue),
     ),
     new ConstrainedBox(
       constraints: const BoxConstraints.expand(),
       child: new FlutterLogo(
-          style: FlutterLogoStyle.horizontal, colors: Colors.green),
+          style: FlutterLogoStyle.stacked, textColor: Colors.red),
+    ),
+    new ConstrainedBox(
+      constraints: const BoxConstraints.expand(),
+      child: new FlutterLogo(
+          style: FlutterLogoStyle.horizontal, textColor: Colors.green),
     ),
   ];
 
