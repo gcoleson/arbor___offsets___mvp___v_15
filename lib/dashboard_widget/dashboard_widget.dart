@@ -6,17 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-//import 'dart:html';
-
-//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/huge_package_heh_heh_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/hybrid_button_item_widget.dart';
-/*import 'package:arbor___offsets___mvp___v_15/dashboard_widget/long_flight_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/medium_flight_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/medium_package_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/sedan_button_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/short_flight_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/small_package_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/suvbutton_item_widget.dart';*/
+//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/general_cart_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +16,153 @@ class CartItem {
   final String description;
   final String imageText;
   final String imageIcon;
+  bool boxSelected;
 
-  CartItem({this.header, this.description, this.imageText, this.imageIcon});
+  CartItem(
+      {this.header,
+      this.description,
+      this.imageText,
+      this.imageIcon,
+      this.boxSelected});
 }
 
-class DashboardWidget extends StatelessWidget {
+List<CartItem> purchaseItemListTest = [
+  CartItem(
+      header: "Eliminate Fuel Impact:",
+      description: "Remove climate impact from an average tank of gas for:",
+      imageIcon: "assets/images/icons8-gas-station-100.png",
+      imageText: 'Hybrid 0',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Fuel Impact:",
+      description: "Remove climate impact from an average tank of gas for:",
+      imageIcon: "assets/images/icons8-gas-station-100.png",
+      imageText: 'Hybrid 1',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Fuel Impact:",
+      description: "Remove climate impact from an average tank of gas for:",
+      imageIcon: "assets/images/icons8-gas-station-100.png",
+      imageText: 'Hybrid 2',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Travel Impact:",
+      description: "Remove climate impact from an average flight between:",
+      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+      imageText: 'New York & Chicago (2 hrs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Travel Impact:",
+      description: "Remove climate impact from an average flight between:",
+      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+      imageText: 'New York & Chicago (4 hrs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Travel Impact:",
+      description: "Remove climate impact from an average flight between:",
+      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+      imageText: 'New York & Chicago (6 hrs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Package Delivery:",
+      description: "Remove climate impact from a typical shipment that is:",
+      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+      imageText: 'Small (under 5lbs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Package Delivery:",
+      description: "Remove climate impact from a typical shipment that is:",
+      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+      imageText: 'Medium (under 5lbs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Package Delivery:",
+      description: "Remove climate impact from a typical shipment that is:",
+      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+      imageText: 'Large (under 5lbs)',
+      boxSelected: false),
+];
+
+class DashboardWidget extends StatefulWidget {
+  @override
+  _DashboardWidgetState createState() => _DashboardWidgetState();
+}
+
+class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
+
+  Color getBorderSelectColor(int index) {
+    if (purchaseItemListTest[index].boxSelected == false) {
+      //turn border on
+      return Color.fromARGB(255, 0, 0, 0);
+    } else {
+      //turn border off
+      return Color.fromARGB(255, 250, 195, 21);
+    }
+  }
+
+  void toggleItemSelected(int index) {
+    if (purchaseItemListTest[index].boxSelected == false) {
+      //turn border on
+      purchaseItemListTest[index].boxSelected = true;
+    } else {
+      //turn border off
+      purchaseItemListTest[index].boxSelected = false;
+    }
+  }
+
+  Widget generalButtonItemWidget(int index, String iconName, String iconText) {
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            toggleItemSelected(index);
+          });
+        },
+        child: Container(
+          width: 95,
+          height: 107,
+          child: Stack(
+            children: [
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Container(
+                  width: 95,
+                  height: 107,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 216, 216, 216),
+                    border: Border.all(
+                      width: 3,
+                      color: getBorderSelectColor(index),
+                    ),
+                  ),
+                  child: Container(),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Align(
+                      alignment: Alignment.center,
+                      child: IconButton(
+                        icon: Image.asset(iconName, fit: BoxFit.fill),
+                        onPressed: () {},
+                      )),
+                  Text(iconText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 65, 127, 69),
+                        fontFamily: "Raleway",
+                        fontWeight: FontWeight.w800,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 14,
+                      )),
+                ],
+              ),
+            ],
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +315,9 @@ class DashboardWidget extends StatelessWidget {
 
     if (((startIndex + index) < cartList.length) &&
         (cartList[startIndex + index].header == header))
-      return generalButtonItemWidget(cartList[startIndex + index].imageIcon,
+      return generalButtonItemWidget(
+          startIndex + index,
+          cartList[startIndex + index].imageIcon,
           cartList[startIndex + index].imageText);
     else
       return null;
@@ -216,54 +349,6 @@ class DashboardWidget extends StatelessWidget {
 
     return returnList;
   }
-
-  List<CartItem> purchaseItemListTest = [
-    CartItem(
-        header: "Eliminate Fuel Impact:",
-        description: "Remove climate impact from an average tank of gas for:",
-        imageIcon: "assets/images/icons8-gas-station-100.png",
-        imageText: 'Hybrid 0'),
-    CartItem(
-        header: "Eliminate Fuel Impact:",
-        description: "Remove climate impact from an average tank of gas for:",
-        imageIcon: "assets/images/icons8-gas-station-100.png",
-        imageText: 'Hybrid 1'),
-    CartItem(
-        header: "Eliminate Fuel Impact:",
-        description: "Remove climate impact from an average tank of gas for:",
-        imageIcon: "assets/images/icons8-gas-station-100.png",
-        imageText: 'Hybrid 2'),
-    CartItem(
-        header: "Eliminate Travel Impact:",
-        description: "Remove climate impact from an average flight between:",
-        imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-        imageText: 'New York & Chicago (2 hrs)'),
-    CartItem(
-        header: "Eliminate Travel Impact:",
-        description: "Remove climate impact from an average flight between:",
-        imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-        imageText: 'New York & Chicago (4 hrs)'),
-    CartItem(
-        header: "Eliminate Travel Impact:",
-        description: "Remove climate impact from an average flight between:",
-        imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-        imageText: 'New York & Chicago (6 hrs)'),
-    CartItem(
-        header: "Eliminate Package Delivery:",
-        description: "Remove climate impact from a typical shipment that is:",
-        imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-        imageText: 'Small (under 5lbs)'),
-    CartItem(
-        header: "Eliminate Package Delivery:",
-        description: "Remove climate impact from a typical shipment that is:",
-        imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-        imageText: 'Medium (under 5lbs)'),
-    CartItem(
-        header: "Eliminate Package Delivery:",
-        description: "Remove climate impact from a typical shipment that is:",
-        imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-        imageText: 'Large (under 5lbs)'),
-  ];
 
   Align buildLiveClimatePositveAlign() {
     return Align(
