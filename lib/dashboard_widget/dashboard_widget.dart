@@ -19,6 +19,68 @@ import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
+class CartItem {
+  final String header;
+  final String description;
+  final String imageText;
+  final String imageIcon;
+
+  CartItem({this.header, this.description, this.imageText, this.imageIcon});
+}
+
+/*
+var itemlist = <CartItem>[
+  CartItem(
+    header: 'Eliminate Fuel Impact:',
+    description: "Remove climate impact from an average tank of gas for:",
+    imageIcon: "assets/images/icons8-gas-station-100.png",
+    imageText: "Hybrid",
+  ),
+  CartItem(
+    header: 'Eliminate Fuel Impact:',
+    description: "Remove climate impact from an average tank of gas for:",
+    imageIcon: "assets/images/icons8-gas-station-100.png",
+    imageText: "Hybrid",
+  ),
+  CartItem(
+    header: 'Eliminate Fuel Impact:',
+    description: "Remove climate impact from an average tank of gas for:",
+    imageIcon: "assets/images/icons8-gas-station-100.png",
+    imageText: "Hybrid",
+  ),
+  CartItem(
+    header: 'Eliminate Travel Impact:',
+    description: "Remove climate impact from an average flight between:",
+    itembuilder: (context, index) => ShortFlightItemWidget(),
+  ),
+  CartItem(
+    header: 'Eliminate Travel Impact:',
+    description: "Remove climate impact from an average flight between:",
+    itembuilder: (context, index) => ShortFlightItemWidget(),
+  ),
+  CartItem(
+    header: 'Eliminate Travel Impact:',
+    description: "Remove climate impact from an average flight between:",
+    itembuilder: (context, index) => ShortFlightItemWidget(),
+  ),
+  CartItem(
+    header: 'Eliminate Package Delivery:"',
+    description: "Remove climate impact from a typical shipment that is:",
+    itembuilder: (context, index) => SmallPackageItemWidget(),
+  ),
+  CartItem(
+    header: 'Eliminate Package Delivery:"',
+    description: "Remove climate impact from a typical shipment that is:",
+    itembuilder: (context, index) => SmallPackageItemWidget(),
+  ),
+  CartItem(
+    header: 'Eliminate Package Delivery:"',
+    description: "Remove climate impact from a typical shipment that is:",
+    itembuilder: (context, index) => SmallPackageItemWidget(),
+  ),
+];
+*/
+
 class DashboardWidget extends StatelessWidget {
   void onItemPressed(BuildContext context) {}
 
@@ -103,178 +165,123 @@ class DashboardWidget extends StatelessWidget {
     );
   }
 
-  Container buildOffsetPurchaseListContainer() {
+  Container buildGeneralAreaContainer({
+    @required String header,
+    @required String description,
+    @required IndexedWidgetBuilder itemBuilder,
+  }) {
+    return Container(
+      width: 416,
+      height: 190,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 4),
+            child: Text(
+              header,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w300,
+                fontSize: 21,
+              ),
+            ),
+          ),
+          Container(
+            width: 382,
+            margin: EdgeInsets.only(left: 4, top: 2),
+            child: Text(
+              description,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w300,
+                fontStyle: FontStyle.italic,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Container(
+            width: 383,
+            height: 108,
+            margin: EdgeInsets.only(left: 14, top: 9),
+            child: GridView.builder(
+              itemCount: 3,
+              scrollDirection: Axis.horizontal,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 108,
+                childAspectRatio: 1.13684,
+                mainAxisSpacing: 30,
+              ),
+              itemBuilder: itemBuilder,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /*Container buildOffsetPurchaseListContainer() {
     return Container(
       height: 601,
       margin: EdgeInsets.only(left: 1, top: 16, right: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 416,
-            height: 190,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 4),
-                  child: Text(
-                    "Eliminate Fuel Impact:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontSize: 21,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 382,
-                  margin: EdgeInsets.only(left: 4, top: 2),
-                  child: Text(
-                    "Remove climate impact from an average tank of gas for:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 383,
-                  height: 108,
-                  margin: EdgeInsets.only(left: 14, top: 9),
-                  child: GridView.builder(
-                    itemCount: 3,
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 108,
-                      childAspectRatio: 1.13684,
-                      mainAxisSpacing: 30,
-                    ),
-                    itemBuilder: (context, index) => HybridButtonItemWidget(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 414,
-            height: 181,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text(
-                      "Eliminate Travel Impact:",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w300,
-                        fontSize: 21,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4, top: 2),
-                  child: Text(
-                    "Remove climate impact from an average flight between:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    width: 383,
-                    height: 106,
-                    margin: EdgeInsets.only(left: 14, top: 6),
-                    child: GridView.builder(
-                      itemCount: 3,
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 106,
-                        childAspectRatio: 1.12766,
-                        mainAxisSpacing: 30,
-                      ),
-                      itemBuilder: (context, index) => ShortFlightItemWidget(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 414,
-            height: 181,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text(
-                      "Eliminate Package Delivery:",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w300,
-                        fontSize: 21,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4, top: 2),
-                  child: Text(
-                    "Remove climate impact from a typical shipment that is:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 106,
-                  margin: EdgeInsets.only(left: 14, top: 6),
-                  child: GridView.builder(
-                    itemCount: 3,
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 106,
-                      childAspectRatio: 1.12766,
-                      mainAxisSpacing: 30,
-                    ),
-                    itemBuilder: (context, index) => SmallPackageItemWidget(),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          buildGeneralAreaContainer(
+              header: "Eliminate Fuel Impact:",
+              description:
+                  "Remove climate impact from an average tank of gas for:",
+              itemBuilder: (context, index) => HybridButtonItemWidget()),
+          buildGeneralAreaContainer(
+              header: "Eliminate Travel Impact:",
+              description:
+                  "Remove climate impact from an average flight between:",
+              itemBuilder: (context, index) => ShortFlightItemWidget()),
+          buildGeneralAreaContainer(
+              header: "Eliminate Package Delivery:",
+              description:
+                  "Remove climate impact from a typical shipment that is:",
+              itemBuilder: (context, index) => SmallPackageItemWidget()),
         ],
       ),
     );
+  }*/
+
+  Container buildOffsetPurchaseListContainer() {
+    return Container(
+      height: 601,
+      margin: EdgeInsets.only(left: 1, top: 16, right: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: purchaseItemLlist(),
+      ),
+    );
+  }
+
+  List<Widget> purchaseItemLlist() {
+    return [
+      buildGeneralAreaContainer(
+          header: "Eliminate Fuel Impact:",
+          description: "Remove climate impact from an average tank of gas for:",
+          itemBuilder: (context, index) => generalButtonItemWidget(
+              "assets/images/icons8-gas-station-100.png", 'Hybrid')),
+      buildGeneralAreaContainer(
+          header: "Eliminate Travel Impact:",
+          description: "Remove climate impact from an average flight between:",
+          itemBuilder: (context, index) => generalButtonItemWidget(
+              "assets/images/icons8-airplane-take-off-100-copy.png",
+              'New York & Chicago (2 hrs)')),
+      buildGeneralAreaContainer(
+          header: "Eliminate Package Delivery:",
+          description: "Remove climate impact from a typical shipment that is:",
+          itemBuilder: (context, index) => generalButtonItemWidget(
+              "assets/images/icons8-in-transit-100-copy-3.png",
+              'Small (under 5lbs)')),
+    ];
   }
 
   Align buildLiveClimatePositveAlign() {

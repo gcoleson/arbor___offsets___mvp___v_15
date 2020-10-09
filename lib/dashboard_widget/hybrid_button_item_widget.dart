@@ -9,6 +9,53 @@
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:flutter/material.dart';
 
+Widget generalButtonItemWidget(String iconName, String iconText) {
+  return Container(
+    width: 95,
+    height: 107,
+    child: Stack(
+      children: [
+        Positioned(
+          left: 0,
+          top: 0,
+          child: Container(
+            width: 95,
+            height: 107,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 216, 216, 216),
+              border: Border.all(
+                width: 3,
+                color: Color.fromARGB(255, 250, 195, 21),
+              ),
+            ),
+            child: Container(),
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                  icon: Image.asset(iconName, fit: BoxFit.fill),
+                  onPressed: () {},
+                )),
+            Text(iconText,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 65, 127, 69),
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w800,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 14,
+                )),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
 class HybridButtonItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,42 +80,27 @@ class HybridButtonItemWidget extends StatelessWidget {
               child: Container(),
             ),
           ),
-          Positioned(
-            left: 25,
-            top: 35,
-            bottom: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    width: 23,
-                    height: 23,
-                    margin: EdgeInsets.only(left: 11),
-                    child: Image.asset(
-                      "assets/images/icons8-gas-station-100.png",
-                      fit: BoxFit.none,
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Hybrid",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 65, 127, 69),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w800,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    icon: Image.asset(
+                        'assets/images/icons8-gas-station-100.png',
+                        fit: BoxFit.fill),
+                    onPressed: () {},
+                  )),
+              Text("Hybrid",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 65, 127, 69),
+                    fontFamily: "Raleway",
+                    fontWeight: FontWeight.w800,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 14,
+                  )),
+            ],
           ),
         ],
       ),
