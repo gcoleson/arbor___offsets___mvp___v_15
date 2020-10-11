@@ -7,6 +7,7 @@
     */
 
 //import 'package:arbor___offsets___mvp___v_15/dashboard_widget/general_cart_item_widget.dart';
+//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -118,50 +119,212 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             toggleItemSelected(index);
           });
         },
-        child: Container(
-          width: 95,
-          height: 107,
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0,
-                top: 0,
-                child: Container(
-                  width: 95,
-                  height: 107,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 216, 216, 216),
-                    border: Border.all(
-                      width: 3,
-                      color: getBorderSelectColor(index),
+        child: generalButtonItemContainer(index, iconName, iconText));
+  }
+
+  Widget buildHighlightedCartItems()
+  //loop through all items and make into a grid 2x
+  {
+    List<Widget> returnList = new List();
+
+    for (var i = 0; i < purchaseItemListTest.length; i++) {
+      //check to see that headers don't match, if so make another area in the cart
+      //always do the first one
+      if (purchaseItemListTest[i].boxSelected == true) {
+        returnList.add(generalButtonItemContainer(
+            0,
+            purchaseItemListTest[i].imageIcon,
+            purchaseItemListTest[i].imageText));
+      }
+    }
+
+    if (returnList.length == 0)
+      return Spacer();
+    else
+      return Container(
+          height: 400,
+          width: 200,
+          child: GridView.count(
+            crossAxisCount: 2,
+            children: returnList,
+          ));
+    //return returnList[0];
+  }
+
+  Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
+  var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
+  var iOsSystemBackgroundsLightSystemBack2 = Color.fromARGB(255, 255, 255, 255);
+
+  Future buildShowDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
+                  right: -40.0,
+                  top: -40.0,
+                  child: InkResponse(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: CircleAvatar(
+                      child: Icon(Icons.close),
+                      backgroundColor: Colors.red,
                     ),
                   ),
-                  child: Container(),
+                ),
+                form(),
+              ],
+            ),
+          );
+        });
+  }
+
+//Form form() {
+  Container form() {
+    return Container(
+        width: 381,
+        height: 700,
+        decoration: new BoxDecoration(
+            color: blueHighlight, borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          children: [
+            new Text("Congratulations!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: Color(0xfffafcfd),
+                  fontSize: 36,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                )),
+            new Text(
+                "By eliminating your climate impact, you’re helping reversing climate change!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  color: Color(0xff010101),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                )),
+            new Text("You just eliminated the climate impact of:",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: iOsSystemBackgroundsLightSystemBack2,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                )),
+            buildHighlightedCartItems(),
+            new Text("Tell your friends how you’re going climate positive:",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  color: Color(0xff010101),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                )),
+            new Container(
+              width: 344,
+              height: 50,
+              decoration: new BoxDecoration(
+                  color: primaryAccentGreen,
+                  borderRadius: BorderRadius.circular(8)),
+              child: new Text("Share",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'SFProText',
+                    color: iOsSystemBackgroundsLightSystemBack2,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                    letterSpacing: -0.408,
+                  )),
+            )
+          ],
+        ));
+
+    /*return Form(
+    //key: _formKey,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: TextFormField(),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: TextFormField(),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RaisedButton(
+            child: Text("Submitß"),
+            onPressed: () {
+              /*(if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                        }*/
+            },
+          ),
+        )
+      ],
+    ),
+  );*/
+  }
+
+  Container generalButtonItemContainer(
+      int index, String iconName, String iconText) {
+    return Container(
+      width: 95,
+      height: 107,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            top: 0,
+            child: Container(
+              width: 95,
+              height: 107,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 216, 216, 216),
+                border: Border.all(
+                  width: 3,
+                  color: getBorderSelectColor(index),
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                      alignment: Alignment.center,
-                      child: IconButton(
-                        icon: Image.asset(iconName, fit: BoxFit.fill),
-                        onPressed: () {},
-                      )),
-                  Text(iconText,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 65, 127, 69),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w800,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 14,
-                      )),
-                ],
-              ),
+              child: Container(),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    icon: Image.asset(iconName, fit: BoxFit.fill),
+                    onPressed: () {},
+                  )),
+              Text(iconText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 65, 127, 69),
+                    fontFamily: "Raleway",
+                    fontWeight: FontWeight.w800,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 14,
+                  )),
             ],
           ),
-        ));
+        ],
+      ),
+    );
   }
 
   @override
@@ -220,21 +383,25 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            alignment: Alignment.center,
-            child: AutoSizeText(
-              "Checkout",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: "SF Pro Text",
-                fontWeight: FontWeight.w400,
-                fontSize: 17,
-                letterSpacing: -0.408,
-                height: 1.29412,
-              ),
-            ),
-          ),
+          GestureDetector(
+              onTap: () {
+                buildShowDialog(context);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                child: AutoSizeText(
+                  "Checkout",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontFamily: "SF Pro Text",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 17,
+                    letterSpacing: -0.408,
+                    height: 1.29412,
+                  ),
+                ),
+              )),
         ],
       ),
     );
