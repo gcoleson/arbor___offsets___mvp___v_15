@@ -111,6 +111,7 @@ class MyHomePageState extends State<MyHomePage> {
             MyPage2Widget(context),
             MyPage3Widget(context),
             MyPage4Widget(context),
+            MyPage5Widget(context)
           ])
           /* new PageView.builder(
               physics: new AlwaysScrollableScrollPhysics(),

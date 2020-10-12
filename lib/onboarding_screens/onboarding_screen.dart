@@ -185,6 +185,12 @@ Widget MyPage4Widget(BuildContext context) {
   ]));
 }
 
+Widget MyPage5Widget(BuildContext context) {
+  return Container(
+    color: Colors.yellow,
+  );
+}
+
 Row _customButton(String buttonText) {
   return Row(children: [
     Spacer(flex: 21),
