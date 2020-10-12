@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget MyPage1Widget(BuildContext context) {
   return Container(
-    child: Stack(children: [
+    child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/bridge-1850679.png", fit: BoxFit.cover),
       Align(
         alignment: Alignment.topCenter,
@@ -40,7 +40,7 @@ Widget MyPage1Widget(BuildContext context) {
 
 Widget MyPage2Widget(BuildContext context) {
   return Container(
-    child: Stack(children: [
+    child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/plant-5310423.png", fit: BoxFit.cover),
       Align(
         alignment: Alignment.topCenter,
@@ -78,7 +78,7 @@ Widget MyPage2Widget(BuildContext context) {
 
 Widget MyPage3Widget(BuildContext context) {
   return Container(
-    child: Stack(children: [
+    child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/mountains-919040.png", fit: BoxFit.cover),
       Align(
           alignment: Alignment.topCenter,
@@ -107,77 +107,141 @@ Widget MyPage3Widget(BuildContext context) {
 
 Widget MyPage4Widget(BuildContext context) {
   return Container(
-      child: Stack(children: [
+      child: Stack(fit: StackFit.expand, children: [
     Image.asset("assets/images/forest-sun-shadow-green-HEIC.png",
         fit: BoxFit.cover),
     Column(children: [
-      Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            margin: EdgeInsets.only(top: 100, left: 10, right: 10),
-            child: Text(
-              "Arbor",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 60,
-              ),
-            ),
-          )),
-      Align(
-          alignment: Alignment.center,
-          child: Container(
-            margin: EdgeInsets.only(left: 10, right: 10),
-            child: Text(
-              "Erase Your Climate Impact",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
-            ),
-          )), //Arbor helps you eliminate yours
-      Align(
-          alignment: Alignment.bottomCenter,
-          child: Row(
+      Spacer(flex: 65),
+      Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(
+              height: 187,
+              decoration:
+                  BoxDecoration(color: Color.fromARGB(127, 216, 216, 216))),
+          Column(
             children: [
-              Text(
-                "New Email ",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: "SF Pro Text",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
+              Container(
+                child: Text(
+                  "Arbor",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 65, 127, 69),
+                    fontFamily: "Montserrat-SemiBold",
+                    fontWeight: FontWeight.bold,
+                    fontSize: 72,
+                  ),
                 ),
               ),
-              Align(
-                  child: Container(
-                      width: 200,
-                      child: TextField(
-                        controller: TextEditingController(),
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          hintText: "Email Address",
-                          icon: new Icon(Icons.mail, color: Colors.grey),
-                          contentPadding: EdgeInsets.all(0),
-                          border: InputBorder.none,
-                        ),
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 98, 0, 238),
-                          fontFamily: "HK Grotesk",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                        ),
-                        maxLines: 1,
-                        autocorrect: false,
-                      ))),
+              Container(
+                child: Text(
+                  "Erase your\n climate impact",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 65, 127, 69),
+                    fontFamily: "Montserrat-Medium",
+                    fontSize: 36,
+                  ),
+                ),
+              ),
             ],
-          ))
+          )
+        ],
+      ),
+      Spacer(flex: 375),
+      Container(
+          height: 44,
+          child: _customTextField("assets/images/UserIcon.png", "Email")),
+      Container(
+          margin: EdgeInsets.only(top: 14, bottom: 22),
+          height: 44,
+          child:
+              _customTextField("assets/images/PasswordIcon.png", "Password")),
+      _customButton("Join"),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+          height: 21,
+          child: Text(
+            "Already have an account? ",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Raleway-Medium",
+                fontSize: 18),
+          ),
+        ),
+        FlatButton(
+            onPressed: () {},
+            child: Text(
+              "Sign In",
+              style: TextStyle(
+                  color: Color.fromARGB(255, 250, 195, 21),
+                  fontSize: 18,
+                  fontFamily: "Raleway-Medium"),
+            )),
+      ]),
+      Spacer(flex: 55)
     ]),
   ]));
+}
+
+Row _customButton(String buttonText) {
+  return Row(children: [
+    Spacer(flex: 21),
+    Flexible(
+        flex: 379,
+        child: Container(
+          height: 50,
+          width: 379,
+          child: RaisedButton(
+              color: Color.fromARGB(255, 65, 127, 69),
+              onPressed: () {},
+              child: Text(
+                "Join",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "SFProText-Semibold",
+                    fontSize: 17),
+              )),
+        )),
+    Spacer(flex: 14)
+  ]);
+}
+
+Row _customTextField(String imageFilePath, String customLabelText) {
+  return Row(
+    children: [
+      Spacer(flex: 17),
+      Flexible(flex: 38, child: Image.asset(imageFilePath, fit: BoxFit.fill)),
+      Flexible(flex: 18, child: Container()),
+      Flexible(
+          flex: 327,
+          child: Container(
+              child: TextFormField(
+            controller: TextEditingController(),
+            decoration: new InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              labelText: customLabelText,
+              border: new OutlineInputBorder(
+                //borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(),
+              ),
+              //fillColor: Colors.green
+            ),
+            validator: (val) {
+              if (val.length == 0) {
+                return "Email cannot be empty";
+              } else {
+                return null;
+              }
+            },
+            keyboardType: TextInputType.emailAddress,
+            style: new TextStyle(
+              fontFamily: "HK Grotesk",
+            ),
+          ))),
+      Spacer(flex: 14)
+    ],
+  );
 }
