@@ -6,21 +6,326 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/huge_package_heh_heh_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/hybrid_button_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/long_flight_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/medium_flight_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/medium_package_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/sedan_button_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/short_flight_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/small_package_item_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/suvbutton_item_widget.dart';
+//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/general_cart_item_widget.dart';
+//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-class DashboardWidget extends StatelessWidget {
+class CartItem {
+  final String header;
+  final String description;
+  final String imageText;
+  final String imageIcon;
+  bool boxSelected;
+
+  CartItem(
+      {this.header,
+      this.description,
+      this.imageText,
+      this.imageIcon,
+      this.boxSelected});
+}
+
+List<CartItem> purchaseItemListTest = [
+  CartItem(
+      header: "Eliminate Fuel Impact:",
+      description: "Remove climate impact from an average tank of gas for:",
+      imageIcon: "assets/images/icons8-gas-station-100.png",
+      imageText: 'Hybrid 0',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Fuel Impact:",
+      description: "Remove climate impact from an average tank of gas for:",
+      imageIcon: "assets/images/icons8-gas-station-100.png",
+      imageText: 'Hybrid 1',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Fuel Impact:",
+      description: "Remove climate impact from an average tank of gas for:",
+      imageIcon: "assets/images/icons8-gas-station-100.png",
+      imageText: 'Hybrid 2',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Travel Impact:",
+      description: "Remove climate impact from an average flight between:",
+      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+      imageText: 'New York & Chicago (2 hrs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Travel Impact:",
+      description: "Remove climate impact from an average flight between:",
+      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+      imageText: 'New York & Chicago (4 hrs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Travel Impact:",
+      description: "Remove climate impact from an average flight between:",
+      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
+      imageText: 'New York & Chicago (6 hrs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Package Delivery:",
+      description: "Remove climate impact from a typical shipment that is:",
+      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+      imageText: 'Small (under 5lbs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Package Delivery:",
+      description: "Remove climate impact from a typical shipment that is:",
+      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+      imageText: 'Medium (under 5lbs)',
+      boxSelected: false),
+  CartItem(
+      header: "Eliminate Package Delivery:",
+      description: "Remove climate impact from a typical shipment that is:",
+      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
+      imageText: 'Large (under 5lbs)',
+      boxSelected: false),
+];
+
+class DashboardWidget extends StatefulWidget {
+  @override
+  _DashboardWidgetState createState() => _DashboardWidgetState();
+}
+
+class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
+
+  Color getBorderSelectColor(int index) {
+    if (purchaseItemListTest[index].boxSelected == false) {
+      //turn border on
+      return Color.fromARGB(255, 0, 0, 0);
+    } else {
+      //turn border off
+      return Color.fromARGB(255, 250, 195, 21);
+    }
+  }
+
+  void toggleItemSelected(int index) {
+    if (purchaseItemListTest[index].boxSelected == false) {
+      //turn border on
+      purchaseItemListTest[index].boxSelected = true;
+    } else {
+      //turn border off
+      purchaseItemListTest[index].boxSelected = false;
+    }
+  }
+
+  Widget generalButtonItemWidget(int index, String iconName, String iconText) {
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            toggleItemSelected(index);
+          });
+        },
+        child: generalButtonItemContainer(index, iconName, iconText));
+  }
+
+  Widget buildHighlightedCartItems()
+  //loop through all items and make into a grid 2x
+  {
+    List<Widget> returnList = new List();
+
+    for (var i = 0; i < purchaseItemListTest.length; i++) {
+      //check to see that headers don't match, if so make another area in the cart
+      //always do the first one
+      if (purchaseItemListTest[i].boxSelected == true) {
+        returnList.add(generalButtonItemContainer(
+            0,
+            purchaseItemListTest[i].imageIcon,
+            purchaseItemListTest[i].imageText));
+      }
+    }
+
+    if (returnList.length == 0)
+      return Spacer();
+    else
+      return Container(
+          height: 400,
+          width: 200,
+          child: GridView.count(
+            crossAxisCount: 2,
+            children: returnList,
+          ));
+    //return returnList[0];
+  }
+
+  Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
+  var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
+  var iOsSystemBackgroundsLightSystemBack2 = Color.fromARGB(255, 255, 255, 255);
+
+  Future buildShowDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
+                  right: -40.0,
+                  top: -40.0,
+                  child: InkResponse(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: CircleAvatar(
+                      child: Icon(Icons.close),
+                      backgroundColor: Colors.red,
+                    ),
+                  ),
+                ),
+                form(),
+              ],
+            ),
+          );
+        });
+  }
+
+//Form form() {
+  Container form() {
+    return Container(
+        width: 381,
+        height: 700,
+        decoration: new BoxDecoration(
+            color: blueHighlight, borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          children: [
+            new Text("Congratulations!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: Color(0xfffafcfd),
+                  fontSize: 36,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                )),
+            new Text(
+                "By eliminating your climate impact, you’re helping reversing climate change!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  color: Color(0xff010101),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                )),
+            new Text("You just eliminated the climate impact of:",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: iOsSystemBackgroundsLightSystemBack2,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                )),
+            buildHighlightedCartItems(),
+            new Text("Tell your friends how you’re going climate positive:",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  color: Color(0xff010101),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                )),
+            new Container(
+              width: 344,
+              height: 50,
+              decoration: new BoxDecoration(
+                  color: primaryAccentGreen,
+                  borderRadius: BorderRadius.circular(8)),
+              child: new Text("Share",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'SFProText',
+                    color: iOsSystemBackgroundsLightSystemBack2,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                    letterSpacing: -0.408,
+                  )),
+            )
+          ],
+        ));
+
+    /*return Form(
+    //key: _formKey,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: TextFormField(),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: TextFormField(),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RaisedButton(
+            child: Text("Submitß"),
+            onPressed: () {
+              /*(if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                        }*/
+            },
+          ),
+        )
+      ],
+    ),
+  );*/
+  }
+
+  Container generalButtonItemContainer(
+      int index, String iconName, String iconText) {
+    return Container(
+      width: 95,
+      height: 107,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            top: 0,
+            child: Container(
+              width: 95,
+              height: 107,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 216, 216, 216),
+                border: Border.all(
+                  width: 3,
+                  color: getBorderSelectColor(index),
+                ),
+              ),
+              child: Container(),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    icon: Image.asset(iconName, fit: BoxFit.fill),
+                    onPressed: () {},
+                  )),
+              Text(iconText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 65, 127, 69),
+                    fontFamily: "Raleway",
+                    fontWeight: FontWeight.w800,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 14,
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +353,6 @@ class DashboardWidget extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 65, 127, 69),
       ),
       body: ListView(
-        //constraints: BoxConstraints.expand(),
-        //decoration: BoxDecoration(
-        //  color: Color.fromARGB(255, 237, 236, 228),
-        //),
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -82,20 +383,81 @@ class DashboardWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          GestureDetector(
+              onTap: () {
+                buildShowDialog(context);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                child: AutoSizeText(
+                  "Checkout",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontFamily: "SF Pro Text",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 17,
+                    letterSpacing: -0.408,
+                    height: 1.29412,
+                  ),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Container buildGeneralAreaContainer({
+    @required String header,
+    @required String description,
+    @required IndexedWidgetBuilder itemBuilder,
+  }) {
+    return Container(
+      width: 416,
+      height: 190,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Container(
-            alignment: Alignment.center,
-            //margin: EdgeInsets.only(left: 100, right: 100),
-            child: AutoSizeText(
-              "Checkout",
-              textAlign: TextAlign.center,
+            margin: EdgeInsets.only(left: 4),
+            child: Text(
+              header,
+              textAlign: TextAlign.left,
               style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: "SF Pro Text",
-                fontWeight: FontWeight.w400,
-                fontSize: 17,
-                letterSpacing: -0.408,
-                height: 1.29412,
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w300,
+                fontSize: 21,
               ),
+            ),
+          ),
+          Container(
+            width: 382,
+            margin: EdgeInsets.only(left: 4, top: 2),
+            child: Text(
+              description,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w300,
+                fontStyle: FontStyle.italic,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Container(
+            width: 383,
+            height: 108,
+            margin: EdgeInsets.only(left: 14, top: 9),
+            child: GridView.builder(
+              scrollDirection: Axis.horizontal,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 108,
+                childAspectRatio: 1.13684,
+                mainAxisSpacing: 30,
+              ),
+              itemBuilder: itemBuilder,
             ),
           ),
         ],
@@ -109,172 +471,50 @@ class DashboardWidget extends StatelessWidget {
       margin: EdgeInsets.only(left: 1, top: 16, right: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 416,
-            height: 190,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 4),
-                  child: Text(
-                    "Eliminate Fuel Impact:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontSize: 21,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 382,
-                  margin: EdgeInsets.only(left: 4, top: 2),
-                  child: Text(
-                    "Remove climate impact from an average tank of gas for:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 383,
-                  height: 108,
-                  margin: EdgeInsets.only(left: 14, top: 9),
-                  child: GridView.builder(
-                    itemCount: 3,
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 108,
-                      childAspectRatio: 1.13684,
-                      mainAxisSpacing: 30,
-                    ),
-                    itemBuilder: (context, index) => HybridButtonItemWidget(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 414,
-            height: 181,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text(
-                      "Eliminate Travel Impact:",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w300,
-                        fontSize: 21,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4, top: 2),
-                  child: Text(
-                    "Remove climate impact from an average flight between:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    width: 383,
-                    height: 106,
-                    margin: EdgeInsets.only(left: 14, top: 6),
-                    child: GridView.builder(
-                      itemCount: 3,
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 106,
-                        childAspectRatio: 1.12766,
-                        mainAxisSpacing: 30,
-                      ),
-                      itemBuilder: (context, index) => ShortFlightItemWidget(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 414,
-            height: 181,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(left: 4),
-                    child: Text(
-                      "Eliminate Package Delivery:",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w300,
-                        fontSize: 21,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4, top: 2),
-                  child: Text(
-                    "Remove climate impact from a typical shipment that is:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 106,
-                  margin: EdgeInsets.only(left: 14, top: 6),
-                  child: GridView.builder(
-                    itemCount: 3,
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 106,
-                      childAspectRatio: 1.12766,
-                      mainAxisSpacing: 30,
-                    ),
-                    itemBuilder: (context, index) => SmallPackageItemWidget(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        children: purchaseItemList(),
       ),
     );
+  }
+
+  Widget buildGeneralButtonItemWidget(BuildContext context, int index,
+      int startIndex, List<CartItem> cartList, String header) {
+    //keep returning widgets until the headers don't match
+
+    if (((startIndex + index) < cartList.length) &&
+        (cartList[startIndex + index].header == header))
+      return generalButtonItemWidget(
+          startIndex + index,
+          cartList[startIndex + index].imageIcon,
+          cartList[startIndex + index].imageText);
+    else
+      return null;
+  }
+
+  List<Widget> purchaseItemList() {
+    List<Widget> returnList = new List();
+    Widget tempWidget;
+
+    for (var i = 0; i < purchaseItemListTest.length; i++) {
+      //check to see that headers don't match, if so make another area in the cart
+      //always do the first one
+      if (i == 0 ||
+          (purchaseItemListTest[i].header !=
+              purchaseItemListTest[i - 1].header)) {
+        tempWidget = (buildGeneralAreaContainer(
+            header: purchaseItemListTest[i].header,
+            description: purchaseItemListTest[i].description,
+            itemBuilder: (context, index) => buildGeneralButtonItemWidget(
+                context,
+                index,
+                i,
+                purchaseItemListTest,
+                purchaseItemListTest[i].header)));
+
+        returnList.add(tempWidget);
+      }
+    }
+
+    return returnList;
   }
 
   Align buildLiveClimatePositveAlign() {
@@ -493,8 +733,6 @@ class DashboardWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          //height: 30,
-                          //width: 50,
                           margin: EdgeInsets.all(5),
                           child: AutoSizeText(
                             "9 trees earned this month.",
@@ -507,14 +745,10 @@ class DashboardWidget extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          //alignment: Alignment.center,
                           child: Container(
-                            //height: 30,
-                            //width: 50,
                             margin: EdgeInsets.all(5),
                             child: AutoSizeText(
                               "38 all-time!",
-                              //minFontSize: 12,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 250, 195, 21),
