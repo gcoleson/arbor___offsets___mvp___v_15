@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Widget MyPage1Widget(BuildContext context) {
   return Container(
@@ -293,7 +294,14 @@ Row _customButton(String buttonText) {
           width: 379,
           child: RaisedButton(
               color: Color.fromARGB(255, 65, 127, 69),
-              onPressed: () {},
+              onPressed: () {
+                FirebaseFirestore.instance
+                    .collection("Test")
+                    .snapshots()
+                    .listen((event) {
+                  print(event.toString());
+                });
+              },
               child: Text(
                 "Join",
                 style: TextStyle(

@@ -15,8 +15,13 @@ import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_scr
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(App());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(App());
+}
 
 // class MyApp extends StatelessWidget {
 //   @override
