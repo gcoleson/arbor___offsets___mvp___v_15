@@ -187,7 +187,99 @@ Widget MyPage4Widget(BuildContext context) {
 
 Widget MyPage5Widget(BuildContext context) {
   return Container(
-    color: Colors.yellow,
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        Image(
+          image: AssetImage("assets/images/WelcomeBackScreen.png"),
+          fit: BoxFit.cover,
+        ),
+        Column(
+          children: [
+            Spacer(flex: 68),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Container(
+                    height: 159,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(127, 216, 216, 216))),
+                Column(
+                  children: [
+                    Container(
+                      child: Text(
+                        "Arbor",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 65, 127, 69),
+                          fontFamily: "Montserrat-SemiBold",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 72,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "Welcome Back",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 65, 127, 69),
+                          fontFamily: "Montserrat-Medium",
+                          fontSize: 36,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Spacer(flex: 47),
+            Container(
+                height: 44,
+                child: _customTextField("assets/images/UserIcon.png", "Email")),
+            Container(
+                margin: EdgeInsets.only(top: 14, bottom: 22),
+                height: 44,
+                child: _customTextField(
+                    "assets/images/PasswordIcon.png", "Password")),
+            _customButton("Join"),
+            FlatButton(
+                onPressed: () {},
+                child: Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 250, 195, 21),
+                      fontSize: 18,
+                      fontFamily: "Raleway-Medium"),
+                )),
+            Spacer(flex: 334),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                height: 21,
+                child: Text(
+                  "Need an account? ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: "Raleway-Medium",
+                      fontSize: 18),
+                ),
+              ),
+              FlatButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Join",
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 250, 195, 21),
+                        fontSize: 18,
+                        fontFamily: "Raleway-Medium"),
+                  )),
+            ]),
+            Spacer(flex: 47)
+          ],
+        )
+      ],
+    ),
   );
 }
 
