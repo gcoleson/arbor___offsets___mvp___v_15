@@ -13,14 +13,18 @@
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 //import 'package:arbor___offsets___mvp___v_15/shopping_cart/shopping_cart.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
+  //Boiler plate code ot get firebase initialized
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Listens to changes to User status (IE sign in/sign out)
   FirebaseAuth auth = FirebaseAuth.instance;
   auth.authStateChanges().listen((User user) {
     if (user == null) {
@@ -29,6 +33,11 @@ void main() async {
       print("User is signed in");
     }
   });
+
+  // Enabling analytics for Firebase
+  FirebaseAnalytics analytics;
+  analytics = FirebaseAnalytics();
+
   runApp(App());
 }
 

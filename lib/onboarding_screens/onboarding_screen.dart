@@ -175,13 +175,13 @@ Widget MyPage4Widget(BuildContext context) {
       Spacer(flex: 375),
       Container(
           height: 44,
-          child: _customTextField(
-              "assets/images/UserIcon.png", "Email", _emailController)),
+          child: _customTextField("assets/images/UserIcon.png", "Email",
+              _emailController, TextInputType.emailAddress, false)),
       Container(
           margin: EdgeInsets.only(top: 14, bottom: 22),
           height: 44,
           child: _customTextField("assets/images/PasswordIcon.png", "Password",
-              _passwordController)),
+              _passwordController, TextInputType.text, true)),
       _customButton("Join", register),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
@@ -281,13 +281,13 @@ Widget MyPage5Widget(BuildContext context) {
             Spacer(flex: 47),
             Container(
                 height: 44,
-                child: _customTextField(
-                    "assets/images/UserIcon.png", "Email", _emailController)),
+                child: _customTextField("assets/images/UserIcon.png", "Email",
+                    _emailController, TextInputType.emailAddress, false)),
             Container(
                 margin: EdgeInsets.only(top: 14, bottom: 22),
                 height: 44,
                 child: _customTextField("assets/images/PasswordIcon.png",
-                    "Password", _passwordController)),
+                    "Password", _passwordController, TextInputType.text, true)),
             _customButton("Sign In", signIn),
             FlatButton(
                 onPressed: () {},
@@ -353,7 +353,7 @@ Row _customButton(String buttonText, Function onButtonPress) {
 }
 
 Row _customTextField(String imageFilePath, String customLabelText,
-    TextEditingController controller) {
+    TextEditingController controller, TextInputType inputType, bool isObscure) {
   return Row(
     children: [
       Spacer(flex: 17),
@@ -363,6 +363,7 @@ Row _customTextField(String imageFilePath, String customLabelText,
           flex: 327,
           child: Container(
               child: TextFormField(
+            obscureText: isObscure,
             controller: controller,
             decoration: new InputDecoration(
               filled: true,
@@ -376,12 +377,12 @@ Row _customTextField(String imageFilePath, String customLabelText,
             ),
             validator: (val) {
               if (val.length == 0) {
-                return "Email cannot be empty";
+                return "Field cannot be empty";
               } else {
                 return null;
               }
             },
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: inputType,
             style: new TextStyle(
               fontFamily: "HK Grotesk",
             ),
