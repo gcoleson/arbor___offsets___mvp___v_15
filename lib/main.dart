@@ -16,10 +16,19 @@ import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_gr
 import 'package:flutter/material.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  auth.authStateChanges().listen((User user) {
+    if (user == null) {
+      print("User is currently signed out");
+    } else {
+      print("User is signed in");
+    }
+  });
   runApp(App());
 }
 
