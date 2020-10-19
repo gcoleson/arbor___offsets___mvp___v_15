@@ -36,6 +36,11 @@ dependencies:
   # Cloud Storage
   cloud_firestore: ^0.14.1
 
+  # Stripe Payment
+  stripe_payment: ^1.0.6
+
+
+
   
 
   
