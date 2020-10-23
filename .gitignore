@@ -32,6 +32,7 @@ android/app/google-services.json
 android/key.properties
 pubspec.lock
 doc/api/
+.flutter-plugins-dependencies
 
 #ios specific
 ios/.generated/

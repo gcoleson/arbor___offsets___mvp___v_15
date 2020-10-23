@@ -1,3 +1,4 @@
+import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -312,7 +313,14 @@ Widget MyPage5Widget(BuildContext context) {
                 ),
               ),
               FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print("pressed");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TabGroupOneTabBarWidget()),
+                    );
+                  },
                   child: Text(
                     "Join",
                     style: TextStyle(
