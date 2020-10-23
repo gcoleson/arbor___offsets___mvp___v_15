@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-
 import 'onboarding_screen.dart';
 
 /// An indicator showing the currently selected page of a PageController
@@ -81,46 +80,20 @@ class MyHomePageState extends State<MyHomePage> {
 
   static const _kCurve = Curves.ease;
 
-  final _kArrowColor = Colors.black.withOpacity(0.8);
-
-  final List<Widget> _pages = <Widget>[
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(textColor: Colors.blue),
-    ),
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(
-          style: FlutterLogoStyle.stacked, textColor: Colors.red),
-    ),
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(
-          style: FlutterLogoStyle.horizontal, textColor: Colors.green),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    var _onboardingScreens = [
+      MyPage1Widget(context),
+      MyPage2Widget(context),
+      MyPage3Widget(context),
+      MyPage4Widget(context),
+      MyPage5Widget(context)
+    ];
     return Material(
       type: MaterialType.transparency,
       child: Stack(
         children: <Widget>[
-          PageView(controller: _controller, children: [
-            MyPage1Widget(context),
-            MyPage2Widget(context),
-            MyPage3Widget(context),
-            MyPage4Widget(context),
-            MyPage5Widget(context)
-          ])
-          /* new PageView.builder(
-              physics: new AlwaysScrollableScrollPhysics(),
-              controller: _controller,
-              itemBuilder: (BuildContext context, int index) {
-                return _pages[index % _pages.length];
-              },
-            ) */
-          ,
+          PageView(controller: _controller, children: _onboardingScreens),
           new Positioned(
             bottom: 0.0,
             left: 0.0,
@@ -131,7 +104,7 @@ class MyHomePageState extends State<MyHomePage> {
               child: new Center(
                 child: new DotsIndicator(
                   controller: _controller,
-                  itemCount: _pages.length,
+                  itemCount: _onboardingScreens.length,
                   onPageSelected: (int page) {
                     _controller.animateToPage(
                       page,
