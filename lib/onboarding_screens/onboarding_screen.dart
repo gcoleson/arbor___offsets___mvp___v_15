@@ -314,7 +314,6 @@ Widget MyPage5Widget(BuildContext context) {
               ),
               FlatButton(
                   onPressed: () {
-                    print("pressed");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
