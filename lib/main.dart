@@ -6,6 +6,8 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'dart:io';
+
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +40,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //home: TabGroupOneTabBarWidget(),
-      home: MyHomePage(),
+      //home: MyHomePage(),
+      routes: {"HomeScreen": (context) => MyHomePage()},
+      initialRoute: "HomeScreen",
     );
   }
 }
