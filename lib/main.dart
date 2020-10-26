@@ -9,6 +9,7 @@
 import 'dart:io';
 
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,8 +42,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //home: MyHomePage(),
-      routes: {"HomeScreen": (context) => MyHomePage()},
-      initialRoute: "HomeScreen",
+      home: TabGroupOneTabBarWidget(),
+      //routes: {"HomeScreen": (context) => MyHomePage()},
+      //initialRoute: "HomeScreen",
     );
   }
 }
