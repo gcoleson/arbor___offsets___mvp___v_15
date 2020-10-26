@@ -6,45 +6,58 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-class ProjectBLandfillGasItemWidget extends StatelessWidget {
+class ProjectBLandfillGasItemWidget extends StatefulWidget {
+  @override
+  _ProjectBLandfillGasItemWidgetState createState() =>
+      _ProjectBLandfillGasItemWidgetState();
+}
+
+class _ProjectBLandfillGasItemWidgetState
+    extends State<ProjectBLandfillGasItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //height: 360,
       constraints: BoxConstraints.expand(height: 336.57031),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
-        //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             height: 280,
-            //constraints: BoxConstraints.expand(),
             margin: EdgeInsets.only(left: 10, right: 10, bottom: 2),
             child: Stack(
               alignment: Alignment.center,
               children: [
                 Positioned(
-                  //left: 0,
                   top: 0,
-                  //height: 200,
-                  child: Image.asset(
-                    "assets/images/one-tree-planted-21-copy.png",
-                    alignment: Alignment.center,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
+                  child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          print('tap');
+                          //ProjectDetailWidget(context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  ProjectDetailWidget(context)));
+                        });
+                      },
+                      child: Image.asset(
+                        "assets/images/one-tree-planted-21-copy.png",
+                        alignment: Alignment.center,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )),
                 ),
                 Positioned(
                   left: 3,
                   right: 10,
                   bottom: 0,
-                  //height: 30,
                   child: AutoSizeText(
                     "Landfill Gas Capture: Nebraska",
                     textAlign: TextAlign.left,
@@ -64,7 +77,6 @@ class ProjectBLandfillGasItemWidget extends StatelessWidget {
             height: 21,
             margin: EdgeInsets.only(left: 13, right: 15, bottom: 3),
             child: Row(
-              //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
                   flex: 1,

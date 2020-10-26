@@ -6,7 +6,6 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/projects_widget/project_areforestation_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class ProjectsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           "Projects",
@@ -41,7 +39,6 @@ class ProjectsWidget extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 65, 127, 69),
       ),
       body: Container(
-        //constraints: BoxConstraints.expand(),
         height: 600,
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 237, 236, 228),
@@ -68,14 +65,12 @@ class ProjectsWidget extends StatelessWidget {
               top: 50,
               right: 1,
               height: 550,
-              //child: ProjectBLandfillGasItemWidget().build(context),
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (context, index) =>
                     ProjectBLandfillGasItemWidget(),
               ),
             ),
-            //ProjectBLandfillGasItemWidget(),
           ],
         ),
       ),

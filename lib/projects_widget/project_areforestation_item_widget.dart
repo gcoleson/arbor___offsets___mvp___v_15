@@ -12,10 +12,12 @@ import 'package:flutter/material.dart';
 
 class ProjectAReforestationItemWidget extends StatelessWidget {
   void onOneTreePlanted21Pressed(BuildContext context) => Navigator.push(
-      context, MaterialPageRoute(builder: (context) => ProjectDetailWidget()));
+      context,
+      MaterialPageRoute(builder: (context) => ProjectDetailWidget(context)));
 
   void onReforestationProjecPressed(BuildContext context) => Navigator.push(
-      context, MaterialPageRoute(builder: (context) => ProjectDetailWidget()));
+      context,
+      MaterialPageRoute(builder: (context) => ProjectDetailWidget(context)));
 
   @override
   Widget build(BuildContext context) {

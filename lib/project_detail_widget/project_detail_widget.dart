@@ -26,9 +26,7 @@ final List<String> imgList = [
 final List<Widget> imageSliders = imgList
     .map((item) => Container(
           child: Container(
-            //margin: EdgeInsets.all(5.0),
             child: ClipRRect(
-                //borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 child: Stack(
               children: <Widget>[
                 Image.network(item, fit: BoxFit.cover, width: 1000.0),
@@ -47,10 +45,9 @@ final List<Widget> imageSliders = imgList
                         end: Alignment.topCenter,
                       ),
                     ),
-                    //padding:
-                    //EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     child: Text(
-                      'No. ${imgList.indexOf(item)} image',
+                      '',
+                      //'No. ${imgList.indexOf(item)} image',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,
@@ -66,6 +63,8 @@ final List<Widget> imageSliders = imgList
     .toList();
 
 class ProjectDetailWidget extends StatelessWidget {
+  ProjectDetailWidget(BuildContext context);
+
   void onItemPressed(BuildContext context) => Navigator.pop(context);
 
   double projectPercentage = .92;
@@ -73,7 +72,6 @@ class ProjectDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           "Project Details",
@@ -103,10 +101,8 @@ class ProjectDetailWidget extends StatelessWidget {
           children: [
             Container(
                 height: 283,
-                //margin: EdgeInsets.only(left: 4, top: 4, right: 4),
                 child: CarouselSlider(
                   options: CarouselOptions(
-                    //aspectRatio: 2.0,
                     enlargeCenterPage: true,
                     scrollDirection: Axis.horizontal,
                     autoPlay: true,
@@ -117,7 +113,6 @@ class ProjectDetailWidget extends StatelessWidget {
               height: 76,
               margin: EdgeInsets.only(left: 10, top: 9, right: 10),
               child: Stack(
-                //alignment: Alignment.center,
                 children: [
                   Positioned(
                     left: 0,
@@ -142,7 +137,6 @@ class ProjectDetailWidget extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          //alignment: Alignment.topLeft,
                           margin: EdgeInsets.only(left: 10),
                           child: AutoSizeText(
                             "Sevierville, TN",
@@ -158,7 +152,6 @@ class ProjectDetailWidget extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          //alignment: Alignment.topLeft,
                           margin: EdgeInsets.only(left: 10),
                           child: AutoSizeText(
                             "\$0.78/pound of carbon removed",
