@@ -11,15 +11,35 @@
 //import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
 //import 'package:arbor___offsets___mvp___v_1.5/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout.dart';
 //import 'package:arbor___offsets___mvp___v_15/shopping_cart/shopping_cart.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
+
+//Firebase Imports
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+//Stripe Imports
+import 'package:stripe_payment/stripe_payment.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+
 void main() async {
+  String text = "Click the button to start the payment";
+  double totalCost = 10.0;
+  double tip = 1.0;
+  double tax = 0.0;
+  double taxPercent = 0.2;
+  int amount = 0;
+  bool showSpinner = false;
+  String url =
+      "https://us-central1-demostripe-b9557.cloudfunctions.net/StripePI";
   //Boiler plate code ot get firebase initialized
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -60,7 +80,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //home: TabGroupOneTabBarWidget(),
-      home: MyHomePage(),
+      //home: MyHomePage(),
+      home: checkoutScreen(),
     );
   }
 }
