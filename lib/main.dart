@@ -9,7 +9,6 @@
 import 'dart:io';
 
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
-<<<<<<< HEAD
 import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout.dart';
 //import 'package:arbor___offsets___mvp___v_15/shopping_cart/shopping_cart.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
@@ -18,10 +17,6 @@ import 'package:flutter/material.dart';
 
 //Firebase Imports
 import 'package:firebase_analytics/firebase_analytics.dart';
-=======
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/material.dart';
->>>>>>> 6457f44ec10835115b043a24924b09c21f87ffb9
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -68,15 +63,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-<<<<<<< HEAD
-      //home: TabGroupOneTabBarWidget(),
-      //home: MyHomePage(),
-      home: checkoutScreen(),
-=======
       //home: MyHomePage(),
       routes: {"HomeScreen": (context) => MyHomePage()},
       initialRoute: "HomeScreen",
->>>>>>> 6457f44ec10835115b043a24924b09c21f87ffb9
     );
   }
 }
