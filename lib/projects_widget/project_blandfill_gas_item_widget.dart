@@ -54,7 +54,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
                                   ProjectDetailWidget(context, projectData)));
                         });
                       },
-                      child: Image.asset(
+                      child: Image.network(
                         projectData.imagemain,
                         alignment: Alignment.center,
                         height: 200,

@@ -26,16 +26,22 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
     print('init data');
     projectData.brief = "brief";
     projectData.description = 'description';
-    projectData.imagemain = "assets/images/one-tree-planted-21-copy.png";
-    projectData.image1 = "assets/images/one-tree-planted-21-copy.png";
-    projectData.image2 = "assets/images/one-tree-planted-21-copy.png";
-    projectData.image3 = "assets/images/one-tree-planted-21-copy.png";
-    projectData.image4 = "assets/images/one-tree-planted-21-copy.png";
+    projectData.imagemain =
+        "https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c";
+    projectData.image1 =
+        "https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c";
+    projectData.image2 =
+        "https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c";
+    projectData.image3 =
+        "https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c";
+    projectData.image4 =
+        "https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c";
     projectData.location = 'location';
     projectData.maplocal = GeoPoint(33.781115, -84.299746);
     projectData.percent = 50;
     projectData.sponsor = 'sponsor';
-    projectData.sponsorlogo = 'logo';
+    projectData.sponsorlogo =
+        'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/SFT-Logo-Long-Color.png?alt=media&token=24f9df3d-a899-47c5-9a09-b13d41db8729';
     projectData.title = 'title';
   }
 

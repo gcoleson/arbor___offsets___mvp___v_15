@@ -8,7 +8,6 @@
 
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
-//import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -16,65 +15,58 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final List<String> imgList = [
-  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+/* final List<String> imgList = [
+  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
+  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
+  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
+  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
+  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
 ];
 
 final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          child: Container(
-            child: ClipRRect(
-                child: Stack(
-              children: <Widget>[
-                Image.network(item, fit: BoxFit.cover, width: 1000.0),
-                Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(200, 0, 0, 0),
-                          Color.fromARGB(0, 0, 0, 0)
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
-                    ),
-                    child: Text(
-                      '',
-                      //'No. ${imgList.indexOf(item)} image',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )),
-          ),
-        ))
-    .toList();
+    .map((item) => Image.network(item, fit: BoxFit.cover, width: 1000.0))
+    .toList(); */
 
-class ProjectDetailWidget extends StatelessWidget {
-  ProjectDetailWidget(BuildContext context, this.projectData);
+class ProjectDetailWidget extends StatefulWidget {
+  ProjectDetailWidget(this.context, this.projectData);
+  final ProjectData projectData;
+  final BuildContext context;
+
+  @override
+  _ProjectDetailWidgetState createState() =>
+      _ProjectDetailWidgetState(context, this.projectData);
+}
+
+class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
+  _ProjectDetailWidgetState(BuildContext context, this.projectData);
   final ProjectData projectData;
 
   void onItemPressed(BuildContext context) => Navigator.pop(context);
 
   final double projectPercentage = .92;
 
+  List<Widget> imageSliders;
+
+  @override
+  void initState() {
+    //build list of image widgets
+    List<String> imgList = [
+      projectData.image1,
+      projectData.image2,
+      projectData.image3,
+      projectData.image4,
+    ];
+
+    imageSliders = imgList
+        .map((item) => Image.network(item, fit: BoxFit.cover, width: 1000.0))
+        .toList();
+
+    super.initState();
+  }
+
   _launchURL() async {
     final url =
-        "https://www.google.com/maps/@${projectData.maplocal.latitude},${projectData.maplocal.longitude},17z";
+        "https://www.google.com/maps/@${widget.projectData.maplocal.latitude},${widget.projectData.maplocal.longitude},17z";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -138,7 +130,7 @@ class ProjectDetailWidget extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(left: 2),
                           child: AutoSizeText(
-                            projectData.brief,
+                            widget.projectData.brief,
                             textAlign: TextAlign.left,
                             maxLines: 1,
                             style: TextStyle(
@@ -157,7 +149,7 @@ class ProjectDetailWidget extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.only(left: 10),
                                 child: AutoSizeText(
-                                  "${projectData.location} ",
+                                  "${widget.projectData.location} ",
                                   textAlign: TextAlign.left,
                                   maxLines: 1,
                                   style: TextStyle(
@@ -193,14 +185,33 @@ class ProjectDetailWidget extends StatelessWidget {
                 ],
               ),
             ),
+            Column(
+              children: [
+                Container(
+                    width: 200,
+                    child: Text("In partnership with: ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: Color.fromARGB(255, 2, 2, 2),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ))),
+                Container(
+                  child: Image.network(widget.projectData.sponsorlogo,
+                      width: 200, fit: BoxFit.fill),
+                ),
+              ],
+            ),
             Container(
               height: 40,
               margin: EdgeInsets.only(left: 10, right: 10),
               child: LinearPercentIndicator(
-                percent: projectData.percent.toDouble() / 100,
+                percent: widget.projectData.percent.toDouble() / 100,
                 lineHeight: 20,
                 center: AutoSizeText(
-                  "${projectData.percent}% Funded",
+                  "${widget.projectData.percent}% Funded",
                   textAlign: TextAlign.left,
                   maxLines: 1,
                   style: TextStyle(
@@ -216,7 +227,7 @@ class ProjectDetailWidget extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 17, top: 8, right: 8),
               child: AutoSizeText(
-                projectData.description,
+                widget.projectData.description,
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   color: Color.fromARGB(255, 2, 2, 2),
