@@ -96,148 +96,150 @@ class ProjectDetailWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.ternaryBackground,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-                height: 283,
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    autoPlay: true,
-                  ),
-                  items: imageSliders,
-                )),
-            Container(
-              height: 76,
-              margin: EdgeInsets.only(left: 10, top: 9, right: 10),
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    right: 68,
-                    bottom: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 2),
-                          child: AutoSizeText(
-                            "Reforestation Project: Tennessee",
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 21,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                  height: 283,
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      enlargeCenterPage: true,
+                      scrollDirection: Axis.horizontal,
+                      autoPlay: true,
+                    ),
+                    items: imageSliders,
+                  )),
+              Container(
+                height: 76,
+                margin: EdgeInsets.only(left: 10, top: 9, right: 10),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      top: 0,
+                      right: 68,
+                      bottom: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 2),
+                            child: AutoSizeText(
+                              "Reforestation Project: Tennessee",
+                              textAlign: TextAlign.left,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontFamily: "Raleway",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 21,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: AutoSizeText(
-                            "Sevierville, TN",
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 2, 2, 2),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18,
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: AutoSizeText(
+                              "Sevierville, TN",
+                              textAlign: TextAlign.left,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 2, 2, 2),
+                                fontFamily: "Raleway",
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: AutoSizeText(
-                            "\$0.78/pound of carbon removed",
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 2, 2, 2),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18,
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: AutoSizeText(
+                              "\$0.78/pound of carbon removed",
+                              textAlign: TextAlign.left,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 2, 2, 2),
+                                fontFamily: "Raleway",
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 40,
+                margin: EdgeInsets.only(left: 10, right: 10),
+                child: LinearPercentIndicator(
+                  percent: projectPercentage,
+                  lineHeight: 20,
+                  center: AutoSizeText(
+                    (projectPercentage * 100).toInt().toString() + "% Funded",
+                    textAlign: TextAlign.left,
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 2, 2, 2),
+                      fontFamily: "Raleway",
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 15,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 10, right: 10),
-              child: LinearPercentIndicator(
-                percent: projectPercentage,
-                lineHeight: 20,
-                center: AutoSizeText(
-                  (projectPercentage * 100).toInt().toString() + "% Funded",
+              Container(
+                margin: EdgeInsets.only(left: 17, top: 8, right: 8),
+                child: AutoSizeText(
+                  "Funding the replanting of 550 acres in Eastern TN, boardering the Great Smokey Mountains National Park. \n\nEach dollar funded goes to purchasing tree seedlings to replant the forest. Every tree planted will remove 40-50 tons of carbon over its lifetime—in addition to rebuilding the forest habitat for native species. The forest is placed in a conservation easement to ensure the trees are never cut down once planted. ",
                   textAlign: TextAlign.left,
-                  maxLines: 1,
                   style: TextStyle(
                     color: Color.fromARGB(255, 2, 2, 2),
                     fontFamily: "Raleway",
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 15,
+                    //fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
                   ),
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 17, top: 8, right: 8),
-              child: AutoSizeText(
-                "Funding the replanting of 550 acres in Eastern TN, boardering the Great Smokey Mountains National Park. \n\nEach dollar funded goes to purchasing tree seedlings to replant the forest. Every tree planted will remove 40-50 tons of carbon over its lifetime—in addition to rebuilding the forest habitat for native species. The forest is placed in a conservation easement to ensure the trees are never cut down once planted. ",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 2, 2, 2),
-                  fontFamily: "Raleway",
-                  //fontWeight: FontWeight.w300,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
+              Container(
+                height: 21,
+                margin: EdgeInsets.only(left: 14, top: 24, right: 11),
+                child: Row(
+                  children: [
+                    Text(
+                      "Visit Project Sponsor",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 2, 2, 2),
+                        fontFamily: "Raleway",
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      ">",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 2, 2, 2),
+                        fontFamily: "Raleway",
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Container(
-              height: 21,
-              margin: EdgeInsets.only(left: 14, top: 24, right: 11),
-              child: Row(
-                children: [
-                  Text(
-                    "Visit Project Sponsor",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    ">",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

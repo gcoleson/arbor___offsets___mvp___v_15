@@ -8,6 +8,7 @@
 
 //import 'package:arbor___offsets___mvp___v_15/dashboard_widget/general_cart_item_widget.dart';
 //import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -157,30 +158,90 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
   Future buildShowDialog(BuildContext context) {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Positioned(
-                  right: -40.0,
-                  top: -40.0,
-                  child: InkResponse(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: CircleAvatar(
-                      child: Icon(Icons.close),
-                      backgroundColor: Colors.red,
-                    ),
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          content: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Positioned(
+                right: -40.0,
+                top: -40.0,
+                child: InkResponse(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: CircleAvatar(
+                    child: Icon(Icons.close),
+                    backgroundColor: Colors.red,
                   ),
                 ),
-                form(),
-              ],
+              ),
+              form(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future _paymentResultDialogue(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
+          insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
             ),
-          );
-        });
+          ),
+          content: Stack(
+            overflow: Overflow.visible,
+            fit: StackFit.expand,
+            children: [
+              //Text("data")
+              _congratulationsDialogue(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Container _congratulationsDialogue() {
+    return Container(
+      alignment: Alignment.topCenter,
+      //margin: EdgeInsetsGeometry.infinity,
+      padding: EdgeInsets.all(0),
+      constraints: BoxConstraints.expand(),
+
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image(
+              image: AssetImage("assets/images/sunrise.png"),
+            ),
+          ),
+        ],
+      ),
+
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 28, 151, 211),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+      ),
+      // child: Stack(
+      //   fit: StackFit.loose,
+      //   children: [
+      //     Image.asset("assets/images/WelcomeBackScreen.png"),
+      //   ],
+      // ),
+    );
   }
 
 //Form form() {
@@ -370,6 +431,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  //TODO: Finish alert dialogues for success and failure for payments
   Container buildCheckoutButtonContainer() {
     return Container(
       width: 300,
@@ -384,24 +446,26 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-              onTap: () {
-                buildShowDialog(context);
-              },
-              child: Container(
-                alignment: Alignment.center,
-                child: AutoSizeText(
-                  "Checkout",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    fontFamily: "SF Pro Text",
-                    fontWeight: FontWeight.w400,
-                    fontSize: 17,
-                    letterSpacing: -0.408,
-                    height: 1.29412,
-                  ),
+            onTap: () {
+              //buildShowDialog(context);
+              _paymentResultDialogue(context);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              child: AutoSizeText(
+                "Checkout",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontFamily: "SF Pro Text",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17,
+                  letterSpacing: -0.408,
+                  height: 1.29412,
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
     );

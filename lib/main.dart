@@ -14,6 +14,7 @@ import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout_entry.dart';
 
 //Firebase Imports
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -64,6 +65,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //home: MyHomePage(),
+      //home: checkout_entry(),
       routes: {"HomeScreen": (context) => MyHomePage()},
       initialRoute: "HomeScreen",
     );
