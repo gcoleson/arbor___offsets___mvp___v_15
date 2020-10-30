@@ -22,6 +22,55 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
 
   ProjectData projectData = ProjectData();
 
+  Widget buildProjectListWidget(BuildContext context) {
+    /*  return ListView.builder(
+      itemCount: 4,
+      itemBuilder: (context, index) => ProjectSummaryWidget(projectData),
+    );
+ */
+    try {
+      return StreamBuilder<QuerySnapshot>(
+        stream: databaseReference.collection("projects").snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) return LinearProgressIndicator();
+
+          final int messageCount = snapshot.data.docs.length;
+
+          print('Message count:$messageCount');
+          print(snapshot.data.docs[0]['brief']);
+
+          return ListView.builder(
+            itemCount: messageCount,
+            itemBuilder: (_, int index) {
+              final DocumentSnapshot document = snapshot.data.docs[index];
+              projectData.brief = document['brief'];
+              projectData.description = document['description'];
+              projectData.imagemain = document['image-main'];
+              projectData.image1 = document['image1'];
+              projectData.image2 = document['image2'];
+              projectData.image3 = document['image3'];
+              projectData.image4 = document['image4'];
+              projectData.location = document['location'];
+              projectData.maplocal = document['map-local'];
+              projectData.percent = document['percent'];
+              projectData.sponsor = document['sponsor'];
+              projectData.sponsorlogo = document['sponsor-logo'];
+              projectData.title = document['title'];
+              return ProjectSummaryWidget(projectData);
+            },
+          );
+        },
+      );
+    } catch (error) {
+      print('project db error');
+      print(error.toString());
+      return ListView.builder(
+        itemCount: 4,
+        itemBuilder: (context, index) => ProjectSummaryWidget(projectData),
+      );
+    }
+  }
+
   initProjectData() {
     print('init data');
     projectData.brief = "brief";
@@ -103,11 +152,12 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
               top: 50,
               right: 1,
               height: 550,
-              child: ListView.builder(
+              child: buildProjectListWidget(context),
+              /* ListView.builder(
                 itemCount: 4,
                 itemBuilder: (context, index) =>
                     ProjectSummaryWidget(projectData),
-              ),
+              ), */
             ),
           ],
         ),

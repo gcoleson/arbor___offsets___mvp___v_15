@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -14,6 +15,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 /* final List<String> imgList = [
   'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
@@ -72,6 +74,23 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  showHTML() {
+    Center(
+      child: SingleChildScrollView(
+        child: Html(
+          data: """
+                <div>Follow<a class='sup'><sup>pl</sup></a> 
+                  Below hr
+                    <b>Bold</b>
+                <h1>what was sent down to you from your Lord</h1>, 
+                and do not follow other guardians apart from Him. Little do 
+                <span class='h'>you remind yourselves</span><a class='f'><sup f=2437>1</sup></a></div>
+                """,
+        ),
+      ),
+    );
   }
 
   @override
@@ -226,16 +245,22 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
             ),
             Container(
               margin: EdgeInsets.only(left: 17, top: 8, right: 8),
-              child: AutoSizeText(
-                widget.projectData.description,
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 2, 2, 2),
-                  fontFamily: "Raleway",
-                  //fontWeight: FontWeight.w300,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
+              child: Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 216, 216, 216),
+                  border: Border.all(
+                    width: 2,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
                 ),
+                child: Scrollbar(
+                    thickness: 5,
+                    child: SingleChildScrollView(
+                      child: Html(
+                        data: projectData.description,
+                      ),
+                    )),
               ),
             ),
           ],
