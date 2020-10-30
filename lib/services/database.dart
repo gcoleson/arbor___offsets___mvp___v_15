@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:arbor___offsets___mvp___v_15/services/auth.dart';
 
 FirebaseFirestore databaseReference = FirebaseFirestore.instance;
 

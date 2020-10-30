@@ -6,7 +6,6 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -16,18 +15,6 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_html/flutter_html.dart';
-
-/* final List<String> imgList = [
-  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
-  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
-  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
-  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
-  'https://firebasestorage.googleapis.com/v0/b/financeapp-2c7b8.appspot.com/o/valparaiso-riverbank-web-scaled.jpg?alt=media&token=f55c40b0-4152-4d9b-9821-2349db9e458c',
-];
-
-final List<Widget> imageSliders = imgList
-    .map((item) => Image.network(item, fit: BoxFit.cover, width: 1000.0))
-    .toList(); */
 
 class ProjectDetailWidget extends StatefulWidget {
   ProjectDetailWidget(this.context, this.projectData);
@@ -74,23 +61,6 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
     } else {
       throw 'Could not launch $url';
     }
-  }
-
-  showHTML() {
-    Center(
-      child: SingleChildScrollView(
-        child: Html(
-          data: """
-                <div>Follow<a class='sup'><sup>pl</sup></a> 
-                  Below hr
-                    <b>Bold</b>
-                <h1>what was sent down to you from your Lord</h1>, 
-                and do not follow other guardians apart from Him. Little do 
-                <span class='h'>you remind yourselves</span><a class='f'><sup f=2437>1</sup></a></div>
-                """,
-        ),
-      ),
-    );
   }
 
   @override

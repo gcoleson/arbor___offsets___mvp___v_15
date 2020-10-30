@@ -6,17 +6,17 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/general_cart_item_widget.dart';
-//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CartItem {
-  final String header;
-  final String description;
-  final String imageText;
-  final String imageIcon;
+  String header;
+  String description;
+  String imageText;
+  String imageIcon;
   bool boxSelected;
 
   CartItem(
@@ -27,7 +27,7 @@ class CartItem {
       this.boxSelected});
 }
 
-List<CartItem> purchaseItemListTest = [
+/*List<CartItem> purchaseItemListItems = [
   CartItem(
       header: "Eliminate Fuel Impact:",
       description: "Remove climate impact from an average tank of gas for:",
@@ -82,7 +82,9 @@ List<CartItem> purchaseItemListTest = [
       imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
       imageText: 'Large (under 5lbs)',
       boxSelected: false),
-];
+];*/
+
+List<CartItem> purchaseItemListItems = List<CartItem>();
 
 class DashboardWidget extends StatefulWidget {
   @override
@@ -93,7 +95,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
 
   Color getBorderSelectColor(int index) {
-    if (purchaseItemListTest[index].boxSelected == false) {
+    if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
       return Color.fromARGB(255, 0, 0, 0);
     } else {
@@ -103,12 +105,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   }
 
   void toggleItemSelected(int index) {
-    if (purchaseItemListTest[index].boxSelected == false) {
+    if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
-      purchaseItemListTest[index].boxSelected = true;
+      purchaseItemListItems[index].boxSelected = true;
     } else {
       //turn border off
-      purchaseItemListTest[index].boxSelected = false;
+      purchaseItemListItems[index].boxSelected = false;
     }
   }
 
@@ -127,14 +129,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   {
     List<Widget> returnList = new List();
 
-    for (var i = 0; i < purchaseItemListTest.length; i++) {
+    for (var i = 0; i < purchaseItemListItems.length; i++) {
       //check to see that headers don't match, if so make another area in the cart
       //always do the first one
-      if (purchaseItemListTest[i].boxSelected == true) {
+      if (purchaseItemListItems[i].boxSelected == true) {
         returnList.add(generalButtonItemContainer(
             0,
-            purchaseItemListTest[i].imageIcon,
-            purchaseItemListTest[i].imageText));
+            purchaseItemListItems[i].imageIcon,
+            purchaseItemListItems[i].imageText));
       }
     }
 
@@ -148,7 +150,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             crossAxisCount: 2,
             children: returnList,
           ));
-    //return returnList[0];
   }
 
   Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
@@ -176,15 +177,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                     ),
                   ),
                 ),
-                form(),
+                formCongrats(),
               ],
             ),
           );
         });
   }
 
-//Form form() {
-  Container form() {
+  Container formCongrats() {
     return Container(
         width: 381,
         height: 700,
@@ -249,34 +249,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             )
           ],
         ));
-
-    /*return Form(
-    //key: _formKey,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: TextFormField(),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: TextFormField(),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            child: Text("Submitß"),
-            onPressed: () {
-              /*(if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                        }*/
-            },
-          ),
-        )
-      ],
-    ),
-  );*/
   }
 
   Container generalButtonItemContainer(
@@ -308,7 +280,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               Align(
                   alignment: Alignment.center,
                   child: IconButton(
-                    icon: Image.asset(iconName, fit: BoxFit.fill),
+                    icon: Image.network(iconName, fit: BoxFit.fill),
                     onPressed: () {},
                   )),
               Text(iconText,
@@ -325,6 +297,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -361,7 +338,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               buildMonthsInARowContainer(),
               buildTotalMonthsContainer(),
               buildLiveClimatePositveAlign(),
-              buildOffsetPurchaseListContainer(),
+              buildOffsetPurchaseListContainer(context),
               buildCheckoutButtonContainer(),
             ],
           )
@@ -465,14 +442,15 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Container buildOffsetPurchaseListContainer() {
+  Container buildOffsetPurchaseListContainer(BuildContext context) {
     return Container(
       height: 601,
       margin: EdgeInsets.only(left: 1, top: 16, right: 5),
-      child: Column(
+      child: buildProductsListWidget(context),
+      /* Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: purchaseItemList(),
-      ),
+      ) */
     );
   }
 
@@ -490,25 +468,72 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       return null;
   }
 
+  Widget buildProductsListWidget(BuildContext context) {
+    try {
+      if (purchaseItemList().isNotEmpty) {
+        print('not empty purchase list');
+        return Column(
+          children: purchaseItemList(),
+          crossAxisAlignment: CrossAxisAlignment.start,
+        );
+      } else {
+        print('empty purchase list');
+        return StreamBuilder<QuerySnapshot>(
+          stream: databaseReference.collection("products").snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) return LinearProgressIndicator();
+
+            final int messageCount = snapshot.data.docs.length;
+
+            for (var i = 0; i < messageCount; i++) {
+              //loop through all records
+              DocumentSnapshot document = snapshot.data.docs[i];
+
+              CartItem item = new CartItem();
+
+              item.description = document['description'];
+              item.header = document['header'];
+              item.imageText = document['imagetext'];
+              item.imageIcon = document['imageicon'];
+              item.boxSelected = false;
+
+              print('Item:${item.imageText} added');
+              purchaseItemListItems.add(item);
+            }
+            return Column(
+              children: purchaseItemList(),
+              crossAxisAlignment: CrossAxisAlignment.start,
+            );
+          },
+        );
+      }
+    } catch (error) {
+      print('product db error');
+      print(error.toString());
+      return Container();
+    }
+  }
+
   List<Widget> purchaseItemList() {
     List<Widget> returnList = new List();
     Widget tempWidget;
 
-    for (var i = 0; i < purchaseItemListTest.length; i++) {
+    for (var i = 0; i < purchaseItemListItems.length; i++) {
       //check to see that headers don't match, if so make another area in the cart
       //always do the first one
       if (i == 0 ||
-          (purchaseItemListTest[i].header !=
-              purchaseItemListTest[i - 1].header)) {
+          (purchaseItemListItems[i].header !=
+              purchaseItemListItems[i - 1].header)) {
         tempWidget = (buildGeneralAreaContainer(
-            header: purchaseItemListTest[i].header,
-            description: purchaseItemListTest[i].description,
+            header: purchaseItemListItems[i].header,
+            description: purchaseItemListItems[i].description,
             itemBuilder: (context, index) => buildGeneralButtonItemWidget(
                 context,
                 index,
                 i,
-                purchaseItemListTest,
-                purchaseItemListTest[i].header)));
+                purchaseItemListItems,
+                purchaseItemListItems[i].header)));
 
         returnList.add(tempWidget);
       }

@@ -23,11 +23,6 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
   ProjectData projectData = ProjectData();
 
   Widget buildProjectListWidget(BuildContext context) {
-    /*  return ListView.builder(
-      itemCount: 4,
-      itemBuilder: (context, index) => ProjectSummaryWidget(projectData),
-    );
- */
     try {
       return StreamBuilder<QuerySnapshot>(
         stream: databaseReference.collection("projects").snapshots(),
@@ -35,9 +30,6 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
           if (!snapshot.hasData) return LinearProgressIndicator();
 
           final int messageCount = snapshot.data.docs.length;
-
-          print('Message count:$messageCount');
-          print(snapshot.data.docs[0]['brief']);
 
           return ListView.builder(
             itemCount: messageCount,
@@ -64,10 +56,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
     } catch (error) {
       print('project db error');
       print(error.toString());
-      return ListView.builder(
-        itemCount: 4,
-        itemBuilder: (context, index) => ProjectSummaryWidget(projectData),
-      );
+      return Container();
     }
   }
 
@@ -96,7 +85,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
 
   @override
   void initState() {
-    initProjectData();
+    //initProjectData();
     super.initState();
   }
 
@@ -153,11 +142,6 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
               right: 1,
               height: 550,
               child: buildProjectListWidget(context),
-              /* ListView.builder(
-                itemCount: 4,
-                itemBuilder: (context, index) =>
-                    ProjectSummaryWidget(projectData),
-              ), */
             ),
           ],
         ),

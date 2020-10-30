@@ -6,7 +6,6 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
@@ -48,7 +47,6 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
                   child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          print('tap');
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   ProjectDetailWidget(context, projectData)));
