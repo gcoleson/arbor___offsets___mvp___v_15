@@ -7,11 +7,43 @@
     */
 
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ProjectsWidget extends StatelessWidget {
+class ProjectsWidget extends StatefulWidget {
+  @override
+  _ProjectsWidgetState createState() => _ProjectsWidgetState();
+}
+
+class _ProjectsWidgetState extends State<ProjectsWidget> {
   void onItemPressed(BuildContext context) {}
+
+  ProjectData projectData = ProjectData();
+
+  initProjectData() {
+    print('init data');
+    projectData.brief = "brief";
+    projectData.description = 'description';
+    projectData.imagemain = "assets/images/one-tree-planted-21-copy.png";
+    projectData.image1 = "assets/images/one-tree-planted-21-copy.png";
+    projectData.image2 = "assets/images/one-tree-planted-21-copy.png";
+    projectData.image3 = "assets/images/one-tree-planted-21-copy.png";
+    projectData.image4 = "assets/images/one-tree-planted-21-copy.png";
+    projectData.location = 'location';
+    projectData.maplocal = GeoPoint(33.781115, -84.299746);
+    projectData.percent = 50;
+    projectData.sponsor = 'sponsor';
+    projectData.sponsorlogo = 'logo';
+    projectData.title = 'title';
+  }
+
+  @override
+  void initState() {
+    initProjectData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +100,7 @@ class ProjectsWidget extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (context, index) =>
-                    ProjectBLandfillGasItemWidget(),
+                    ProjectSummaryWidget(projectData),
               ),
             ),
           ],

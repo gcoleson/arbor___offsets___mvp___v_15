@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 //import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -13,6 +14,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -63,11 +65,22 @@ final List<Widget> imageSliders = imgList
     .toList();
 
 class ProjectDetailWidget extends StatelessWidget {
-  ProjectDetailWidget(BuildContext context);
+  ProjectDetailWidget(BuildContext context, this.projectData);
+  final ProjectData projectData;
 
   void onItemPressed(BuildContext context) => Navigator.pop(context);
 
-  double projectPercentage = .92;
+  final double projectPercentage = .92;
+
+  _launchURL() async {
+    final url =
+        "https://www.google.com/maps/@${projectData.maplocal.latitude},${projectData.maplocal.longitude},17z";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +138,7 @@ class ProjectDetailWidget extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(left: 2),
                           child: AutoSizeText(
-                            "Reforestation Project: Tennessee",
+                            projectData.brief,
                             textAlign: TextAlign.left,
                             maxLines: 1,
                             style: TextStyle(
@@ -137,33 +150,41 @@ class ProjectDetailWidget extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: AutoSizeText(
-                            "Sevierville, TN",
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 2, 2, 2),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: AutoSizeText(
-                            "\$0.78/pound of carbon removed",
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 2, 2, 2),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18,
-                            ),
+                          height: 21,
+                          margin: EdgeInsets.only(left: 14, top: 24, right: 11),
+                          child: Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: AutoSizeText(
+                                  "${projectData.location} ",
+                                  textAlign: TextAlign.left,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 2, 2, 2),
+                                    fontFamily: "Raleway",
+                                    fontWeight: FontWeight.w300,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  _launchURL();
+                                },
+                                child: Text("Map  >",
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 2, 2, 2),
+                                      fontFamily: "Raleway",
+                                      fontWeight: FontWeight.w300,
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 18,
+                                    )),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -176,10 +197,10 @@ class ProjectDetailWidget extends StatelessWidget {
               height: 40,
               margin: EdgeInsets.only(left: 10, right: 10),
               child: LinearPercentIndicator(
-                percent: projectPercentage,
+                percent: projectData.percent.toDouble() / 100,
                 lineHeight: 20,
                 center: AutoSizeText(
-                  (projectPercentage * 100).toInt().toString() + "% Funded",
+                  "${projectData.percent}% Funded",
                   textAlign: TextAlign.left,
                   maxLines: 1,
                   style: TextStyle(
@@ -195,7 +216,7 @@ class ProjectDetailWidget extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 17, top: 8, right: 8),
               child: AutoSizeText(
-                "Funding the replanting of 550 acres in Eastern TN, boardering the Great Smokey Mountains National Park. \n\nEach dollar funded goes to purchasing tree seedlings to replant the forest. Every tree planted will remove 40-50 tons of carbon over its lifetime—in addition to rebuilding the forest habitat for native species. The forest is placed in a conservation easement to ensure the trees are never cut down once planted. ",
+                projectData.description,
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   color: Color.fromARGB(255, 2, 2, 2),
@@ -204,37 +225,6 @@ class ProjectDetailWidget extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
                 ),
-              ),
-            ),
-            Container(
-              height: 21,
-              margin: EdgeInsets.only(left: 14, top: 24, right: 11),
-              child: Row(
-                children: [
-                  Text(
-                    "Visit Project Sponsor",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    ">",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
               ),
             ),
           ],
