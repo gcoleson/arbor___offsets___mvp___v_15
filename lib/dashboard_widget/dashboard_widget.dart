@@ -194,6 +194,32 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+
+    Future _paymentResultDialogue(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
+          insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+          content: Stack(
+            overflow: Overflow.visible,
+            fit: StackFit.expand,
+            children: [
+              //Text("data")
+              _congratulationsDialogue(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Container _congratulationsDialogue() {
     return Container(
       alignment: Alignment.topCenter,
