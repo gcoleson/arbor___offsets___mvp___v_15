@@ -6,14 +6,22 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/values/values.dart';
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:internationalization/internationalization.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+convertDate(int date) {
+  var format = new DateFormat("yMd");
+  var dateString = format.format(DateTime.fromMillisecondsSinceEpoch(date));
+  return dateString;
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
@@ -27,21 +35,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         children: [
           Container(
             margin: EdgeInsets.only(left: 10, top: 10, bottom: 5),
-            child: Text(
-              "Ed T.",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 21,
-              ),
-            ),
+            child: loadUserData(context),
           ),
           Container(
             margin: EdgeInsets.only(left: 10, top: 5, bottom: 10),
             child: Text(
-              "Member since July 2020",
+              "Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.timestamp, isUtc: true))}",
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(255, 2, 2, 2),

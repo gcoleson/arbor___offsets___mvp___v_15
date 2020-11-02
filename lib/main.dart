@@ -31,7 +31,7 @@ void main() async {
     if (user == null) {
       print("User is currently signed out");
     } else {
-      print("User is signed in");
+      print("User ${user.uid} is signed in");
 
       //save uid
       databaseService = DatabaseService(uid: user.uid);

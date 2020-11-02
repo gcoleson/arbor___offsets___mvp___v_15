@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -27,64 +28,38 @@ class CartItem {
       this.boxSelected});
 }
 
-/*List<CartItem> purchaseItemListItems = [
-  CartItem(
-      header: "Eliminate Fuel Impact:",
-      description: "Remove climate impact from an average tank of gas for:",
-      imageIcon: "assets/images/icons8-gas-station-100.png",
-      imageText: 'Hybrid 0',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Fuel Impact:",
-      description: "Remove climate impact from an average tank of gas for:",
-      imageIcon: "assets/images/icons8-gas-station-100.png",
-      imageText: 'Hybrid 1',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Fuel Impact:",
-      description: "Remove climate impact from an average tank of gas for:",
-      imageIcon: "assets/images/icons8-gas-station-100.png",
-      imageText: 'Hybrid 2',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Travel Impact:",
-      description: "Remove climate impact from an average flight between:",
-      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-      imageText: 'New York & Chicago (2 hrs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Travel Impact:",
-      description: "Remove climate impact from an average flight between:",
-      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-      imageText: 'New York & Chicago (4 hrs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Travel Impact:",
-      description: "Remove climate impact from an average flight between:",
-      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-      imageText: 'New York & Chicago (6 hrs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Package Delivery:",
-      description: "Remove climate impact from a typical shipment that is:",
-      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-      imageText: 'Small (under 5lbs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Package Delivery:",
-      description: "Remove climate impact from a typical shipment that is:",
-      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-      imageText: 'Medium (under 5lbs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Package Delivery:",
-      description: "Remove climate impact from a typical shipment that is:",
-      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-      imageText: 'Large (under 5lbs)',
-      boxSelected: false),
-];*/
-
 List<CartItem> purchaseItemListItems = List<CartItem>();
+
+Widget loadUserData(BuildContext context) {
+  return new StreamBuilder(
+      stream: databaseService.getUserData(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text("Loading User Data",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w700,
+                fontSize: 21,
+              ));
+        }
+        var userDocument = snapshot.data;
+
+        userdata.firstName = userDocument['firstName'];
+        userdata.lastName = userDocument['lastName'];
+        userdata.timestamp = userDocument['timestamp'];
+
+        return Text(userdata.firstName + ' ' + userdata.lastName,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: Color.fromARGB(255, 2, 2, 2),
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w700,
+              fontSize: 21,
+            ));
+      });
+}
 
 class DashboardWidget extends StatefulWidget {
   @override
@@ -300,11 +275,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -334,6 +304,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              loadUserData(context),
               buildImpactContainer(),
               buildMonthsInARowContainer(),
               buildTotalMonthsContainer(),
@@ -442,16 +413,16 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Container buildOffsetPurchaseListContainer(BuildContext context) {
-    return Container(
-      height: 601,
-      margin: EdgeInsets.only(left: 1, top: 16, right: 5),
-      child: buildProductsListWidget(context),
-      /* Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: purchaseItemList(),
-      ) */
-    );
+  Widget buildOffsetPurchaseListContainer(BuildContext context) {
+    return Scrollbar(
+        thickness: 5,
+        child: SingleChildScrollView(
+          child: Container(
+            height: 600,
+            margin: EdgeInsets.only(left: 1, top: 16, right: 5),
+            child: buildProductsListWidget(context),
+          ),
+        ));
   }
 
   Widget buildGeneralButtonItemWidget(BuildContext context, int index,
@@ -498,7 +469,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               item.imageIcon = document['imageicon'];
               item.boxSelected = false;
 
-              print('Item:${item.imageText} added');
+              //print('Item:${item.header} added');
+              //print('Item:${item.description} added');
               purchaseItemListItems.add(item);
             }
             return Column(
@@ -518,6 +490,15 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   List<Widget> purchaseItemList() {
     List<Widget> returnList = new List();
     Widget tempWidget;
+
+    //sort the list
+    purchaseItemListItems.sort((a, b) => a.header.compareTo(b.header));
+
+    /*print('sorted list');
+    for (var i = 0; i < purchaseItemListItems.length; i++) {
+      print(purchaseItemListItems[i].header);
+      print(purchaseItemListItems[i].description);
+    }*/
 
     for (var i = 0; i < purchaseItemListItems.length; i++) {
       //check to see that headers don't match, if so make another area in the cart
