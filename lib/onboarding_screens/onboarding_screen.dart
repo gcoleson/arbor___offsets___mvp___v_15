@@ -1,9 +1,10 @@
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Widget MyPage1Widget(BuildContext context) {
+Widget myPage1Widget(BuildContext context) {
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/bridge-1850679.png", fit: BoxFit.cover),
@@ -41,7 +42,7 @@ Widget MyPage1Widget(BuildContext context) {
   );
 }
 
-Widget MyPage2Widget(BuildContext context) {
+Widget myPage2Widget(BuildContext context) {
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/plant-5310423.png", fit: BoxFit.cover),
@@ -79,7 +80,7 @@ Widget MyPage2Widget(BuildContext context) {
   );
 }
 
-Widget MyPage3Widget(BuildContext context) {
+Widget myPage3Widget(BuildContext context) {
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/mountains-919040.png", fit: BoxFit.cover),
@@ -108,7 +109,7 @@ Widget MyPage3Widget(BuildContext context) {
   );
 }
 
-Widget MyPage4Widget(BuildContext context) {
+Widget myPage4Widget(BuildContext context) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -119,6 +120,19 @@ Widget MyPage4Widget(BuildContext context) {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
+
+      //save uid in class
+      DatabaseService(uid: userCredential.user.uid);
+
+      // create a new document for the user with the uid
+      await DatabaseService().updateUserData(userdata);
+
+      await DatabaseService()
+          .updateUserMessagesSystemType("Onboarding message sent");
+
+      //go to main screen
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => TabGroupOneTabBarWidget()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak');
@@ -211,7 +225,7 @@ Widget MyPage4Widget(BuildContext context) {
   ]));
 }
 
-Widget MyPage5Widget(BuildContext context) {
+Widget myPage5Widget(BuildContext context) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -221,6 +235,14 @@ Widget MyPage5Widget(BuildContext context) {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
+
+      //save uid in class
+      DatabaseService(uid: userCredential.user.uid);
+
+      await DatabaseService().updateUserMessagesSystemType("signin");
+
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => TabGroupOneTabBarWidget()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

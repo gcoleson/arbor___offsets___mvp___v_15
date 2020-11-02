@@ -6,20 +6,27 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-class ProjectBLandfillGasItemWidget extends StatefulWidget {
+class ProjectSummaryWidget extends StatefulWidget {
+  final ProjectData projectData;
+
+  ProjectSummaryWidget(this.projectData);
+
   @override
-  _ProjectBLandfillGasItemWidgetState createState() =>
-      _ProjectBLandfillGasItemWidgetState();
+  _ProjectSummaryWidgetState createState() =>
+      _ProjectSummaryWidgetState(this.projectData);
 }
 
-class _ProjectBLandfillGasItemWidgetState
-    extends State<ProjectBLandfillGasItemWidget> {
+class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
+  final ProjectData projectData;
+
+  _ProjectSummaryWidgetState(this.projectData);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,15 +47,13 @@ class _ProjectBLandfillGasItemWidgetState
                   child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          print('tap');
-                          //ProjectDetailWidget(context);
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
-                                  ProjectDetailWidget(context)));
+                                  ProjectDetailWidget(context, projectData)));
                         });
                       },
-                      child: Image.asset(
-                        "assets/images/one-tree-planted-21-copy.png",
+                      child: Image.network(
+                        projectData.imagemain,
                         alignment: Alignment.center,
                         height: 200,
                         fit: BoxFit.cover,
@@ -59,7 +64,7 @@ class _ProjectBLandfillGasItemWidgetState
                   right: 10,
                   bottom: 0,
                   child: AutoSizeText(
-                    "Landfill Gas Capture: Nebraska",
+                    projectData.title,
                     textAlign: TextAlign.left,
                     maxLines: 1,
                     style: TextStyle(
@@ -85,7 +90,7 @@ class _ProjectBLandfillGasItemWidgetState
                     child: Container(
                       margin: EdgeInsets.only(right: 82),
                       child: AutoSizeText(
-                        "Capture landfill methane",
+                        projectData.brief,
                         maxLines: 1,
                         textAlign: TextAlign.left,
                         style: TextStyle(
@@ -102,7 +107,7 @@ class _ProjectBLandfillGasItemWidgetState
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: AutoSizeText(
-                    "43% Funded",
+                    "${projectData.percent}" "% Funded",
                     maxLines: 1,
                     textAlign: TextAlign.right,
                     style: TextStyle(
@@ -119,7 +124,7 @@ class _ProjectBLandfillGasItemWidgetState
           Container(
             margin: EdgeInsets.only(left: 10, right: 68, bottom: 1),
             child: AutoSizeText(
-              "\$1.22 per pound of carbon removed",
+              "",
               textAlign: TextAlign.left,
               maxLines: 1,
               style: TextStyle(

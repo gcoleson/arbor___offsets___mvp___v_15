@@ -9,9 +9,9 @@
 import 'dart:io';
 
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
-import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout.dart';
-//import 'package:arbor___offsets___mvp___v_15/shopping_cart/shopping_cart.dart';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout_entry.dart';
@@ -28,6 +28,10 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+FirebaseAnalytics analytics;
+
+DatabaseService databaseService;
 
 void main() async {
   String text = "Click the button to start the payment";
@@ -50,11 +54,16 @@ void main() async {
       print("User is currently signed out");
     } else {
       print("User is signed in");
+
+      //save uid
+      databaseService = DatabaseService(uid: user.uid);
+
+      databaseService.updateUserMessagesSystemType("signin");
     }
+    //todo add error handling
   });
 
   // Enabling analytics for Firebase
-  FirebaseAnalytics analytics;
   analytics = FirebaseAnalytics();
 
   runApp(App());
@@ -63,11 +72,16 @@ void main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //home: MyHomePage(),
-      //home: checkout_entry(),
-      routes: {"HomeScreen": (context) => MyHomePage()},
-      initialRoute: "HomeScreen",
-    );
+    //if we are not signed in then put up signin
+    //else go to app
+    if (databaseService.uid == null) {
+      return MaterialApp(
+        home: MyHomePage(),
+      );
+    } else {
+      return MaterialApp(
+        home: TabGroupOneTabBarWidget(),
+      );
+    }
   }
 }

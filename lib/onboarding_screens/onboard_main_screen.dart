@@ -83,11 +83,11 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var _onboardingScreens = [
-      MyPage1Widget(context),
-      MyPage2Widget(context),
-      MyPage3Widget(context),
-      MyPage4Widget(context),
-      MyPage5Widget(context)
+      //myPage1Widget(context),
+      //myPage2Widget(context),
+      //myPage3Widget(context),
+      myPage4Widget(context),
+      myPage5Widget(context)
     ];
     return Material(
       type: MaterialType.transparency,
