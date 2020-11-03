@@ -39,7 +39,7 @@ dependencies:
 
 
   # Stripe Payment
-  stripe_payment: ^1.0.6
+  stripe_payment: ^1.0.8
 
   # http
   http: ^0.12.0+4
