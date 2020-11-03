@@ -46,9 +46,9 @@ Widget loadUserData(BuildContext context) {
         }
         var userDocument = snapshot.data;
 
-        userdata.firstName = userDocument['firstName'];
-        userdata.lastName = userDocument['lastName'];
-        userdata.timestamp = userDocument['timestamp'];
+        // userdata.firstName = userDocument['firstName'];
+        // userdata.lastName = userDocument['lastName'];
+        // userdata.timestamp = userDocument['timestamp'];
 
         return Text(userdata.firstName + ' ' + userdata.lastName,
             textAlign: TextAlign.left,
