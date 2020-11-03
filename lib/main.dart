@@ -14,7 +14,7 @@ import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_gr
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
-import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout_entry.dart';
+//import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout_entry.dart';
 
 //Firebase Imports
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -53,7 +53,7 @@ void main() async {
     if (user == null) {
       print("User is currently signed out");
     } else {
-      print("User is signed in");
+      print("User ${user.uid} is signed in");
 
       //save uid
       databaseService = DatabaseService(uid: user.uid);

@@ -83,9 +83,9 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var _onboardingScreens = [
-      //myPage1Widget(context),
-      //myPage2Widget(context),
-      //myPage3Widget(context),
+      myPage1Widget(context),
+      myPage2Widget(context),
+      myPage3Widget(context),
       myPage4Widget(context),
       myPage5Widget(context)
     ];

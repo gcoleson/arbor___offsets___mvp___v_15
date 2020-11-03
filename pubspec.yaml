@@ -37,6 +37,7 @@ dependencies:
   # Cloud Storage
   cloud_firestore: ^0.14.1
 
+
   # Stripe Payment
   stripe_payment: ^1.0.6
 
@@ -48,11 +49,14 @@ dependencies:
 
 
 
-  
+
   #show a URL
   url_launcher: ^5.7.8
 
   flutter_html: ^1.0.2
+
+  internationalization: ^3.0.1+1
+
   
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseFirestore databaseReference = FirebaseFirestore.instance;
 
-UserData userdata = UserData.instance;
-
 class ProjectData {
   static ProjectData get instance => ProjectData();
 
@@ -22,6 +20,8 @@ class ProjectData {
   String title;
 }
 
+UserData userdata = UserData.instance;
+
 class UserData {
   static UserData get instance => UserData();
 
@@ -37,6 +37,7 @@ class UserData {
   int carbonOffsetMe = 20;
   int carbonOffsetFriends = 10;
   int carbonOffsetCommunity = 5;
+  int timestamp = 1604201604913;
 }
 
 class UserMessages {
@@ -58,6 +59,16 @@ class DatabaseService {
   // collection reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+
+  Stream<DocumentSnapshot> getUserData() {
+    try {
+      return userCollection.doc(this.uid).snapshots();
+    } catch (error) {
+      print('Get user data error');
+      print(error.toString());
+      return null;
+    }
+  }
 
   Future<void> updateUserData(UserData data) async {
     return await userCollection.doc(this.uid).set({
