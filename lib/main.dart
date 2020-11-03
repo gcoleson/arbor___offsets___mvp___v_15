@@ -52,7 +52,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     //if we are not signed in then put up signin
     //else go to app
-    if (databaseService.uid == null) {
+    if (databaseService?.uid == null) {
       return MaterialApp(
         home: MyHomePage(),
       );
