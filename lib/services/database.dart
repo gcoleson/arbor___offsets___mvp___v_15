@@ -61,6 +61,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
 
   Stream<DocumentSnapshot> getUserData() {
+    if (this.uid == null) return null;
+
     try {
       return userCollection.doc(this.uid).snapshots();
     } catch (error) {
@@ -71,6 +73,10 @@ class DatabaseService {
   }
 
   Future<void> updateUserData(UserData data) async {
+    UserData test = data ?? null;
+    if (test == null) {
+      return null;
+    }
     return await userCollection.doc(this.uid).set({
       'firstName': data.firstName,
       'lastName': data.lastName,

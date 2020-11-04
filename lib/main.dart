@@ -25,22 +25,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // Listens to changes to User status (IE sign in/sign out)
-  FirebaseAuth auth = FirebaseAuth.instance;
-  auth.authStateChanges().listen((User user) {
-    if (user == null) {
-      print("User is currently signed out");
-    } else {
-      print("User ${user.uid} is signed in");
-
-      //save uid
-      databaseService = DatabaseService(uid: user.uid);
-
-      databaseService.updateUserMessagesSystemType("signin");
-    }
-    //todo add error handling
-  });
-
   // Enabling analytics for Firebase
   analytics = FirebaseAnalytics();
 
@@ -50,6 +34,26 @@ void main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Listens to changes to User status (IE sign in/sign out)
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    auth.authStateChanges().listen((User user) {
+      if (user == null) {
+        print("User is currently signed out");
+      } else {
+        print("User ${user.uid} ${user.email} is signed in");
+
+        //save uid
+        databaseService = DatabaseService(uid: user.uid);
+
+        databaseService.updateUserMessagesSystemType("signin");
+
+        //check for user data, if not make a record
+
+      }
+      //todo add error handling
+    });
+
     //if we are not signed in then put up signin
     //else go to app
     if (databaseService?.uid == null) {
