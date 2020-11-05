@@ -10,9 +10,11 @@ import 'dart:io';
 
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:arbor___offsets___mvp___v_15/stripe/checkout_entry.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'dashboard_widget/dashboard_widget.dart';
 //import 'onboarding_screens/onboarding_screen.dart';
 //import 'package:arbor___offsets___mvp___v_15/shopping_cart/checkout_entry.dart';
 
@@ -75,14 +77,18 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     //if we are not signed in then put up signin
     //else go to app
-    if (databaseService.uid == null) {
-      return MaterialApp(
-        home: MyHomePage(),
-      );
-    } else {
-      return MaterialApp(
-        home: TabGroupOneTabBarWidget(),
-      );
-    }
+    // if (databaseService.uid == null) {
+    //   return MaterialApp(
+    //     home: MyHomePage(),
+    //   );
+    // } else {
+    //   return MaterialApp(
+    //     home: TabGroupOneTabBarWidget(),
+    //   );
+    // }
+
+    return MaterialApp(
+      home: DashboardWidget(),
+    );
   }
 }

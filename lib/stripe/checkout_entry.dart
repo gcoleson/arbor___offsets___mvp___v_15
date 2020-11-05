@@ -24,6 +24,8 @@ class checkout_entry extends StatelessWidget {
                 ),
               );
 
+              print(jsonDecode(response.body));
+
               //then decode the json returned
               if (response.body != null && response.body != 'error') {
                 sessionId = jsonDecode(response.body)['id'];
