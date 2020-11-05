@@ -52,6 +52,8 @@ class UserMessageTypes {
   static const int userMessageTypeAlert = 0;
 }
 
+DatabaseService databaseService;
+
 class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
@@ -77,17 +79,10 @@ class DatabaseService {
     if (test == null) {
       return null;
     }
+    print('Create UID:${this.uid} db entry');
     return await userCollection.doc(this.uid).set({
-      'firstName': data.firstName,
-      'lastName': data.lastName,
-      'addressStreet': data.addressStreet,
-      'addressState': data.addressState,
-      'addressZipcode': data.addressZipcode,
-      'phoneNumberOne': data.phoneNumberOne,
-      'phoneNumberTwo': data.phoneNumberTwo,
-      'phoneNumberThree': data.phoneNumberOne,
-      'emailAddress': data.emailAddress,
-      'carbonoffsetme': data.carbonOffsetMe,
+      'firstname': data.firstName,
+      'lastname': data.lastName,
       'timestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
     });
   }

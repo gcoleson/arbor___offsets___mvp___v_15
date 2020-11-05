@@ -29,6 +29,8 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var imageDummy = projectData.imagemain;
+
     return Container(
       constraints: BoxConstraints.expand(height: 336.57031),
       decoration: BoxDecoration(
@@ -53,7 +55,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
                         });
                       },
                       child: Image.network(
-                        projectData.imagemain,
+                        imageDummy,
                         alignment: Alignment.center,
                         height: 200,
                         fit: BoxFit.cover,

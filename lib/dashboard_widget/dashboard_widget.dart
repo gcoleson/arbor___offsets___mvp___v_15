@@ -7,6 +7,7 @@
     */
 
 import 'package:arbor___offsets___mvp___v_15/main.dart';
+import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -46,9 +47,22 @@ Widget loadUserData(BuildContext context) {
         }
         var userDocument = snapshot.data;
 
-        userdata.firstName = userDocument['firstName'];
-        userdata.lastName = userDocument['lastName'];
-        userdata.timestamp = userDocument['timestamp'];
+        try {
+          userdata.firstName = userDocument['firstname'];
+          userdata.lastName = userDocument['lastname'];
+          userdata.timestamp = userDocument['timestamp'];
+        } catch (error) {
+          print('Get user data error');
+          print(error.toString());
+          return Text(userdata.firstName + ' ' + userdata.lastName,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w700,
+                fontSize: 21,
+              ));
+        }
 
         return Text(userdata.firstName + ' ' + userdata.lastName,
             textAlign: TextAlign.left,
@@ -469,8 +483,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               item.imageIcon = document['imageicon'];
               item.boxSelected = false;
 
-              //print('Item:${item.header} added');
-              //print('Item:${item.description} added');
               purchaseItemListItems.add(item);
             }
             return Column(
