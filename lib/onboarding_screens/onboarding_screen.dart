@@ -121,13 +121,15 @@ Widget myPage4Widget(BuildContext context) {
           .createUserWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
 
+      print('Created UID:${userCredential.user.uid}');
+
       //save uid in class
-      DatabaseService(uid: userCredential.user.uid);
+      databaseService = DatabaseService(uid: userCredential.user.uid);
 
       // create a new document for the user with the uid
-      await DatabaseService().updateUserData(userdata);
+      await databaseService.updateUserData(userdata);
 
-      await DatabaseService()
+      await databaseService
           .updateUserMessagesSystemType("Onboarding message sent");
 
       //go to main screen
@@ -237,9 +239,9 @@ Widget myPage5Widget(BuildContext context) {
               email: _emailController.text, password: _passwordController.text);
 
       //save uid in class
-      DatabaseService(uid: userCredential.user.uid);
+      databaseService = DatabaseService(uid: userCredential.user.uid);
 
-      await DatabaseService().updateUserMessagesSystemType("signin");
+      await databaseService.updateUserMessagesSystemType("signin");
 
       Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => TabGroupOneTabBarWidget()));

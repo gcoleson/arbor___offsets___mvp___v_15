@@ -73,12 +73,12 @@ class AuthService {
       result = await _auth.createUserWithEmailAndPassword(
           email: userdata.emailAddress, password: password);
 
-      DatabaseService(uid: result.user.uid);
+      databaseService = DatabaseService(uid: result.user.uid);
 
       // create a new document for the user with the uid
-      await DatabaseService().updateUserData(userdata);
+      await databaseService.updateUserData(userdata);
 
-      await DatabaseService()
+      await databaseService
           .updateUserMessagesSystemType("Onboarding message sent");
 
       return result.user.uid;

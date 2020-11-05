@@ -6,8 +6,6 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'dart:io';
-
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/stripe/checkout_entry.dart';
@@ -34,8 +32,6 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
  */
 FirebaseAnalytics analytics;
 
-DatabaseService databaseService;
-
 void main() async {
   /* String text = "Click the button to start the payment";
   double totalCost = 10.0;
@@ -48,20 +44,25 @@ void main() async {
       "https://us-central1-demostripe-b9557.cloudfunctions.net/StripePI"; */
   //Boiler plate code ot get firebase initialized
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
 
-  // Listens to changes to User status (IE sign in/sign out)
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  // Listens to changes to User status (IE sign in/sign out)
   auth.authStateChanges().listen((User user) {
     if (user == null) {
       print("User is currently signed out");
     } else {
-      print("User ${user.uid} is signed in");
+      print("User ${user.uid} ${user.email} is signed in");
 
       //save uid
       databaseService = DatabaseService(uid: user.uid);
 
       databaseService.updateUserMessagesSystemType("signin");
+
+      //check for user data, if not make a record
+
     }
     //todo add error handling
   });
@@ -75,9 +76,10 @@ void main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // if we are not signed in then put up signin
-    // else go to app
-    if (databaseService.uid == null) {
+    //if we are not signed in then put up signin
+    //else go to app
+    if (databaseService?.uid == null) {
+      print("uid null");
       return MaterialApp(
         home: MyHomePage(),
       );

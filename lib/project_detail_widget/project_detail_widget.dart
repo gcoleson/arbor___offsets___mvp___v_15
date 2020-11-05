@@ -32,23 +32,26 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
 
   void onItemPressed(BuildContext context) => Navigator.pop(context);
 
-  final double projectPercentage = .92;
-
-  List<Widget> imageSliders;
+  List<Widget> imageSliders = [];
 
   @override
   void initState() {
     //build list of image widgets
     List<String> imgList = [
+      projectData.imagemain,
       projectData.image1,
       projectData.image2,
       projectData.image3,
       projectData.image4,
     ];
 
-    imageSliders = imgList
-        .map((item) => Image.network(item, fit: BoxFit.cover, width: 1000.0))
-        .toList();
+    imgList.forEach((element) {
+      if (element != null) {
+        Widget test =
+            new Image.network(element, fit: BoxFit.cover, width: 1000.0);
+        imageSliders.add(test);
+      }
+    });
 
     super.initState();
   }
@@ -61,6 +64,17 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  CarouselSlider buildCarouselSlider() {
+    return CarouselSlider(
+      options: CarouselOptions(
+        enlargeCenterPage: true,
+        scrollDirection: Axis.horizontal,
+        autoPlay: true,
+      ),
+      items: imageSliders,
+    );
   }
 
   @override
@@ -93,16 +107,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-                height: 283,
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    autoPlay: true,
-                  ),
-                  items: imageSliders,
-                )),
+            Container(height: 283, child: buildCarouselSlider()),
             Container(
               height: 76,
               margin: EdgeInsets.only(left: 10, top: 9, right: 10),
