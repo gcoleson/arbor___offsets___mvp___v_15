@@ -75,20 +75,20 @@ void main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //if we are not signed in then put up signin
-    //else go to app
-    // if (databaseService.uid == null) {
-    //   return MaterialApp(
-    //     home: MyHomePage(),
-    //   );
-    // } else {
-    //   return MaterialApp(
-    //     home: TabGroupOneTabBarWidget(),
-    //   );
-    // }
+    // if we are not signed in then put up signin
+    // else go to app
+    if (databaseService.uid == null) {
+      return MaterialApp(
+        home: MyHomePage(),
+      );
+    } else {
+      return MaterialApp(
+        home: TabGroupOneTabBarWidget(),
+      );
+    }
 
-    return MaterialApp(
-      home: DashboardWidget(),
-    );
+    // return MaterialApp(
+    //   home: DashboardWidget(),
+    // );
   }
 }

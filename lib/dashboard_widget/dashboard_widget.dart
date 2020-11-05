@@ -12,12 +12,17 @@ import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CartItem {
   String header;
   String description;
   String imageText;
   String imageIcon;
+  String documentID;
+  double price;
   bool boxSelected;
 
   CartItem(
@@ -394,26 +399,73 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-              onTap: () {
-                buildShowDialog(context);
-                //_paymentResultDialogue(context);
-              },
-              child: Container(
-                alignment: Alignment.center,
-                child: AutoSizeText(
-                  "Checkout",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    fontFamily: "SF Pro Text",
-                    fontWeight: FontWeight.w400,
-                    fontSize: 17,
-                    letterSpacing: -0.408,
-                    height: 1.29412,
+          Builder(
+            builder: (BuildContext context) {
+              return GestureDetector(
+                onTap: () async {
+                  String sessionId = 'error';
+                  //final sessionId = await Server().createCheckout();
+                  print(purchaseItemListItems[0].documentID);
+                  print(purchaseItemListItems[0].imageText);
+
+                  String checkout_json;
+
+                  for (var i = 0; i < purchaseItemListItems.length; i++) {
+                    //check to see that headers don't match, if so make another area in the cart
+                    //always do the first one
+                    if (purchaseItemListItems[i].boxSelected == true) {
+                      checkout_json = purchaseItemListItems[i].documentID;
+                    }
+                  }
+
+                  // First Ping Firebase for session ID for stripe checkout
+                  final http.Response response = await http.post(
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/',
+                    body: json.encode(
+                      {'docID': checkout_json, 'quantity': 1},
+                    ),
+                  );
+
+                  print(jsonDecode(response.body));
+
+                  //then decode the json returned
+                  if (response.body != null && response.body != 'error') {
+                    sessionId = jsonDecode(response.body)['id'];
+                    print('Checkout Success!!!!');
+                  }
+
+                  if (sessionId != 'error') {
+                    // Call the one time checkout screen with session ID
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => OneTimeCheckout(
+                              sessionId: sessionId,
+                            )));
+                    final snackBar =
+                        SnackBar(content: Text('SessionId: $sessionId'));
+                    //Scaffold.of(context).showSnackBar(snackBar);
+                    _congratulationsDialogue();
+                  } else {
+                    print('Checkout Entry has failed');
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  child: AutoSizeText(
+                    "Checkout",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontFamily: "SF Pro Text",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 17,
+                      letterSpacing: -0.408,
+                      height: 1.29412,
+                    ),
                   ),
                 ),
-              )),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -531,6 +583,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               item.header = document['header'];
               item.imageText = document['imagetext'];
               item.imageIcon = document['imageicon'];
+              item.documentID = document.id;
+              item.price = document['price'];
               item.boxSelected = false;
 
               //print('Item:${item.header} added');

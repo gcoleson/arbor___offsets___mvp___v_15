@@ -24,6 +24,14 @@ class _OneTimeCheckoutState extends State<OneTimeCheckout> {
             redirectToStripe();
           }
         },
+        navigationDelegate: (NavigationRequest request) {
+          if (request.url.startsWith('https://yoursite.com/success.html')) {
+            Navigator.of(context).pop('success');
+          } else if (request.url.startsWith('https://example.com/cancel')) {
+            Navigator.of(context).pop('cancel');
+          }
+          return NavigationDecision.navigate;
+        },
       ),
     );
   }
