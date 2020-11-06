@@ -32,6 +32,10 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
  */
 FirebaseAnalytics analytics;
 
+const appVersion =
+    String.fromEnvironment('APP_VERSION', defaultValue: 'development');
+const appDate = String.fromEnvironment('APP_DATE', defaultValue: 'none');
+
 void main() async {
   /* String text = "Click the button to start the payment";
   double totalCost = 10.0;
@@ -70,6 +74,7 @@ void main() async {
   // Enabling analytics for Firebase
   analytics = FirebaseAnalytics();
 
+  print('App Version:' + appVersion + ' Date:' + appDate);
   runApp(App());
 }
 
@@ -88,9 +93,5 @@ class App extends StatelessWidget {
         home: TabGroupOneTabBarWidget(),
       );
     }
-
-    // return MaterialApp(
-    //   home: DashboardWidget(),
-    // );
   }
 }
