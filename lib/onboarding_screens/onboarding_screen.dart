@@ -361,26 +361,30 @@ Widget myPage5Widget(BuildContext context) {
 }
 
 Row _customButton(String buttonText, Function onButtonPress) {
-  return Row(children: [
-    Spacer(flex: 21),
-    Flexible(
+  return Row(
+    children: [
+      Spacer(flex: 21),
+      Flexible(
         flex: 379,
         child: Container(
           height: 50,
           width: 379,
           child: RaisedButton(
-              color: Color.fromARGB(255, 65, 127, 69),
-              onPressed: onButtonPress,
-              child: Text(
-                buttonText,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: "SFProText-Semibold",
-                    fontSize: 17),
-              )),
-        )),
-    Spacer(flex: 14)
-  ]);
+            color: Color.fromARGB(255, 65, 127, 69),
+            onPressed: onButtonPress,
+            child: Text(
+              buttonText,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "SFProText-Semibold",
+                  fontSize: 17),
+            ),
+          ),
+        ),
+      ),
+      Spacer(flex: 14)
+    ],
+  );
 }
 
 Row _customTextField(String imageFilePath, String customLabelText,

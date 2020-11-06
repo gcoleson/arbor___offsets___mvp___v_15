@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 
 class CartItem {
   String header;
@@ -245,13 +246,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         ));
   }
 
-  Future _paymentResultDialogue(BuildContext context) {
+  Future paymentSuccessBuildDialogue(BuildContext context) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
-          insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 50),
+          insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10.0),
@@ -262,7 +263,28 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             fit: StackFit.expand,
             children: [
               //Text("data")
-              _congratulationsDialogue(),
+              successDialogue(),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: Container(
+                  color: Color.fromARGB(0, 0, 0, 0),
+                  height: 40,
+                  width: 40,
+                  child: FlatButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    color: Colors.transparent,
+                    child: Text(
+                      "X",
+                      style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 28,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );
@@ -270,7 +292,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Container _congratulationsDialogue() {
+  Container successDialogue() {
     return Container(
       alignment: Alignment.topCenter,
       //margin: EdgeInsetsGeometry.infinity,
@@ -285,6 +307,42 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               image: AssetImage("assets/images/sunrise.png"),
             ),
           ),
+          Spacer(),
+          Text(
+            "Congratulations!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 36,
+              color: Colors.white,
+              fontFamily: "Montserrat",
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Spacer(),
+          Text(
+            "By eliminiating your climate impact, you're helping reversing climate change!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Spacer(),
+          Text(
+            "Tell your freinds how you're going climate positive:",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Spacer(),
+          _customButton("Share", () {}),
+          Spacer(),
         ],
       ),
 
@@ -300,6 +358,118 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       //     Image.asset("assets/images/WelcomeBackScreen.png"),
       //   ],
       // ),
+    );
+  }
+
+  Future paymentFailureBuildDialogue(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
+          insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+          content: Stack(
+            overflow: Overflow.visible,
+            fit: StackFit.expand,
+            children: [
+              //Text("data")
+              failureDialogue(),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: Container(
+                  color: Color.fromARGB(0, 0, 0, 0),
+                  height: 40,
+                  width: 40,
+                  child: FlatButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    color: Colors.transparent,
+                    child: Text(
+                      "X",
+                      style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 28,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Container failureDialogue() {
+    return Container(
+      alignment: Alignment.topCenter,
+      //margin: EdgeInsetsGeometry.infinity,
+      padding: EdgeInsets.all(0),
+      constraints: BoxConstraints.expand(),
+
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image(
+              image: AssetImage("assets/images/PaymentFailureDog.png"),
+            ),
+          ),
+          Spacer(),
+          Text(
+            "Something go wrong?",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 36,
+              color: Colors.white,
+              fontFamily: "Montserrat",
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Spacer(),
+          Text(
+            "You're seconds away from erasing your climate impact.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Spacer(),
+          Text(
+            "Tap below to go back to your shopping cart and check out again",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Spacer(),
+          _customButton(
+            "Try Again",
+            () => Navigator.of(context).pop(),
+          ),
+          Spacer(),
+        ],
+      ),
+
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 28, 151, 211),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+      ),
     );
   }
 
@@ -456,14 +626,22 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
                   if (sessionId != 'error') {
                     // Call the one time checkout screen with session ID
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => OneTimeCheckout(
-                              sessionId: sessionId,
-                            )));
+                    final outcome =
+                        await Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => OneTimeCheckout(
+                                  sessionId: sessionId,
+                                )));
+                    if (outcome == "success") {
+                      print("finished payment eeeee");
+                      paymentSuccessBuildDialogue(context);
+                    } else if (outcome == "failure") {
+                      print("Payment was a failure");
+                      paymentFailureBuildDialogue(context);
+                    }
                     final snackBar =
                         SnackBar(content: Text('SessionId: $sessionId'));
                     //Scaffold.of(context).showSnackBar(snackBar);
-                    _congratulationsDialogue();
+                    //_congratulationsDialogue();
                   } else {
                     print('Checkout Entry has failed');
                   }
@@ -905,4 +1083,31 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           ],
         ));
   }
+}
+
+Row _customButton(String buttonText, Function onButtonPress) {
+  return Row(
+    children: [
+      Spacer(flex: 21),
+      Flexible(
+        flex: 379,
+        child: Container(
+          height: 50,
+          width: 379,
+          child: RaisedButton(
+            color: Color.fromARGB(255, 65, 127, 69),
+            onPressed: onButtonPress,
+            child: Text(
+              buttonText,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "SFProText-Semibold",
+                  fontSize: 17),
+            ),
+          ),
+        ),
+      ),
+      Spacer(flex: 14)
+    ],
+  );
 }
