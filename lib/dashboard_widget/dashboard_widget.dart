@@ -423,12 +423,18 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   print(purchaseItemListItems[0].imageText);
 
                   String checkout_json;
+                  var checkout_list = [];
 
                   for (var i = 0; i < purchaseItemListItems.length; i++) {
                     //check to see that headers don't match, if so make another area in the cart
                     //always do the first one
                     if (purchaseItemListItems[i].boxSelected == true) {
-                      checkout_json = purchaseItemListItems[i].documentID;
+                      checkout_list.add(
+                        {
+                          'docID': purchaseItemListItems[i].documentID,
+                          'quantity': 1
+                        },
+                      );
                     }
                   }
 
@@ -436,7 +442,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   final http.Response response = await http.post(
                     'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/',
                     body: json.encode(
-                      {'docID': checkout_json, 'quantity': 1},
+                      {'items': checkout_list},
                     ),
                   );
 
