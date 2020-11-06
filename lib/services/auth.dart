@@ -73,7 +73,7 @@ class AuthService {
       result = await _auth.createUserWithEmailAndPassword(
           email: userdata.emailAddress, password: password);
 
-      databaseService = DatabaseService(uid: result.user.uid);
+      databaseService.uid = result.user.uid;
 
       // create a new document for the user with the uid
       await databaseService.updateUserData(userdata);

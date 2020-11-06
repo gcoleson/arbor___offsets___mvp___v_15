@@ -61,7 +61,7 @@ void main() async {
       print("User ${user.uid} ${user.email} is signed in");
 
       //save uid
-      databaseService = DatabaseService(uid: user.uid);
+      databaseService.uid = user.uid;
 
       databaseService.updateUserMessagesSystemType("signin");
 

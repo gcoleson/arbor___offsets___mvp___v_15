@@ -143,7 +143,7 @@ Widget myPage4Widget(BuildContext context) {
       print('Created UID:${userCredential.user.uid}');
 
       //save uid in class
-      databaseService = DatabaseService(uid: userCredential.user.uid);
+      databaseService.uid = userCredential.user.uid;
 
       // create a new document for the user with the uid
       await databaseService.updateUserData(userdata);
@@ -261,7 +261,7 @@ Widget myPage5Widget(BuildContext context) {
               email: _emailController.text, password: _passwordController.text);
 
       //save uid in class
-      databaseService = DatabaseService(uid: userCredential.user.uid);
+      databaseService.uid = userCredential.user.uid;
 
       await databaseService.updateUserMessagesSystemType("signin");
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 FirebaseFirestore databaseReference = FirebaseFirestore.instance;
 
@@ -52,10 +53,10 @@ class UserMessageTypes {
   static const int userMessageTypeAlert = 0;
 }
 
-DatabaseService databaseService;
+DatabaseService databaseService = DatabaseService();
 
 class DatabaseService {
-  final String uid;
+  String uid;
   DatabaseService({this.uid});
 
   // collection reference
