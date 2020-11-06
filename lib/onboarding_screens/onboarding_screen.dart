@@ -1,7 +1,6 @@
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Widget myPage1Widget(BuildContext context) {
@@ -22,7 +21,7 @@ Widget myPage1Widget(BuildContext context) {
                 fontSize: 33,
               ),
             )),
-      ), //Arbor helps you eliminate yours
+      ),
       Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -109,6 +108,26 @@ Widget myPage3Widget(BuildContext context) {
   );
 }
 
+Future<void> _showDialog1(BuildContext context, String errorMessage) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Alert'),
+        content: Text(errorMessage),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 Widget myPage4Widget(BuildContext context) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
@@ -138,11 +157,14 @@ Widget myPage4Widget(BuildContext context) {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak');
+        _showDialog1(context, e.toString());
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
+        _showDialog1(context, e.toString());
       }
     } catch (e) {
       print(e);
+      _showDialog1(context, e.toString());
     }
   }
 
@@ -248,11 +270,14 @@ Widget myPage5Widget(BuildContext context) {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
+        _showDialog1(context, e.toString());
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user');
+        _showDialog1(context, e.toString());
       }
     } catch (e) {
       print(e);
+      _showDialog1(context, e.toString());
     }
   }
 
@@ -405,10 +430,8 @@ Row _customTextField(String imageFilePath, String customLabelText,
               fillColor: Colors.white,
               labelText: customLabelText,
               border: new OutlineInputBorder(
-                //borderRadius: new BorderRadius.circular(25.0),
                 borderSide: new BorderSide(),
               ),
-              //fillColor: Colors.green
             ),
             validator: (val) {
               if (val.length == 0) {
