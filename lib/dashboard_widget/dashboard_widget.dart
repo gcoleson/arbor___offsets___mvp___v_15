@@ -6,8 +6,6 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-import 'package:arbor___offsets___mvp___v_15/main.dart';
-import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -16,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 
 class CartItem {
   String header;
@@ -38,28 +35,49 @@ class CartItem {
 List<CartItem> purchaseItemListItems = List<CartItem>();
 
 Widget loadUserData(BuildContext context) {
-  return new StreamBuilder(
-      stream: databaseService.getUserData(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Text("Loading User Data",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 21,
-              ));
-        }
-        var userDocument = snapshot.data;
+  if (userdata.dataLoadedFromDB) {
+    return Text(userdata.firstName + ' ' + userdata.lastName,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          color: Color.fromARGB(255, 2, 2, 2),
+          fontFamily: "Raleway",
+          fontWeight: FontWeight.w700,
+          fontSize: 21,
+        ));
+  } else
+    return new StreamBuilder(
+        stream: databaseService.getUserData(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Text("Loading User Data",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 2, 2, 2),
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 21,
+                ));
+          }
+          var userDocument = snapshot.data;
 
-        try {
-          userdata.firstName = userDocument['firstname'];
-          userdata.lastName = userDocument['lastname'];
-          userdata.timestamp = userDocument['timestamp'];
-        } catch (error) {
-          print('Get user data error');
-          print(error.toString());
+          try {
+            userdata.firstName = userDocument['firstname'];
+            userdata.lastName = userDocument['lastname'];
+            userdata.timestamp = userDocument['timestamp'];
+            userdata.dataLoadedFromDB = true;
+          } catch (error) {
+            print('Get user data error');
+            print(error.toString());
+            return Text(userdata.firstName + ' ' + userdata.lastName,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 2, 2, 2),
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 21,
+                ));
+          }
+
           return Text(userdata.firstName + ' ' + userdata.lastName,
               textAlign: TextAlign.left,
               style: TextStyle(
@@ -68,17 +86,7 @@ Widget loadUserData(BuildContext context) {
                 fontWeight: FontWeight.w700,
                 fontSize: 21,
               ));
-        }
-
-        return Text(userdata.firstName + ' ' + userdata.lastName,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 2, 2, 2),
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-              fontSize: 21,
-            ));
-      });
+        });
 }
 
 class DashboardWidget extends StatefulWidget {
@@ -807,12 +815,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
     //sort the list
     purchaseItemListItems.sort((a, b) => a.header.compareTo(b.header));
-
-    /*print('sorted list');
-    for (var i = 0; i < purchaseItemListItems.length; i++) {
-      print(purchaseItemListItems[i].header);
-      print(purchaseItemListItems[i].description);
-    }*/
 
     for (var i = 0; i < purchaseItemListItems.length; i++) {
       //check to see that headers don't match, if so make another area in the cart

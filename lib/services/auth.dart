@@ -62,7 +62,7 @@ class AuthService {
   }
    */
 
-  Future<String> registerWithEmailAndPassword(
+  /*Future<String> registerWithEmailAndPassword(
       UserData userdata, String password) async {
     try {
       print(userdata);
@@ -87,7 +87,7 @@ class AuthService {
       print(error.toString());
       return null;
     }
-  }
+  }*/
 
   // sign out
   Future signOut() async {

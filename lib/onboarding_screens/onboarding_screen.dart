@@ -148,8 +148,7 @@ Widget myPage4Widget(BuildContext context) {
       // create a new document for the user with the uid
       await databaseService.updateUserData(userdata);
 
-      await databaseService
-          .updateUserMessagesSystemType("Onboarding message sent");
+      await databaseService.updateUserMessagesSystemType("User Created");
 
       //go to main screen
       Navigator.of(context).push(

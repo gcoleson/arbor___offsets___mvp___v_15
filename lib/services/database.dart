@@ -28,17 +28,11 @@ class UserData {
 
   String firstName = 'testName';
   String lastName = 'testlast';
-  String addressStreet = "teststreet";
-  String addressState = 'teststate';
-  String addressZipcode = 'testzip';
-  String phoneNumberOne = 'testphone1';
-  String phoneNumberTwo = 'testphone2';
-  String phoneNumberThree = 'testphone3';
-  String emailAddress = 'test@test.com';
   int carbonOffsetMe = 20;
   int carbonOffsetFriends = 10;
   int carbonOffsetCommunity = 5;
   int timestamp = 1604201604913;
+  bool dataLoadedFromDB = false;
 }
 
 class UserMessages {
@@ -89,12 +83,22 @@ class DatabaseService {
   }
 
   Future<void> updateUserMessagesSystemType(String messageBoday) async {
-    return await userCollection.doc(this.uid).collection('messages').doc().set({
-      'messagetype': UserMessageTypes.userMessageTypeSystem,
-      'messageheader': 'System',
-      'messagebody': messageBoday,
-      'timestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
-    });
+    try {
+      return await userCollection
+          .doc(this.uid)
+          .collection('messages')
+          .doc()
+          .set({
+        'messagetype': UserMessageTypes.userMessageTypeSystem,
+        'messageheader': 'System',
+        'messagebody': messageBoday,
+        'timestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
+      });
+    } catch (error) {
+      print('Get user data error');
+      print(error.toString());
+      return null;
+    }
   }
 
   Future<void> updateUserMessagesTransferType(String messageBoday) async {
