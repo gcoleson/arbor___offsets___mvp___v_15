@@ -22,14 +22,17 @@ class CartItem {
   String imageIcon;
   String documentID;
   double price;
+  double coinCount;
+  double treeCount;
   bool boxSelected;
 
-  CartItem(
-      {this.header,
-      this.description,
-      this.imageText,
-      this.imageIcon,
-      this.boxSelected});
+  CartItem({
+    this.header,
+    this.description,
+    this.imageText,
+    this.imageIcon,
+    this.boxSelected,
+  });
 }
 
 List<CartItem> purchaseItemListItems = List<CartItem>();
@@ -369,6 +372,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  //TODO: Make the screens dynamic and not overflow for all typoes of screen resolutions
   Future checkoutCartBuildDialogue(BuildContext context) {
     return showDialog(
       context: context,
@@ -415,18 +419,22 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Column buildLineItems()
+  Container buildLineItems()
   //loop through all items and make into a grid 2x
   {
-    Column productColumn;
+    SingleChildScrollView productColumn;
     List<Widget> returnList = new List();
     double totalCost = 0;
+    double totalTrees = 0;
+    double totalCoins = 0;
 
     for (var i = 0; i < purchaseItemListItems.length; i++) {
       //check to see that headers don't match, if so make another area in the cart
       //always do the first one
       if (purchaseItemListItems[i].boxSelected == true) {
         totalCost += purchaseItemListItems[i].price;
+        totalTrees += purchaseItemListItems[i].treeCount;
+        totalCoins += purchaseItemListItems[i].coinCount;
         returnList.add(
           Row(
             children: [
@@ -484,7 +492,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           Container(
             width: 80,
             child: Text(
-              "\$" + totalCost.toString().padRight(4, '0'),
+              "\$" + totalCost.toStringAsFixed(2).padRight(4, '0'),
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontFamily: "Raleway",
@@ -497,8 +505,103 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       ),
     );
 
-    return Column(
-      children: returnList,
+    returnList.add(
+      Row(
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(9, 0, 0, 0),
+            width: 200,
+            child: Text(
+              "You'll Earn",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Raleway",
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    returnList.add(
+      Row(
+        children: [
+          Spacer(
+            flex: 50,
+          ),
+          Container(
+            width: 200,
+            child: Text(
+              "Arbor Trees",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Raleway",
+              ),
+            ),
+          ),
+          Container(
+            width: 50,
+            child: Text(
+              totalTrees.toString().padRight(4, '0'),
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Raleway",
+              ),
+            ),
+          ),
+          Spacer(
+            flex: 50,
+          ),
+        ],
+      ),
+    );
+
+    returnList.add(
+      Row(
+        children: [
+          Spacer(
+            flex: 50,
+          ),
+          Container(
+            width: 200,
+            child: Text(
+              "Arbor Coins",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Raleway",
+              ),
+            ),
+          ),
+          Container(
+            width: 50,
+            child: Text(
+              totalCoins.toInt().toString(),
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Raleway",
+              ),
+            ),
+          ),
+          Spacer(
+            flex: 50,
+          ),
+        ],
+      ),
+    );
+
+    //returnList.add(value);
+
+    return Container(
+      width: 300,
+      height: 140,
+      child: SingleChildScrollView(
+        child: Column(
+          children: returnList,
+        ),
+      ),
     );
   }
 
@@ -523,7 +626,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image(
-              image: AssetImage("assets/images/CheckoutImage.PNG"),
+              image: AssetImage("assets/images/greg.PNG"),
             ),
           ),
           Row(
@@ -570,8 +673,81 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             ),
           ),
           buildLineItems(),
+          Text(
+            "Eliminate your carbon Impact now!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Montserrat",
+              fontSize: 28,
+            ),
+          ),
           Spacer(),
-          _customButton("Checkout", () {}),
+          _customButton(
+            "Checkout",
+            () async {
+              Navigator.of(context).pop();
+
+              String sessionId = 'error';
+              //final sessionId = await Server().createCheckout();
+              print(purchaseItemListItems[0].documentID);
+              print(purchaseItemListItems[0].imageText);
+
+              String checkout_json;
+              var checkout_list = [];
+
+              for (var i = 0; i < purchaseItemListItems.length; i++) {
+                //check to see that headers don't match, if so make another area in the cart
+                //always do the first one
+                if (purchaseItemListItems[i].boxSelected == true) {
+                  checkout_list.add(
+                    {
+                      'docID': purchaseItemListItems[i].documentID,
+                      'quantity': 1
+                    },
+                  );
+                }
+              }
+
+              // First Ping Firebase for session ID for stripe checkout
+              final http.Response response = await http.post(
+                'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/',
+                body: json.encode(
+                  {'items': checkout_list},
+                ),
+              );
+
+              print(jsonDecode(response.body));
+
+              //then decode the json returned
+              if (response.body != null && response.body != 'error') {
+                sessionId = jsonDecode(response.body)['id'];
+                print('Checkout Success!!!!');
+              }
+
+              if (sessionId != 'error') {
+                // Call the one time checkout screen with session ID
+                final outcome =
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => OneTimeCheckout(
+                              sessionId: sessionId,
+                            )));
+                if (outcome == "success") {
+                  print("finished payment eeeee");
+                  paymentSuccessBuildDialogue(context);
+                } else if (outcome == "failure") {
+                  print("Payment was a failure");
+                  paymentFailureBuildDialogue(context);
+                }
+                final snackBar =
+                    SnackBar(content: Text('SessionId: $sessionId'));
+                //Scaffold.of(context).showSnackBar(snackBar);
+                //_congratulationsDialogue();
+              } else {
+                print('Checkout Entry has failed');
+              }
+            },
+          ),
           Spacer(),
         ],
       ),
@@ -1016,6 +1192,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               item.imageIcon = document['imageicon'];
               item.documentID = document.id;
               item.price = document['price'];
+              item.treeCount = double.parse(document['treecount'].toString());
+              print(document['coincount']);
+
+              item.coinCount = 5.0;
               item.boxSelected = false;
 
               purchaseItemListItems.add(item);
