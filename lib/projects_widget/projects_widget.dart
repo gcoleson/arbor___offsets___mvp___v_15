@@ -110,7 +110,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
         ),
         child: Stack(
           children: [
-            Positioned(
+            /*Positioned(
               left: 10,
               top: 10,
               height: 30,
@@ -124,7 +124,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
                   fontSize: 28,
                 ),
               ),
-            ),
+            ),*/
             Positioned(
               left: 3,
               top: 50,
