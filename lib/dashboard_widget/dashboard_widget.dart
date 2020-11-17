@@ -16,8 +16,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CartItem.dart';
 import 'shopping_cart_widget.dart';
+import 'UserStats.dart';
 
 List<CartItem> purchaseItemListItems = List<CartItem>();
+UserStats userStats = new UserStats();
 
 Widget loadUserData(BuildContext context) {
   if (userdata.dataLoadedFromDB) {
@@ -121,10 +123,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       //check to see that headers don't match, if so make another area in the cart
       //always do the first one
       if (purchaseItemListItems[i].boxSelected == true) {
-        returnList.add(generalButtonItemContainer(
-            0,
-            purchaseItemListItems[i].imageIcon,
-            purchaseItemListItems[i].imageText));
+        returnList.add(
+          generalButtonItemContainer(0, purchaseItemListItems[i].imageIcon,
+              purchaseItemListItems[i].imageText),
+        );
       }
     }
 
@@ -132,18 +134,22 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       return Spacer();
     else
       return Container(
-          height: 400,
-          width: 200,
-          child: GridView.count(
-            crossAxisCount: 2,
-            children: returnList,
-          ));
+        height: 400,
+        width: 200,
+        child: GridView.count(
+          crossAxisCount: 2,
+          children: returnList,
+        ),
+      );
   }
 
   Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
   var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
   var iOsSystemBackgroundsLightSystemBack2 = Color.fromARGB(255, 255, 255, 255);
 
+  /*===============================================================================================
+  Deprecated: old dialogue builder for the congrtulations dialogue box
+  ================================================================================================*/
   Future buildShowDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -172,6 +178,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         });
   }
 
+  /*===============================================================================================
+  Deprecated: original dialogue box for congratulation of payment
+  ================================================================================================*/
   Container formCongrats() {
     return Container(
         width: 381,
@@ -239,6 +248,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         ));
   }
 
+  /*===============================================================================================
+  Container for squares that contain product
+  ================================================================================================*/
   Container generalButtonItemContainer(
       int index, String iconName, String iconText) {
     return Container(
@@ -287,6 +299,39 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  /*===============================================================================================
+  Stream Builder for User Data
+  ================================================================================================*/
+  StreamBuilder buildUserStats(BuildContext context) {
+    return StreamBuilder(
+      stream: databaseReference
+          .collection("users")
+          .doc(databaseService.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        print("User Data Loaded");
+        userStats.consecutiveMonths = snapshot.data["consecutiveMonths"];
+        userStats.totalMonths = snapshot.data["totalMonths"];
+        userStats.totalTrees = snapshot.data["totalTrees"];
+        userStats.treesThisMonth = snapshot.data["treesThisMonth"];
+        return Column(
+          children: [
+            buildImpactContainer(
+                userStats.totalTrees, userStats.treesThisMonth),
+            buildMonthsInARowContainer(userStats.consecutiveMonths),
+            buildTotalMonthsContainer(userStats.totalMonths)
+          ],
+        );
+      },
+    );
+  }
+
+  /*===============================================================================================
+  Building Widget
+  ================================================================================================*/
   @override
   void initState() {
     super.initState();
@@ -294,7 +339,19 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // user statistics
+
     //Stream data collection
+    var userStatStreamBuilder = StreamBuilder(
+        stream: databaseReference
+            .collection("users")
+            .doc(databaseService.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          userStats.consecutiveMonths = snapshot.data["consecutiveMonths"];
+          print("I am called");
+          return SizedBox.shrink();
+        });
 
     return Scaffold(
       appBar: AppBar(
@@ -325,9 +382,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               loadUserData(context),
-              buildImpactContainer(),
-              buildMonthsInARowContainer(),
-              buildTotalMonthsContainer(),
+              // buildImpactContainer(3, 3),
+              // buildMonthsInARowContainer(3),
+              // buildTotalMonthsContainer(3),
+              buildUserStats(context),
               buildLiveClimatePositveAlign(),
               buildOffsetPurchaseListContainer(context),
               buildCheckoutButtonContainer(),
@@ -338,6 +396,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  /*===============================================================================================
+  Checkout Button
+  ================================================================================================*/
   Container buildCheckoutButtonContainer() {
     return Container(
       width: 300,
@@ -380,6 +441,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  /*===============================================================================================
+  ???
+  ================================================================================================*/
   Container buildGeneralAreaContainer({
     @required String header,
     @required String description,
@@ -438,6 +502,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  /*===============================================================================================
+  ???
+  ================================================================================================*/
   Widget buildOffsetPurchaseListContainer(BuildContext context) {
     return Scrollbar(
         thickness: 5,
@@ -450,6 +517,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         ));
   }
 
+  /*===============================================================================================
+  Building Buttons for items to purchase
+  ================================================================================================*/
   Widget buildGeneralButtonItemWidget(BuildContext context, int index,
       int startIndex, List<CartItem> cartList, String header) {
     //keep returning widgets until the headers don't match
@@ -464,6 +534,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       return null;
   }
 
+  /*===============================================================================================
+  Stream Builder for Products
+  ================================================================================================*/
   Widget buildProductsListWidget(BuildContext context) {
     try {
       if (purchaseItemList().isNotEmpty) {
@@ -516,6 +589,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     }
   }
 
+  /*===============================================================================================
+  Scrollable area for each product?
+  ================================================================================================*/
   List<Widget> purchaseItemList() {
     List<Widget> returnList = new List();
     Widget tempWidget;
@@ -546,6 +622,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     return returnList;
   }
 
+  /*===============================================================================================
+  Title above the product list
+  ================================================================================================*/
   Align buildLiveClimatePositveAlign() {
     return Align(
       alignment: Alignment.topLeft,
@@ -565,7 +644,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Container buildTotalMonthsContainer() {
+  /*===============================================================================================
+  User stats: Total Months
+  ================================================================================================*/
+  Container buildTotalMonthsContainer(int totalMonths) {
     return Container(
       height: 57,
       margin: EdgeInsets.only(right: 1),
@@ -605,7 +687,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "5",
+                    //===========================================
+                    // Total Months of Impact
+                    //===========================================
+                    totalMonths.toString(),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Color.fromARGB(255, 250, 195, 21),
@@ -641,102 +726,93 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Widget buildMonthsInARowContainer() {
-    try {
-      return StreamBuilder(
-        stream: databaseReference
-            .collection("users")
-            .doc(databaseService.uid)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return CircularProgressIndicator();
-          }
-          int totalTrees = snapshot.data["consecutiveMonths"];
-          print("total trees are: " + totalTrees.toString());
-          return Container(
-            height: 50,
-            margin: EdgeInsets.only(left: 1, top: 20),
-            child: Stack(
-              alignment: Alignment.topCenter,
+  /*===============================================================================================
+  Stream Builder for Months in a row
+  ================================================================================================*/
+  Widget buildMonthsInARowContainer(int consecutiveMonths) {
+    print("consecutive months are: " + consecutiveMonths.toString());
+    return Container(
+      height: 50,
+      margin: EdgeInsets.only(left: 1, top: 20),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Positioned(
+            left: 0,
+            top: -0,
+            right: 0,
+            child: Container(
+              height: 48,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 93, 187, 71),
+                border: Border.all(
+                  width: 1,
+                  color: Color.fromARGB(255, 151, 151, 151),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(128, 0, 0, 0),
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: Container(),
+            ),
+          ),
+          Positioned(
+            left: 22,
+            top: -1,
+            right: 11,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Positioned(
-                  left: 0,
-                  top: -0,
-                  right: 0,
-                  child: Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 93, 187, 71),
-                      border: Border.all(
-                        width: 1,
-                        color: Color.fromARGB(255, 151, 151, 151),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(128, 0, 0, 0),
-                          offset: Offset(0, 2),
-                          blurRadius: 4,
-                        ),
-                      ],
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    //==============================
+                    //Consecutive Months
+                    //==============================
+                    consecutiveMonths.toString(),
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 250, 195, 21),
+                      fontFamily: "Raleway",
+                      fontWeight: FontWeight.w700,
+                      fontSize: 36,
                     ),
-                    child: Container(),
                   ),
                 ),
-                Positioned(
-                  left: 22,
-                  top: -1,
-                  right: 11,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          totalTrees.toString(),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 250, 195, 21),
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 36,
-                          ),
-                        ),
+                Spacer(),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 7),
+                    child: Text(
+                      "months in a row of impact",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 2, 2, 2),
+                        fontFamily: "Raleway",
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 24,
                       ),
-                      Spacer(),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 7),
-                          child: Text(
-                            "months in a row of impact",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 2, 2, 2),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 24,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],
             ),
-          );
-        },
-      );
-    } catch (e) {
-      print("aaaaaaaaaaaaa");
-      print(e);
-      return Container();
-    }
+          ),
+        ],
+      ),
+    );
   }
 
-  Container buildImpactContainer() {
+  /*===============================================================================================
+  User stats: Months of Impact
+  ================================================================================================*/
+  Container buildImpactContainer(int totalTrees, int treesThisMonth) {
     return Container(
         //height: 400,
         margin: EdgeInsets.only(left: 5, top: 5, right: 5),
@@ -783,7 +859,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                         Container(
                           margin: EdgeInsets.all(5),
                           child: AutoSizeText(
-                            "9 trees earned this month.",
+                            //================================
+                            // treesThisMonth
+                            //=================================
+                            treesThisMonth.toString() +
+                                "trees earned this month.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color.fromARGB(255, 250, 195, 21),
@@ -796,7 +876,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                           child: Container(
                             margin: EdgeInsets.all(5),
                             child: AutoSizeText(
-                              "38 all-time!",
+                              //========================
+                              // total trees
+                              //=======================
+                              totalTrees.toString() + "all-time!",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 250, 195, 21),
