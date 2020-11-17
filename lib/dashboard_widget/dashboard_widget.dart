@@ -294,6 +294,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //Stream data collection
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -639,80 +641,99 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Container buildMonthsInARowContainer() {
-    return Container(
-      height: 50,
-      margin: EdgeInsets.only(left: 1, top: 20),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Positioned(
-            left: 0,
-            top: -0,
-            right: 0,
-            child: Container(
-              height: 48,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 93, 187, 71),
-                border: Border.all(
-                  width: 1,
-                  color: Color.fromARGB(255, 151, 151, 151),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(128, 0, 0, 0),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
-              child: Container(),
-            ),
-          ),
-          Positioned(
-            left: 22,
-            top: -1,
-            right: 11,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+  Widget buildMonthsInARowContainer() {
+    try {
+      return StreamBuilder(
+        stream: databaseReference
+            .collection("users")
+            .doc(databaseService.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+          int totalTrees = snapshot.data["consecutiveMonths"];
+          print("total trees are: " + totalTrees.toString());
+          return Container(
+            height: 50,
+            margin: EdgeInsets.only(left: 1, top: 20),
+            child: Stack(
+              alignment: Alignment.topCenter,
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "2",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 250, 195, 21),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 36,
+                Positioned(
+                  left: 0,
+                  top: -0,
+                  right: 0,
+                  child: Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 93, 187, 71),
+                      border: Border.all(
+                        width: 1,
+                        color: Color.fromARGB(255, 151, 151, 151),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(128, 0, 0, 0),
+                          offset: Offset(0, 2),
+                          blurRadius: 4,
+                        ),
+                      ],
                     ),
+                    child: Container(),
                   ),
                 ),
-                Spacer(),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 7),
-                    child: Text(
-                      "months in a row of impact",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 24,
+                Positioned(
+                  left: 22,
+                  top: -1,
+                  right: 11,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          totalTrees.toString(),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 250, 195, 21),
+                            fontFamily: "Raleway",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 36,
+                          ),
+                        ),
                       ),
-                    ),
+                      Spacer(),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 7),
+                          child: Text(
+                            "months in a row of impact",
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 2, 2, 2),
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        },
+      );
+    } catch (e) {
+      print("aaaaaaaaaaaaa");
+      print(e);
+      return Container();
+    }
   }
 
   Container buildImpactContainer() {
