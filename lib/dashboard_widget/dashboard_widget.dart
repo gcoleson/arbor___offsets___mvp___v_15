@@ -97,7 +97,7 @@ class DashboardWidget extends StatefulWidget {
 class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
 
-  Color getBorderSelectColor(int index) {
+  Color getProductBorderSelectColor(int index) {
     if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
       return Color.fromARGB(255, 0, 0, 0);
@@ -498,7 +498,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 color: Color.fromARGB(255, 216, 216, 216),
                 border: Border.all(
                   width: 3,
-                  color: getBorderSelectColor(index),
+                  color: getProductBorderSelectColor(index),
                 ),
               ),
               child: Container(),
@@ -600,14 +600,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   print(purchaseItemListItems[0].documentID);
                   print(purchaseItemListItems[0].imageText);
 
-                  String checkout_json;
-                  var checkout_list = [];
+                  var checkoutList = [];
 
                   for (var i = 0; i < purchaseItemListItems.length; i++) {
-                    //check to see that headers don't match, if so make another area in the cart
-                    //always do the first one
                     if (purchaseItemListItems[i].boxSelected == true) {
-                      checkout_list.add(
+                      checkoutList.add(
                         {
                           'docID': purchaseItemListItems[i].documentID,
                           'quantity': 1
@@ -620,7 +617,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   final http.Response response = await http.post(
                     'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/',
                     body: json.encode(
-                      {'items': checkout_list},
+                      {'items': checkoutList},
                     ),
                   );
 
@@ -646,8 +643,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       print("Payment was a failure");
                       paymentFailureBuildDialogue(context);
                     }
-                    final snackBar =
-                        SnackBar(content: Text('SessionId: $sessionId'));
                     //Scaffold.of(context).showSnackBar(snackBar);
                     //_congratulationsDialogue();
                   } else {

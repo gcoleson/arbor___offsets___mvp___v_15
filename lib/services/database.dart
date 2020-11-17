@@ -19,6 +19,7 @@ class ProjectData {
   String sponsor;
   String sponsorlogo;
   String title;
+  bool selected;
 }
 
 UserData userdata = UserData.instance;
@@ -43,8 +44,8 @@ class UserMessages {
 
 class UserMessageTypes {
   static const int userMessageTypeSystem = 0;
-  static const int userMessageTypeTransaction = 0;
-  static const int userMessageTypeAlert = 0;
+  static const int userMessageTypeTransaction = 1;
+  static const int userMessageTypeAlert = 2;
 }
 
 DatabaseService databaseService = DatabaseService();

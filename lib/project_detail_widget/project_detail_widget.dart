@@ -194,7 +194,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                         ))),
                 Container(
                   child: Image.network(widget.projectData.sponsorlogo,
-                      width: 200, fit: BoxFit.fill),
+                      width: 100, fit: BoxFit.fill),
                 ),
               ],
             ),
