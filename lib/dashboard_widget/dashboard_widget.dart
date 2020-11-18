@@ -18,12 +18,26 @@ import 'CartItem.dart';
 import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
 import 'user_stats_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 List<CartItem> purchaseItemListItems = List<CartItem>();
 UserStats userStats = new UserStats();
 
 Widget loadUserData(BuildContext context) {
-  if (userdata.dataLoadedFromDB) {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User user = auth.currentUser;
+
+  //TODO: Name should be used instead, email address is used temporarily
+  if (user != null) {
+    return Text(user.email,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          color: Color.fromARGB(255, 2, 2, 2),
+          fontFamily: "Raleway",
+          fontWeight: FontWeight.w700,
+          fontSize: 21,
+        ));
+  } else if (userdata.dataLoadedFromDB) {
     return Text(userdata.firstName + ' ' + userdata.lastName,
         textAlign: TextAlign.left,
         style: TextStyle(
@@ -34,47 +48,54 @@ Widget loadUserData(BuildContext context) {
         ));
   } else
     return new StreamBuilder(
-        stream: databaseService.getUserData(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Text("Loading User Data",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 2, 2, 2),
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 21,
-                ));
-          }
-          var userDocument = snapshot.data;
+      stream: databaseService.getUserData(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text(
+            "Loading User Data",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: Color.fromARGB(255, 2, 2, 2),
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w700,
+              fontSize: 21,
+            ),
+          );
+        }
+        var userDocument = snapshot.data;
 
-          try {
-            userdata.firstName = userDocument['firstname'];
-            userdata.lastName = userDocument['lastname'];
-            userdata.timestamp = userDocument['timestamp'];
-            userdata.dataLoadedFromDB = true;
-          } catch (error) {
-            print('Get user data error');
-            print(error.toString());
-            return Text(userdata.firstName + ' ' + userdata.lastName,
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 2, 2, 2),
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 21,
-                ));
-          }
+        try {
+          userdata.firstName = userDocument['firstname'];
+          userdata.lastName = userDocument['lastname'];
+          userdata.timestamp = userDocument['timestamp'];
+          userdata.dataLoadedFromDB = true;
+        } catch (error) {
+          print('Get user data error');
+          print(error.toString());
+          return Text(
+            userdata.firstName + ' ' + userdata.lastName,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: Color.fromARGB(255, 2, 2, 2),
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w700,
+              fontSize: 21,
+            ),
+          );
+        }
 
-          return Text(userdata.firstName + ' ' + userdata.lastName,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 21,
-              ));
-        });
+        return Text(
+          userdata.firstName + ' ' + userdata.lastName,
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            color: Color.fromARGB(255, 2, 2, 2),
+            fontFamily: "Raleway",
+            fontWeight: FontWeight.w700,
+            fontSize: 21,
+          ),
+        );
+      },
+    );
 }
 
 class DashboardWidget extends StatefulWidget {
