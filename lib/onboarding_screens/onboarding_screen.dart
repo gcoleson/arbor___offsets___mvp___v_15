@@ -150,6 +150,8 @@ Widget myPage4Widget(BuildContext context) {
 
       await databaseService.updateUserMessagesSystemType("User Created");
 
+      await databaseService.updateUserStats();
+
       //go to main screen
       Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => TabGroupOneTabBarWidget()));

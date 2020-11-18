@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -118,6 +120,29 @@ class DatabaseService {
       'messagebody': messageBoday,
       'timestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
     });
+  }
+
+  Future<void> addOrder(var orderList, double trees) {
+    return userCollection
+        .doc(this.uid)
+        .collection('orders')
+        .add({'date': DateTime.now(), 'trees': trees, 'items': orderList})
+        .then((value) => print("Order successfulyy added"))
+        .catchError((e) => print("Failed to add order: $e"));
+  }
+
+  Future<void> updateUserStats() {
+    return userCollection
+        .doc(this.uid)
+        .set({
+          'consecutiveMonths': 0,
+          'totalMonths': 0,
+          'totalTrees': 0,
+          'treesThisMonth': 0,
+          'prevMonthOfPurchase': new DateTime.utc(1997, 9, 24)
+        })
+        .then((value) => print("User stats successfully updated"))
+        .catchError((e) => print('Failed to update user data: $e'));
   }
 
   CollectionReference getUserSystemMessageDB() {

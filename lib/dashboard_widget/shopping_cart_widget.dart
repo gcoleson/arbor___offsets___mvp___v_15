@@ -3,6 +3,7 @@ import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CartItem.dart';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 
 Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
 var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
@@ -452,6 +453,8 @@ Container checkoutCartDialogue(
 
             String checkout_json;
             var checkout_list = [];
+            var order_list = [];
+            double totalTrees = 0;
 
             for (var i = 0; i < purchaseItemList.length; i++) {
               //check to see that headers don't match, if so make another area in the cart
@@ -460,6 +463,14 @@ Container checkoutCartDialogue(
                 checkout_list.add(
                   {'docID': purchaseItemList[i].documentID, 'quantity': 1},
                 );
+
+                order_list.add({
+                  'item': purchaseItemList[i].imageText,
+                  'quantity': 1,
+                  'trees': purchaseItemList[i].treeCount
+                });
+
+                totalTrees += purchaseItemList[i].treeCount.toInt();
               }
             }
 
@@ -487,10 +498,10 @@ Container checkoutCartDialogue(
                             sessionId: sessionId,
                           )));
               if (outcome == "success") {
-                print("finished payment eeeee");
-
                 FocusScope.of(context).unfocus();
                 Navigator.of(context).pop();
+                databaseService.addOrder(order_list, totalTrees);
+
                 paymentSuccessBuildDialogue(context);
               } else if (outcome == "failure") {
                 print("Payment was a failure");
