@@ -23,18 +23,30 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
       if (!snapshot.hasData) {
         return CircularProgressIndicator();
       }
-      print("User Data Loaded");
-      userStats.consecutiveMonths = snapshot.data["consecutiveMonths"];
-      userStats.totalMonths = snapshot.data["totalMonths"];
-      userStats.totalTrees = snapshot.data["totalTrees"];
-      userStats.treesThisMonth = snapshot.data["treesThisMonth"];
-      return Column(
-        children: [
-          buildImpactContainer(userStats.totalTrees, userStats.treesThisMonth),
-          buildMonthsInARowContainer(userStats.consecutiveMonths),
-          buildTotalMonthsContainer(userStats.totalMonths)
-        ],
-      );
+      try {
+        print("User Data Loaded");
+        userStats.consecutiveMonths = snapshot.data["consecutiveMonths"];
+        userStats.totalMonths = snapshot.data["totalMonths"];
+        userStats.totalTrees = snapshot.data["totalTrees"];
+        userStats.treesThisMonth = snapshot.data["treesThisMonth"];
+        return Column(
+          children: [
+            buildImpactContainer(
+                userStats.totalTrees, userStats.treesThisMonth),
+            buildMonthsInARowContainer(userStats.consecutiveMonths),
+            buildTotalMonthsContainer(userStats.totalMonths)
+          ],
+        );
+      } catch (error) {
+        print(error.toString());
+        return Column(
+          children: [
+            buildImpactContainer(0, 0),
+            buildMonthsInARowContainer(0),
+            buildTotalMonthsContainer(0)
+          ],
+        );
+      }
     },
   );
 }

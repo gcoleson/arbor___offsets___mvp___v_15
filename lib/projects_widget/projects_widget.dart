@@ -8,24 +8,25 @@
 
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
-import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-dynamic testDBForField(DocumentSnapshot doc, String field) {
-  Map<String, dynamic> test = doc.data();
-
-  for (var entry in test.entries) {
-    if (entry.key == field) {
-      return entry.value;
-    }
-  }
-  return null;
-}
+Map<int, ProjectData> projectDataMap = Map();
 
 class ProjectsWidget extends StatefulWidget {
   @override
   _ProjectsWidgetState createState() => _ProjectsWidgetState();
+}
+
+class ProjectModel extends ChangeNotifier {
+  int value = 0;
+
+  void selectChange() {
+    value += 1;
+    print('notifyListeners:$value');
+    notifyListeners();
+  }
 }
 
 class _ProjectsWidgetState extends State<ProjectsWidget> {
@@ -60,7 +61,21 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
               projectData.sponsor = document['sponsor'];
               projectData.sponsorlogo = document['sponsor-logo'];
               projectData.title = document['title'];
-              return ProjectSummaryWidget(projectData);
+
+              projectData.projectnumber =
+                  testDBForField(document, 'projectnumber') ?? 0;
+
+              if (projectData.projectnumber != 0 &&
+                  userdata.selectedprojectnumber != 0 &&
+                  projectData.projectnumber == userdata.selectedprojectnumber)
+                projectData.selected = true;
+              else
+                projectData.selected = false;
+
+              //add to map for referencing selected or not
+              projectDataMap.putIfAbsent(index, () => projectData);
+
+              return ProjectSummaryWidget(index, projectData);
             },
           );
         },
@@ -73,12 +88,6 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
   }
 
   @override
-  void initState() {
-    //initProjectData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -87,44 +96,45 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat",
+            fontFamily: "Montserrat Semi-Bold",
             fontWeight: FontWeight.w600,
-            fontSize: 24,
+            fontSize: 36,
           ),
         ),
         automaticallyImplyLeading: false,
-        actions: [
+        /* actions: [
           IconButton(
             onPressed: () => this.onItemPressed(context),
             icon: Image.asset(
               "assets/images/icons8-account-100.png",
             ),
           ),
-        ],
+        ], */
         backgroundColor: Color.fromARGB(255, 65, 127, 69),
       ),
       body: Container(
         height: 600,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 237, 236, 228),
+          //color: Color.fromARGB(255, 237, 236, 228),
+          color: Color.fromARGB(255, 255, 255, 255),
         ),
         child: Stack(
           children: [
-            Positioned(
-              left: 10,
-              top: 10,
-              height: 30,
-              child: Text(
-                "August 2020",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: AppColors.secondaryText,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
-              ),
+            /*Positioned(
+          left: 10,
+          top: 10,
+          height: 30,
+          child: Text(
+            "August 2020",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: AppColors.secondaryText,
+              fontFamily: "Montserrat",
+              fontWeight: FontWeight.w500,
+              fontSize: 28,
             ),
+          ),
+        ),*/
             Positioned(
               left: 3,
               top: 50,

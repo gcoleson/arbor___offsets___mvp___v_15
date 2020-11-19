@@ -20,6 +20,7 @@ import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
 import 'user_stats_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 List<CartItem> purchaseItemListItems = List<CartItem>();
 UserStats userStats = new UserStats();
@@ -52,16 +53,14 @@ Widget loadUserData(BuildContext context) {
       stream: databaseService.getUserData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Text(
-            "Loading User Data",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 2, 2, 2),
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-              fontSize: 21,
-            ),
-          );
+          return Text("Loading User Data",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w700,
+                fontSize: 21,
+              ));
         }
         var userDocument = snapshot.data;
 
@@ -69,20 +68,20 @@ Widget loadUserData(BuildContext context) {
           userdata.firstName = userDocument['firstname'];
           userdata.lastName = userDocument['lastname'];
           userdata.timestamp = userDocument['timestamp'];
+          userdata.selectedprojectnumber =
+              userDocument['selectedprojectnumber'];
           userdata.dataLoadedFromDB = true;
         } catch (error) {
           print('Get user data error');
           print(error.toString());
-          return Text(
-            userdata.firstName + ' ' + userdata.lastName,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 2, 2, 2),
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-              fontSize: 21,
-            ),
-          );
+          return Text(userdata.firstName + ' ' + userdata.lastName,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w700,
+                fontSize: 21,
+              ));
         }
 
         return Text(
@@ -111,7 +110,7 @@ class DashboardWidget extends StatefulWidget {
 class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
 
-  Color getBorderSelectColor(int index) {
+  Color getProductBorderSelectColor(int index) {
     if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
       return Color.fromARGB(255, 0, 0, 0);
@@ -295,7 +294,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 color: Color.fromARGB(255, 216, 216, 216),
                 border: Border.all(
                   width: 3,
-                  color: getBorderSelectColor(index),
+                  color: getProductBorderSelectColor(index),
                 ),
               ),
               child: Container(),
@@ -402,7 +401,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       height: 50,
       margin: EdgeInsets.only(left: 20, right: 20),
       decoration: BoxDecoration(
-        color: AppColors.secondaryBackground,
+        color: AppColors.primaryDarkGreen,
         borderRadius: Radii.k8pxRadius,
       ),
       child: Column(
@@ -421,7 +420,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                     "Checkout",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      //color: Color.fromARGB(255, 255, 255, 255),
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontFamily: "SF Pro Text",
                       fontWeight: FontWeight.w400,
                       fontSize: 17,

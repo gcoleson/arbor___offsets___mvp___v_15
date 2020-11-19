@@ -155,7 +155,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
       databaseService.uid = userCredential.user.uid;
 
       // create a new document for the user with the uid
-      await databaseService.updateUserData(userdata);
+      await databaseService.updateUserData(userdata, true);
 
       await databaseService.updateUserMessagesSystemType("User Created");
 

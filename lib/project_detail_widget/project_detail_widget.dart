@@ -102,7 +102,8 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
-          color: AppColors.ternaryBackground,
+          //color: AppColors.ternaryBackground,
+          color: AppColors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -194,7 +195,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                         ))),
                 Container(
                   child: Image.network(widget.projectData.sponsorlogo,
-                      width: 200, fit: BoxFit.fill),
+                      width: 100, fit: BoxFit.fill),
                 ),
               ],
             ),
