@@ -12,17 +12,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-dynamic testDBForField(DocumentSnapshot doc, String field) {
-  Map<String, dynamic> test = doc.data();
-
-  for (var entry in test.entries) {
-    if (entry.key == field) {
-      return entry.value;
-    }
-  }
-  return null;
-}
-
 Map<int, ProjectData> projectDataMap = Map();
 
 class ProjectsWidget extends StatefulWidget {
@@ -31,35 +20,13 @@ class ProjectsWidget extends StatefulWidget {
 }
 
 class ProjectModel extends ChangeNotifier {
-  /// Internal, private state of the cart.
-  //final List<Item> _items = [];
-
-  /// An unmodifiable view of the items in the cart.
-  //UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
-
-  /// The current total price of all items (assuming all items cost $42).
-  //int get totalPrice => _items.length * 42;
+  int value = 0;
 
   void selectChange() {
-    print('notifyListeners');
+    value += 1;
+    print('notifyListeners:$value');
     notifyListeners();
   }
-
-  /// Adds [item] to cart. This and [removeAll] are the only ways to modify the
-  /// cart from the outside.
-  /* void add(Item item) {
-    _items.add(item);
-    // This call tells the widgets that are listening to this model to rebuild.
-    notifyListeners();
-  }
- */
-  /// Removes all items from the cart.
-/*   void removeAll() {
-    _items.clear();
-    // This call tells the widgets that are listening to this model to rebuild.
-    notifyListeners();
-  }
- */
 }
 
 class _ProjectsWidgetState extends State<ProjectsWidget> {
@@ -94,7 +61,16 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
               projectData.sponsor = document['sponsor'];
               projectData.sponsorlogo = document['sponsor-logo'];
               projectData.title = document['title'];
-              projectData.selected = document['selected'];
+
+              projectData.projectnumber =
+                  testDBForField(document, 'projectnumber') ?? 0;
+
+              if (projectData.projectnumber != 0 &&
+                  userdata.selectedprojectnumber != 0 &&
+                  projectData.projectnumber == userdata.selectedprojectnumber)
+                projectData.selected = true;
+              else
+                projectData.selected = false;
 
               //add to map for referencing selected or not
               projectDataMap.putIfAbsent(index, () => projectData);
@@ -110,6 +86,13 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
       return Container();
     }
   }
+
+  var projectTextStyle = TextStyle(
+    color: Color.fromARGB(255, 255, 255, 255),
+    fontFamily: "Montserrat",
+    fontWeight: FontWeight.w600,
+    fontSize: 24,
+  );
 
   @override
   Widget build(BuildContext context) {

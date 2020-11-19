@@ -48,25 +48,29 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
       //toggle all other projects off
       projectDataMap.forEach((key, value) {
         if (key != index) {
-          print('removed:$key');
-          print(value);
           value.selected = false;
+          print('deselected:$key:${value.selected}:${value.title}');
         }
       });
+
+      userdata.selectedprojectnumber = projectData.projectnumber;
 
       //turn border on
       //turn selected text on
       //write to db
+
     } else {
       projectData.selected = false;
+      userdata.selectedprojectnumber = 0;
 
       //turn border off
-      //turn selected text on
+      //turn selected text off
       //write to db
     }
+    databaseService.updateUserData(userdata, false);
 
-    //notify of changes
-    ProjectModel().selectChange();
+    var counter = context.read<ProjectModel>();
+    counter.selectChange();
   }
 
   @override
@@ -119,7 +123,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
                         right: 10,
                         bottom: 10,
                         child: AutoSizeText(
-                          projectData.selected ? "Selected" : '',
+                          projectData.selected ? "Selected:" : '',
                           textAlign: TextAlign.right,
                           maxLines: 1,
                           style: TextStyle(

@@ -6,6 +6,7 @@ FirebaseFirestore databaseReference = FirebaseFirestore.instance;
 class ProjectData {
   static ProjectData get instance => ProjectData();
 
+  int projectnumber; //starts at 1, zero is no project selected
   String brief;
   String description;
   String imagemain;
@@ -33,6 +34,7 @@ class UserData {
   int carbonOffsetFriends = 10;
   int carbonOffsetCommunity = 5;
   int timestamp = 1604201604913;
+  int selectedprojectnumber = 0; //starts at 1, zero is no project selected
   bool dataLoadedFromDB = false;
 }
 
@@ -49,6 +51,17 @@ class UserMessageTypes {
 }
 
 DatabaseService databaseService = DatabaseService();
+
+dynamic testDBForField(DocumentSnapshot doc, String field) {
+  Map<String, dynamic> test = doc.data();
+
+  for (var entry in test.entries) {
+    if (entry.key == field) {
+      return entry.value;
+    }
+  }
+  return null;
+}
 
 class DatabaseService {
   String uid;
@@ -70,17 +83,27 @@ class DatabaseService {
     }
   }
 
-  Future<void> updateUserData(UserData data) async {
+  Future<void> updateUserData(UserData data, bool create) async {
     UserData test = data ?? null;
     if (test == null) {
       return null;
     }
-    print('Create UID:${this.uid} db entry');
-    return await userCollection.doc(this.uid).set({
-      'firstname': data.firstName,
-      'lastname': data.lastName,
-      'timestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
-    });
+    print('Update UID:${this.uid} db entry');
+
+    if (create)
+      return await userCollection.doc(this.uid).set({
+        'firstname': data.firstName,
+        'lastname': data.lastName,
+        'selectedprojectnumber': data.selectedprojectnumber,
+        'createtimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
+      }, SetOptions(merge: true));
+    else
+      return await userCollection.doc(this.uid).set({
+        'firstname': data.firstName,
+        'lastname': data.lastName,
+        'selectedprojectnumber': data.selectedprojectnumber,
+        'lastwitetimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
+      }, SetOptions(merge: true));
   }
 
   Future<void> updateUserMessagesSystemType(String messageBoday) async {
