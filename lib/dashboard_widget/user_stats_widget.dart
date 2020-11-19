@@ -239,7 +239,7 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                     // horizontal, this produces 2 rows.
                     crossAxisCount: 3,
                     // Generate 100 widgets that display their index in the List.
-                    children: List.generate(9, (index) {
+                    children: List.generate(treesThisMonth.toInt(), (index) {
                       return Center(
                         child: Image.asset(
                           "assets/images/icons8-oak-tree-100-2-copy-9.png",

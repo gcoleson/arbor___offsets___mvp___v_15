@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -99,6 +100,10 @@ Widget loadUserData(BuildContext context) {
 }
 
 class DashboardWidget extends StatefulWidget {
+  final VoidCallback onUserIconPressed;
+
+  DashboardWidget(this.onUserIconPressed);
+
   @override
   _DashboardWidgetState createState() => _DashboardWidgetState();
 }
@@ -360,7 +365,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () => this.onItemPressed(context),
+            onPressed: this.widget.onUserIconPressed,
             icon: Image.asset(
               "assets/images/icons8-account-100.png",
             ),
