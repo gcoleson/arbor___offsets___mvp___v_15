@@ -14,6 +14,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internationalization/internationalization.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
@@ -21,6 +22,11 @@ class MyStatefulWidget extends StatefulWidget {
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
+
+final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: 'info@412technology.com',
+    query: 'subject=Arbor app feedback'.replaceAll(" ", "%20"));
 
 convertDate(int date) {
   var format = new DateFormat("yMd");
@@ -64,21 +70,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final TextEditingController _emailController = TextEditingController();
 
   Widget changeEmailOrPassword(BuildContext context) {
-    return Column(children: [
-      Row(
+    return Container(
+      color: Color.fromARGB(255, 216, 216, 216),
+      child: Column(
         children: [
-          Text(
-            "New Email ",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontFamily: "SF Pro Text",
-              fontWeight: FontWeight.w400,
-              fontSize: 17,
-            ),
-          ),
-          Align(
-              child: Container(
+          Row(
+            children: [
+              Text(
+                "New Email ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontFamily: "SF Pro Text",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17,
+                ),
+              ),
+              Align(
+                child: Container(
                   width: 200,
                   child: TextField(
                     controller: TextEditingController(),
@@ -97,112 +106,119 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ),
                     maxLines: 1,
                     autocorrect: false,
-                  ))),
-        ],
-      ),
-      Row(
-        children: [
-          Text(
-            "New Password ",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontFamily: "SF Pro Text",
-              fontWeight: FontWeight.w400,
-              fontSize: 17,
-            ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "New Password ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontFamily: "SF Pro Text",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17,
+                ),
+              ),
+              Container(
+                width: 200,
+                child: TextField(
+                  controller: TextEditingController(),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                    icon: new Icon(Icons.vpn_key, color: Colors.grey),
+                    contentPadding: EdgeInsets.all(0),
+                    border: InputBorder.none,
+                  ),
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 98, 0, 238),
+                    fontFamily: "HK Grotesk",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                  ),
+                  maxLines: 1,
+                  autocorrect: false,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Reenter New Password",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontFamily: "SF Pro Text",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17,
+                ),
+              ),
+              Container(
+                width: 200,
+                child: TextField(
+                  controller: TextEditingController(),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                    icon: new Icon(Icons.vpn_key, color: Colors.grey),
+                    contentPadding: EdgeInsets.all(0),
+                    border: InputBorder.none,
+                  ),
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 98, 0, 238),
+                    fontFamily: "HK Grotesk",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                  ),
+                  maxLines: 1,
+                  autocorrect: false,
+                ),
+              ),
+            ],
           ),
           Container(
-              width: 200,
-              child: TextField(
-                controller: TextEditingController(),
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  icon: new Icon(Icons.vpn_key, color: Colors.grey),
-                  contentPadding: EdgeInsets.all(0),
-                  border: InputBorder.none,
-                ),
-                style: TextStyle(
-                  color: Color.fromARGB(255, 98, 0, 238),
-                  fontFamily: "HK Grotesk",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
-                ),
-                maxLines: 1,
-                autocorrect: false,
-              )),
-        ],
-      ),
-      Row(
-        children: [
-          Text(
-            "Reenter New Password",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontFamily: "SF Pro Text",
-              fontWeight: FontWeight.w400,
-              fontSize: 17,
+            width: 300,
+            height: 50,
+            margin: EdgeInsets.only(left: 20, right: 20),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryBackground,
+              borderRadius: Radii.k8pxRadius,
             ),
-          ),
-          Container(
-              width: 200,
-              child: TextField(
-                controller: TextEditingController(),
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  icon: new Icon(Icons.vpn_key, color: Colors.grey),
-                  contentPadding: EdgeInsets.all(0),
-                  border: InputBorder.none,
-                ),
-                style: TextStyle(
-                  color: Color.fromARGB(255, 98, 0, 238),
-                  fontFamily: "HK Grotesk",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
-                ),
-                maxLines: 1,
-                autocorrect: false,
-              )),
-        ],
-      ),
-      Container(
-        width: 300,
-        height: 50,
-        margin: EdgeInsets.only(left: 20, right: 20),
-        decoration: BoxDecoration(
-          color: AppColors.secondaryBackground,
-          borderRadius: Radii.k8pxRadius,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  child: AutoSizeText(
-                    "Sign Out",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontFamily: "SF Pro Text",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 17,
-                      letterSpacing: -0.408,
-                      height: 1.29412,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: AutoSizeText(
+                      "Sign Out",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontFamily: "SF Pro Text",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17,
+                        letterSpacing: -0.408,
+                        height: 1.29412,
+                      ),
                     ),
                   ),
-                )),
-          ],
-        ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-    ]);
+    );
   }
 
   Widget showProfilePanel(BuildContext context) {
@@ -211,9 +227,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         setState(() {
           isExpandedTest[index] = !isExpanded;
         });
+        if (index == 1 && !isExpanded) {
+          launch(emailLaunchUri.toString());
+        }
       },
+      expandedHeaderPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       children: [
         ExpansionPanel(
+          canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
               title: Text(
@@ -231,43 +252,51 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           body: changeEmailOrPassword(context),
           isExpanded: isExpandedTest[0],
         ),
+
+        //TODO: Scope Reduction revisit this later!
+        // ExpansionPanel(
+        //   canTapOnHeader: true,
+        //   headerBuilder: (BuildContext context, bool isExpanded) {
+        //     return ListTile(
+        //       title: Text(
+        //         "Change Payment",
+        //         textAlign: TextAlign.left,
+        //         style: TextStyle(
+        //           color: Color.fromARGB(255, 65, 127, 69),
+        //           fontFamily: "Montserrat",
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 28,
+        //         ),
+        //       ),
+        //     );
+        //   },
+        //   body: Text("test 2"),
+        //   isExpanded: isExpandedTest[1],
+        // ),
+
+        //TODO: Scope Reduction Revisit Later
+        // ExpansionPanel(
+        //   canTapOnHeader: true,
+        //   headerBuilder: (BuildContext context, bool isExpanded) {
+        //     return ListTile(
+        //       title: Text(
+        //         "Replay Tutorial",
+        //         textAlign: TextAlign.left,
+        //         style: TextStyle(
+        //           color: Color.fromARGB(255, 65, 127, 69),
+        //           fontFamily: "Montserrat",
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 28,
+        //         ),
+        //       ),
+        //     );
+        //   },
+        //   body: Text("test 3"),
+        //   isExpanded: isExpandedTest[2],
+        // ),
+
         ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(
-                "Change Payment",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 65, 127, 69),
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
-              ),
-            );
-          },
-          body: Text("test 2"),
-          isExpanded: isExpandedTest[1],
-        ),
-        ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(
-                "Replay Tutorial",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 65, 127, 69),
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
-              ),
-            );
-          },
-          body: Text("test 3"),
-          isExpanded: isExpandedTest[2],
-        ),
-        ExpansionPanel(
+          canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
               title: Text(
@@ -282,8 +311,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
             );
           },
-          body: Text("test 4"),
-          isExpanded: isExpandedTest[3],
+          body: Text("test"),
+          //isExpanded: isExpandedTest[1]
         )
       ],
     );
@@ -300,35 +329,28 @@ class UserAccountWidget extends StatelessWidget {
     //FocusScope.of(context).unfocus();
 
     return Scaffold(
-        extendBodyBehindAppBar: false,
-        appBar: AppBar(
-          title: Text(
-            "Profile",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-            ),
+      extendBodyBehindAppBar: false,
+      appBar: AppBar(
+        title: Text(
+          "Profile",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color.fromARGB(255, 255, 255, 255),
+            fontFamily: "Montserrat",
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
           ),
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              onPressed: () => this.onItemPressed(context),
-              icon: Image.asset(
-                "assets/images/icons8-account-100.png",
-              ),
-            ),
-          ],
-          backgroundColor: Color.fromARGB(255, 65, 127, 69),
         ),
-        body: Container(
-          constraints: BoxConstraints.expand(),
-          decoration: BoxDecoration(
-            color: Color.fromARGB(255, 237, 236, 228),
-          ),
-          child: MyStatefulWidget(),
-        ));
+        automaticallyImplyLeading: false,
+        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+      ),
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: MyStatefulWidget(),
+      ),
+    );
   }
 }
