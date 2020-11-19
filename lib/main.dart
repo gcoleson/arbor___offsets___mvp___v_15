@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 FirebaseAnalytics analytics;
 
@@ -51,7 +52,10 @@ void main() async {
   analytics = FirebaseAnalytics();
 
   print('App Version:' + appVersion + ' Date:' + appDate);
-  runApp(App());
+
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) => runApp(App()));
 }
 
 class App extends StatelessWidget {
