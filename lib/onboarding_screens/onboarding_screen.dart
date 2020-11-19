@@ -2,6 +2,15 @@ import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'onboard_main_screen.dart';
+
+void switchPage(PageController controller, int pageNum) {
+  controller.animateToPage(
+    pageNum,
+    duration: const Duration(milliseconds: 500),
+    curve: Curves.ease,
+  );
+}
 
 Widget myPage1Widget(BuildContext context) {
   return Container(
@@ -128,7 +137,7 @@ Future<void> _showDialog1(BuildContext context, String errorMessage) {
   );
 }
 
-Widget myPage4Widget(BuildContext context) {
+Widget myPage4Widget(BuildContext context, PageController controller) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -236,7 +245,7 @@ Widget myPage4Widget(BuildContext context) {
           ),
         ),
         FlatButton(
-            onPressed: () {},
+            onPressed: () => switchPage(controller, 4),
             child: Text(
               "Sign In",
               style: TextStyle(
@@ -250,7 +259,7 @@ Widget myPage4Widget(BuildContext context) {
   ]));
 }
 
-Widget myPage5Widget(BuildContext context) {
+Widget myPage5Widget(BuildContext context, PageController controller) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -363,13 +372,14 @@ Widget myPage5Widget(BuildContext context) {
                 ),
               ),
               FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TabGroupOneTabBarWidget()),
-                    );
-                  },
+                  onPressed: () => switchPage(controller, 3)
+                  // { Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => TabGroupOneTabBarWidget()),
+                  //   );
+                  // }
+                  ,
                   child: Text(
                     "Join",
                     style: TextStyle(
