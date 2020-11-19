@@ -87,13 +87,6 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
     }
   }
 
-  var projectTextStyle = TextStyle(
-    color: Color.fromARGB(255, 255, 255, 255),
-    fontFamily: "Montserrat",
-    fontWeight: FontWeight.w600,
-    fontSize: 24,
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,20 +96,20 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat",
+            fontFamily: "Montserrat Semi-Bold",
             fontWeight: FontWeight.w600,
-            fontSize: 24,
+            fontSize: 36,
           ),
         ),
         automaticallyImplyLeading: false,
-        actions: [
+        /* actions: [
           IconButton(
             onPressed: () => this.onItemPressed(context),
             icon: Image.asset(
               "assets/images/icons8-account-100.png",
             ),
           ),
-        ],
+        ], */
         backgroundColor: Color.fromARGB(255, 65, 127, 69),
       ),
       body: Container(

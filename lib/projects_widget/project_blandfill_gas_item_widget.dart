@@ -87,37 +87,36 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
           children: [
             Container(
               height: 280,
-              margin: EdgeInsets.only(left: 10, right: 10, bottom: 2),
               child: Container(
                 height: 280,
                 child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                      width: 3,
-                      color: getProductBorderSelectColor(),
-                    ),
-                  ),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      Positioned(
-                        top: 0,
-                        child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                toggleProjectSelected();
-                              });
-                            },
-                            child: Container(
-                              height: 280,
-                              child: Image.network(
-                                imageDummy,
-                                alignment: Alignment.center,
-                                fit: BoxFit.contain,
-                              ),
-                            )),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.network(
+                          imageDummy,
+                          fit: BoxFit.fill,
+                          height: 280,
+                        ),
                       ),
+                      GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              toggleProjectSelected();
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                width: 3,
+                                color: getProductBorderSelectColor(),
+                              ),
+                            ),
+                          )),
                       Positioned(
                         left: 3,
                         right: 10,
@@ -176,7 +175,7 @@ class ProjectTitleWidget extends StatelessWidget {
       child: AutoSizeText(
         projectData.title,
         textAlign: TextAlign.left,
-        maxLines: 1,
+        maxLines: 2,
         style: TextStyle(
           color: Color.fromARGB(255, 0, 0, 0),
           fontFamily: "Raleway",
@@ -210,7 +209,6 @@ class ProjectInfoWidget extends StatelessWidget {
               child: Container(
                 child: AutoSizeText(
                   projectData.brief,
-                  //maxLines: 1,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: AppColors.primaryText,
