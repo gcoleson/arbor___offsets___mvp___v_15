@@ -7,6 +7,7 @@
     */
 
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 FirebaseAnalytics analytics;
 
@@ -54,8 +56,9 @@ void main() async {
   print('App Version:' + appVersion + ' Date:' + appDate);
 
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) => runApp(App()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+      (_) => runApp(ChangeNotifierProvider(
+          create: (context) => ProjectModel(), child: App())));
 }
 
 class App extends StatelessWidget {

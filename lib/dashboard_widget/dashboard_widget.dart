@@ -51,16 +51,14 @@ Widget loadUserData(BuildContext context) {
       stream: databaseService.getUserData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Text(
-            "Loading User Data",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 2, 2, 2),
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-              fontSize: 21,
-            ),
-          );
+          return Text("Loading User Data",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w700,
+                fontSize: 21,
+              ));
         }
         var userDocument = snapshot.data;
 
@@ -68,20 +66,20 @@ Widget loadUserData(BuildContext context) {
           userdata.firstName = userDocument['firstname'];
           userdata.lastName = userDocument['lastname'];
           userdata.timestamp = userDocument['timestamp'];
+          userdata.selectedprojectnumber =
+              userDocument['selectedprojectnumber'];
           userdata.dataLoadedFromDB = true;
         } catch (error) {
           print('Get user data error');
           print(error.toString());
-          return Text(
-            userdata.firstName + ' ' + userdata.lastName,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 2, 2, 2),
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-              fontSize: 21,
-            ),
-          );
+          return Text(userdata.firstName + ' ' + userdata.lastName,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 2, 2, 2),
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w700,
+                fontSize: 21,
+              ));
         }
 
         return Text(
@@ -106,7 +104,7 @@ class DashboardWidget extends StatefulWidget {
 class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
 
-  Color getBorderSelectColor(int index) {
+  Color getProductBorderSelectColor(int index) {
     if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
       return Color.fromARGB(255, 0, 0, 0);
@@ -290,7 +288,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 color: Color.fromARGB(255, 216, 216, 216),
                 border: Border.all(
                   width: 3,
-                  color: getBorderSelectColor(index),
+                  color: getProductBorderSelectColor(index),
                 ),
               ),
               child: Container(),
@@ -397,7 +395,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       height: 50,
       margin: EdgeInsets.only(left: 20, right: 20),
       decoration: BoxDecoration(
-        color: AppColors.secondaryBackground,
+        //color: AppColors.secondaryBackground,
+        color: AppColors.backgroundBlue,
         borderRadius: Radii.k8pxRadius,
       ),
       child: Column(
