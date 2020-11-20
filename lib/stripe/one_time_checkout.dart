@@ -72,13 +72,12 @@ class _OneTimeCheckoutState extends State<OneTimeCheckout> {
 
 const String kStripeHtmlPage = '''
 <!DOCTYPE html>
-<html>
+<html style = "background-color: #417F45;">
 <script src="https://js.stripe.com/v3/"></script>
 <head><title>Stripe checkout</title></head>
 <body>
 <div style="padding-top: 50px;">
 </div>
-Loading
 </body>
 </html>
 ''';

@@ -477,6 +477,7 @@ Container checkoutCartDialogue(
           child: _customButton(
             "Checkout",
             () async {
+              onCheckoutLoading(context);
               String sessionId = 'error';
               //final sessionId = await Server().createCheckout();
               print(purchaseItemList[0].documentID);
@@ -512,6 +513,7 @@ Container checkoutCartDialogue(
                   {'items': checkout_list},
                 ),
               );
+              Navigator.pop(context);
 
               print(jsonDecode(response.body));
 
@@ -564,6 +566,39 @@ Container checkoutCartDialogue(
     //     Image.asset("assets/images/WelcomeBackScreen.png"),
     //   ],
     // ),
+  );
+}
+
+void onCheckoutLoading(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+          height: 200,
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(30),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Spacer(),
+              CircularProgressIndicator(),
+              Spacer(),
+              Text(
+                "Loading",
+                style: AppFonts.arborSubTitle,
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+      );
+    },
   );
 }
 
