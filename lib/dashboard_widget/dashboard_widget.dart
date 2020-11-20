@@ -26,22 +26,23 @@ List<CartItem> purchaseItemListItems = List<CartItem>();
 UserStats userStats = new UserStats();
 
 Widget loadUserData(BuildContext context) {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final User user = auth.currentUser;
+  // final FirebaseAuth auth = FirebaseAuth.instance;
+  // final User user = auth.currentUser;
 
   //TODO: Name should be used instead, email address is used temporarily
-  if (user != null) {
-    return Text(user.email,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Color.fromARGB(255, 2, 2, 2),
-          fontFamily: "Raleway",
-          fontWeight: FontWeight.w700,
-          fontSize: 21,
-        ));
-  }
+  // if (user != null) {
+  //   return Text(user.email,
+  //       textAlign: TextAlign.left,
+  //       style: TextStyle(
+  //         color: Color.fromARGB(255, 2, 2, 2),
+  //         fontFamily: "Raleway",
+  //         fontWeight: FontWeight.w700,
+  //         fontSize: 21,
+  //       ));
+  // }
 
   if (userdata.dataLoadedFromDB) {
+    return SizedBox.shrink();
     // return Text(userdata.firstName + ' ' + userdata.lastName,
     //     textAlign: TextAlign.left,
     //     style: TextStyle(
@@ -55,6 +56,7 @@ Widget loadUserData(BuildContext context) {
       stream: databaseService.getUserData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
+          return SizedBox.shrink();
           // return Text("Loading User Data",
           //     textAlign: TextAlign.left,
           //     style: TextStyle(
@@ -73,9 +75,11 @@ Widget loadUserData(BuildContext context) {
           userdata.selectedprojectnumber =
               userDocument['selectedprojectnumber'];
           userdata.dataLoadedFromDB = true;
+          return SizedBox.shrink();
         } catch (error) {
           print('Get user data error');
           print(error.toString());
+          return SizedBox.shrink();
           // return Text(userdata.firstName + ' ' + userdata.lastName,
           //     textAlign: TextAlign.left,
           //     style: TextStyle(
