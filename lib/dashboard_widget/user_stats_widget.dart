@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'CartItem.dart';
 import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -259,39 +260,64 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                         ),
                       );
                     }))),
-            Container(
-              height: 90,
+            Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
                     margin: EdgeInsets.all(5),
-                    child: AutoSizeText(
-                      //================================
-                      // treesThisMonth
-                      //=================================
-                      treesThisMonth.toString() + " trees earned this month.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 250, 195, 21),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w700,
+                    child: RichText(
+                      textAlign: TextAlign.end,
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 34,
+                          color: Color.fromARGB(255, 250, 195, 21),
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w700,
+                        ),
+                        //================================
+                        // treesThisMonth
+                        //=================================
+                        children: <TextSpan>[
+                          new TextSpan(
+                            text: treesThisMonth.toString() + " ",
+                            style: TextStyle(color: AppColors.highlightYellow),
+                          ),
+                          new TextSpan(
+                            text: "Arbor trees earned this month",
+                            style: TextStyle(color: AppColors.primaryDarkGreen),
+                          )
+                        ],
                       ),
                     ),
                   ),
                   Container(
                     child: Container(
                       margin: EdgeInsets.all(5),
-                      child: AutoSizeText(
-                        //========================
-                        // total trees
-                        //=======================
-                        totalTrees.toString() + " all-time!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 250, 195, 21),
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w700,
+                      child: RichText(
+                        textAlign: TextAlign.end,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 34,
+                            color: Color.fromARGB(255, 250, 195, 21),
+                            fontFamily: "Raleway",
+                            fontWeight: FontWeight.w700,
+                          ),
+                          //================================
+                          // treesThisMonth
+                          //=================================
+                          children: <TextSpan>[
+                            new TextSpan(
+                              text: totalTrees.toString(),
+                              style:
+                                  TextStyle(color: AppColors.highlightYellow),
+                            ),
+                            new TextSpan(
+                              text: " all-time!",
+                              style:
+                                  TextStyle(color: AppColors.primaryDarkGreen),
+                            )
+                          ],
                         ),
                       ),
                     ),

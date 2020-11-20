@@ -39,28 +39,30 @@ Widget loadUserData(BuildContext context) {
           fontWeight: FontWeight.w700,
           fontSize: 21,
         ));
-  } else if (userdata.dataLoadedFromDB) {
-    return Text(userdata.firstName + ' ' + userdata.lastName,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Color.fromARGB(255, 2, 2, 2),
-          fontFamily: "Raleway",
-          fontWeight: FontWeight.w700,
-          fontSize: 21,
-        ));
+  }
+
+  if (userdata.dataLoadedFromDB) {
+    // return Text(userdata.firstName + ' ' + userdata.lastName,
+    //     textAlign: TextAlign.left,
+    //     style: TextStyle(
+    //       color: Color.fromARGB(255, 2, 2, 2),
+    //       fontFamily: "Raleway",
+    //       fontWeight: FontWeight.w700,
+    //       fontSize: 21,
+    //     ));
   } else
     return new StreamBuilder(
       stream: databaseService.getUserData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Text("Loading User Data",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 21,
-              ));
+          // return Text("Loading User Data",
+          //     textAlign: TextAlign.left,
+          //     style: TextStyle(
+          //       color: Color.fromARGB(255, 2, 2, 2),
+          //       fontFamily: "Raleway",
+          //       fontWeight: FontWeight.w700,
+          //       fontSize: 21,
+          //     ));
         }
         var userDocument = snapshot.data;
 
@@ -74,26 +76,26 @@ Widget loadUserData(BuildContext context) {
         } catch (error) {
           print('Get user data error');
           print(error.toString());
-          return Text(userdata.firstName + ' ' + userdata.lastName,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 21,
-              ));
+          // return Text(userdata.firstName + ' ' + userdata.lastName,
+          //     textAlign: TextAlign.left,
+          //     style: TextStyle(
+          //       color: Color.fromARGB(255, 2, 2, 2),
+          //       fontFamily: "Raleway",
+          //       fontWeight: FontWeight.w700,
+          //       fontSize: 21,
+          //     ));
         }
 
-        return Text(
-          userdata.firstName + ' ' + userdata.lastName,
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Color.fromARGB(255, 2, 2, 2),
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w700,
-            fontSize: 21,
-          ),
-        );
+        // return Text(
+        //   userdata.firstName + ' ' + userdata.lastName,
+        //   textAlign: TextAlign.left,
+        //   style: TextStyle(
+        //     color: Color.fromARGB(255, 2, 2, 2),
+        //     fontFamily: "Raleway",
+        //     fontWeight: FontWeight.w700,
+        //     fontSize: 21,
+        //   ),
+        // );
       },
     );
 }
@@ -356,17 +358,19 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat",
+            fontFamily: "Montserrat Semi-Bold",
             fontWeight: FontWeight.w600,
-            fontSize: 24,
+            fontSize: 36,
           ),
         ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: this.widget.onUserIconPressed,
+            onPressed: this
+                .widget
+                .onUserIconPressed, // this is a void callback to tab group one tab bar
             icon: Image.asset(
-              "assets/images/icons8-account-100.png",
+              "assets/images/UserIcon.png",
             ),
           ),
         ],
