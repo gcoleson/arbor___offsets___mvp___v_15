@@ -10,6 +10,7 @@ import 'CartItem.dart';
 import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -116,13 +117,7 @@ Container buildTotalMonthsContainer(int totalMonths) {
                   child: Text(
                     "total months of impact",
                     textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 24,
-                    ),
+                    style: AppFonts.MonthlyImpactText,
                   ),
                 ),
               ),
@@ -199,13 +194,7 @@ Widget buildMonthsInARowContainer(int consecutiveMonths) {
                   child: Text(
                     "months in a row of impact",
                     textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 24,
-                    ),
+                    style: AppFonts.MonthlyImpactText,
                   ),
                 ),
               ),
@@ -231,14 +220,9 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
           height: 30,
           alignment: Alignment.topLeft,
           child: Text(
-            "Your Impact:",
+            "Your Climate Impact:",
             textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 65, 127, 69),
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w500,
-              fontSize: 28,
-            ),
+            style: AppFonts.ScreenSubhead,
           ),
         ),
         Row(
