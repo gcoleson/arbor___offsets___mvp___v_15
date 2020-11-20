@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'CartItem.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
 var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
@@ -41,13 +42,15 @@ Future buildShowDialog(BuildContext context) {
 //Form form() {
 Container form() {
   return Container(
-      width: 381,
-      height: 700,
-      decoration: new BoxDecoration(
-          color: blueHighlight, borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        children: [
-          new Text("Congratulations!",
+    width: 381,
+    height: 700,
+    decoration: BoxDecoration(
+        color: blueHighlight, borderRadius: BorderRadius.circular(10)),
+    child: Column(
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+          child: Text("Congratulations!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Montserrat',
@@ -56,54 +59,60 @@ Container form() {
                 fontWeight: FontWeight.w600,
                 fontStyle: FontStyle.normal,
               )),
-          new Text(
-              "By eliminating your climate impact, you’re helping reversing climate change!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Raleway',
-                color: Color(0xff010101),
-                fontSize: 18,
-                fontWeight: FontWeight.w300,
-                fontStyle: FontStyle.normal,
-              )),
-          new Text("You just eliminated the climate impact of:",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: iOsSystemBackgroundsLightSystemBack2,
-                fontSize: 28,
-                fontWeight: FontWeight.w500,
-                fontStyle: FontStyle.normal,
-              )),
-          Spacer(),
-          new Text("Tell your friends how you’re going climate positive:",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Raleway',
-                color: Color(0xff010101),
-                fontSize: 18,
-                fontWeight: FontWeight.w300,
-                fontStyle: FontStyle.normal,
-              )),
-          new Container(
-            width: 344,
-            height: 50,
-            decoration: new BoxDecoration(
-                color: primaryAccentGreen,
-                borderRadius: BorderRadius.circular(8)),
-            child: new Text("Share",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'SFProText',
-                  color: iOsSystemBackgroundsLightSystemBack2,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                  letterSpacing: -0.408,
-                )),
-          )
-        ],
-      ));
+        ),
+        Spacer(flex: 25),
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+          child: Text(
+            "By eliminating your climate impact, you’re helping reversing climate change!",
+            textAlign: TextAlign.center,
+            style: AppFonts.congratsSubhead,
+          ),
+        ),
+        //TODO: Finish the share feature
+        // Text("You just eliminated the climate impact of:",
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //       fontFamily: 'Montserrat',
+        //       color: iOsSystemBackgroundsLightSystemBack2,
+        //       fontSize: 28,
+        //       fontWeight: FontWeight.w500,
+        //       fontStyle: FontStyle.normal,
+        //     )),
+        Spacer(
+          flex: 110,
+        ),
+        // Text("Tell your friends how you’re going climate positive:",
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //       fontFamily: 'Raleway',
+        //       color: Color(0xff010101),
+        //       fontSize: 18,
+        //       fontWeight: FontWeight.w300,
+        //       fontStyle: FontStyle.normal,
+        //     )),
+        // Container(
+        //   width: 344,
+        //   height: 50,
+        //   decoration: BoxDecoration(
+        //       color: primaryAccentGreen,
+        //       borderRadius: BorderRadius.circular(8)),
+        //   child: Text(
+        //     "Share",
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //       fontFamily: 'SFProText',
+        //       color: iOsSystemBackgroundsLightSystemBack2,
+        //       fontSize: 17,
+        //       fontWeight: FontWeight.w600,
+        //       fontStyle: FontStyle.normal,
+        //       letterSpacing: -0.408,
+        //     ),
+        //   ),
+        // )
+      ],
+    ),
+  );
 
   /*return Form(
     //key: _formKey,
@@ -183,7 +192,7 @@ Future checkoutCartBuildDialogue(
   );
 }
 
-Container buildLineItems(List<CartItem> purchaseItemList)
+Widget buildLineItems(List<CartItem> purchaseItemList)
 //loop through all items and make into a grid 2x
 {
   SingleChildScrollView productColumn;
@@ -354,9 +363,7 @@ Container buildLineItems(List<CartItem> purchaseItemList)
 
   //returnList.add(value);
 
-  return Container(
-    width: 300,
-    height: 140,
+  return Expanded(
     child: SingleChildScrollView(
       child: Column(
         children: returnList,
@@ -375,14 +382,17 @@ Container checkoutCartDialogue(
 
     child: Column(
       children: [
-        Text(
-          "Shopping Cart:",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 36,
-              color: Colors.white,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w800),
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
+          child: Text(
+            "Shopping Cart:",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 36,
+                color: Colors.white,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w800),
+          ),
         ),
         StreamBuilder(
             stream: databaseReference
@@ -448,90 +458,95 @@ Container checkoutCartDialogue(
           ),
         ),
         buildLineItems(purchaseItemList),
-        Text(
-          "Eliminate your carbon Impact now!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: "Montserrat",
-            fontSize: 28,
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 11, 8, 11),
+          child: Text(
+            "Eliminate your carbon Impact now!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Montserrat",
+              fontSize: 28,
+            ),
           ),
         ),
-        Spacer(),
-        _customButton(
-          "Checkout",
-          () async {
-            String sessionId = 'error';
-            //final sessionId = await Server().createCheckout();
-            print(purchaseItemList[0].documentID);
-            print(purchaseItemList[0].imageText);
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+          child: _customButton(
+            "Checkout",
+            () async {
+              String sessionId = 'error';
+              //final sessionId = await Server().createCheckout();
+              print(purchaseItemList[0].documentID);
+              print(purchaseItemList[0].imageText);
 
-            String checkout_json;
-            var checkout_list = [];
-            var order_list = [];
-            double totalTrees = 0;
+              String checkout_json;
+              var checkout_list = [];
+              var order_list = [];
+              double totalTrees = 0;
 
-            for (var i = 0; i < purchaseItemList.length; i++) {
-              //check to see that headers don't match, if so make another area in the cart
-              //always do the first one
-              if (purchaseItemList[i].boxSelected == true) {
-                checkout_list.add(
-                  {'docID': purchaseItemList[i].documentID, 'quantity': 1},
-                );
+              for (var i = 0; i < purchaseItemList.length; i++) {
+                //check to see that headers don't match, if so make another area in the cart
+                //always do the first one
+                if (purchaseItemList[i].boxSelected == true) {
+                  checkout_list.add(
+                    {'docID': purchaseItemList[i].documentID, 'quantity': 1},
+                  );
 
-                order_list.add({
-                  'item': purchaseItemList[i].imageText,
-                  'quantity': 1,
-                  'trees': purchaseItemList[i].treeCount
-                });
+                  order_list.add({
+                    'item': purchaseItemList[i].imageText,
+                    'quantity': 1,
+                    'trees': purchaseItemList[i].treeCount
+                  });
 
-                totalTrees += purchaseItemList[i].treeCount.toInt();
+                  totalTrees += purchaseItemList[i].treeCount.toInt();
+                }
               }
-            }
 
-            // First Ping Firebase for session ID for stripe checkout
-            final http.Response response = await http.post(
-              'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/',
-              body: json.encode(
-                {'items': checkout_list},
-              ),
-            );
+              // First Ping Firebase for session ID for stripe checkout
+              final http.Response response = await http.post(
+                'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/',
+                body: json.encode(
+                  {'items': checkout_list},
+                ),
+              );
 
-            print(jsonDecode(response.body));
+              print(jsonDecode(response.body));
 
-            //then decode the json returned
-            if (response.body != null && response.body != 'error') {
-              sessionId = jsonDecode(response.body)['id'];
-              print('Checkout Success!!!!');
-            }
-
-            if (sessionId != 'error') {
-              // Call the one time checkout screen with session ID
-              final outcome =
-                  await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => OneTimeCheckout(
-                            sessionId: sessionId,
-                          )));
-              if (outcome == "success") {
-                FocusScope.of(context).unfocus();
-                Navigator.of(context).pop();
-                databaseService.addOrder(order_list, totalTrees);
-
-                paymentSuccessBuildDialogue(context);
-              } else if (outcome == "failure") {
-                print("Payment was a failure");
-                Navigator.of(context).pop();
-                paymentFailureBuildDialogue(context);
+              //then decode the json returned
+              if (response.body != null && response.body != 'error') {
+                sessionId = jsonDecode(response.body)['id'];
+                print('Checkout Success!!!!');
               }
-              final snackBar = SnackBar(content: Text('SessionId: $sessionId'));
-              //Scaffold.of(context).showSnackBar(snackBar);
-              //_congratulationsDialogue();
-            } else {
-              print('Checkout Entry has failed');
-            }
-          },
+
+              if (sessionId != 'error') {
+                // Call the one time checkout screen with session ID
+                final outcome =
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => OneTimeCheckout(
+                              sessionId: sessionId,
+                            )));
+                if (outcome == "success") {
+                  FocusScope.of(context).unfocus();
+                  Navigator.of(context).pop();
+                  databaseService.addOrder(order_list, totalTrees);
+
+                  paymentSuccessBuildDialogue(context);
+                } else if (outcome == "failure") {
+                  print("Payment was a failure");
+                  Navigator.of(context).pop();
+                  paymentFailureBuildDialogue(context);
+                }
+                final snackBar =
+                    SnackBar(content: Text('SessionId: $sessionId'));
+                //Scaffold.of(context).showSnackBar(snackBar);
+                //_congratulationsDialogue();
+              } else {
+                print('Checkout Entry has failed');
+              }
+            },
+          ),
         ),
-        Spacer(),
       ],
     ),
 
@@ -750,42 +765,49 @@ Container successDialogue() {
             image: AssetImage("assets/images/sunrise.png"),
           ),
         ),
-        Spacer(),
-        Text(
-          "Congratulations!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 36,
-            color: Colors.white,
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w600,
+        Spacer(
+          flex: 38,
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+          child: Text(
+            "Congratulations!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 36,
+              color: Colors.white,
+              fontFamily: "Montserrat",
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-        Spacer(),
-        Text(
-          "By eliminiating your climate impact, you're helping reversing climate change!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w600,
+        Spacer(
+          flex: 25,
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+          child: Text(
+            "By eliminiating your climate impact, you're helping reversing climate change!",
+            textAlign: TextAlign.center,
+            style: AppFonts.congratsSubhead,
           ),
         ),
-        Spacer(),
-        Text(
-          "Tell your freinds how you're going climate positive:",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w400,
-          ),
+        Spacer(
+          flex: 110,
         ),
-        Spacer(),
-        _customButton("Share", () {}),
-        Spacer(),
+        // Text(
+        //   "Tell your freinds how you're going climate positive:",
+        //   textAlign: TextAlign.center,
+        //   style: TextStyle(
+        //     fontSize: 18,
+        //     color: Colors.black,
+        //     fontFamily: "Raleway",
+        //     fontWeight: FontWeight.w400,
+        //   ),
+        // ),
+        // Spacer(),
+        // _customButton("Share", () {}),
+        // Spacer(),
       ],
     ),
 

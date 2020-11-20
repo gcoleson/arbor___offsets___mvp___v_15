@@ -515,14 +515,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         child: SingleChildScrollView(
           child: Container(
             height: 600,
-            margin: EdgeInsets.only(left: 1, top: 16, right: 5),
+            margin: EdgeInsets.only(left: 1, top: 8, right: 5),
             child: buildProductsListWidget(context),
           ),
         ));
   }
 
   /*===============================================================================================
-  Building Buttons for items to purchase
+  Building Squares for each item to purchase
   ================================================================================================*/
   Widget buildGeneralButtonItemWidget(BuildContext context, int index,
       int startIndex, List<CartItem> cartList, String header) {
@@ -594,7 +594,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   }
 
   /*===============================================================================================
-  Scrollable area for each product?
+  Calculating all the items needed to go into each row
   ================================================================================================*/
   List<Widget> purchaseItemList() {
     List<Widget> returnList = new List();
@@ -609,6 +609,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       if (i == 0 ||
           (purchaseItemListItems[i].header !=
               purchaseItemListItems[i - 1].header)) {
+        print("total items: " + purchaseItemListItems.length.toString());
         tempWidget = (buildGeneralAreaContainer(
             header: purchaseItemListItems[i].header,
             description: purchaseItemListItems[i].description,
