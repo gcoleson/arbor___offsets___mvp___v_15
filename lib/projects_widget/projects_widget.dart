@@ -104,7 +104,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
         title: Text(
           "Projects",
           textAlign: TextAlign.center,
-          style: AppFonts.NavBarHeader,
+          style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
         /* actions: [

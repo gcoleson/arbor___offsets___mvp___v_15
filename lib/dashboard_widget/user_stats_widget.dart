@@ -117,7 +117,7 @@ Container buildTotalMonthsContainer(int totalMonths) {
                   child: Text(
                     "total months of impact",
                     textAlign: TextAlign.right,
-                    style: AppFonts.MonthlyImpactText,
+                    style: AppFonts.monthlyImpactText,
                   ),
                 ),
               ),
@@ -194,7 +194,7 @@ Widget buildMonthsInARowContainer(int consecutiveMonths) {
                   child: Text(
                     "months in a row of impact",
                     textAlign: TextAlign.right,
-                    style: AppFonts.MonthlyImpactText,
+                    style: AppFonts.monthlyImpactText,
                   ),
                 ),
               ),
@@ -222,7 +222,7 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
           child: Text(
             "Your Climate Impact:",
             textAlign: TextAlign.left,
-            style: AppFonts.ScreenSubhead,
+            style: AppFonts.screenSubhead,
           ),
         ),
         Row(
