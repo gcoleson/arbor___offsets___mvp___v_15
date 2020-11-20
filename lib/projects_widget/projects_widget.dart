@@ -8,9 +8,12 @@
 
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 Map<int, ProjectData> projectDataMap = Map();
 
@@ -44,36 +47,43 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
           return ListView.builder(
             itemCount: messageCount,
             itemBuilder: (_, int index) {
-              ProjectData projectData = ProjectData();
+              //we might be returning here, check for data
+              ProjectData projectData;
 
-              DocumentSnapshot document = snapshot.data.docs[index];
+              if (!projectDataMap.containsKey(index)) {
+                projectData = ProjectData();
 
-              projectData.brief = document['brief'];
-              projectData.description = document['description'];
-              projectData.imagemain = document['image-main'];
-              projectData.image1 = testDBForField(document, 'image1');
-              projectData.image2 = testDBForField(document, 'image2');
-              projectData.image3 = testDBForField(document, 'image3');
-              projectData.image4 = testDBForField(document, 'image4');
-              projectData.location = document['location'];
-              projectData.maplocal = document['map-local'];
-              projectData.percent = document['percent'];
-              projectData.sponsor = document['sponsor'];
-              projectData.sponsorlogo = document['sponsor-logo'];
-              projectData.title = document['title'];
+                DocumentSnapshot document = snapshot.data.docs[index];
 
-              projectData.projectnumber =
-                  testDBForField(document, 'projectnumber') ?? 0;
+                projectData.brief = document['brief'];
+                projectData.description = document['description'];
+                projectData.imagemain = document['image-main'];
+                projectData.image1 = testDBForField(document, 'image1');
+                projectData.image2 = testDBForField(document, 'image2');
+                projectData.image3 = testDBForField(document, 'image3');
+                projectData.image4 = testDBForField(document, 'image4');
+                projectData.location = document['location'];
+                projectData.maplocal = document['map-local'];
+                projectData.percent = document['percent'];
+                projectData.sponsor = document['sponsor'];
+                projectData.sponsorlogo = document['sponsor-logo'];
+                projectData.title = document['title'];
 
-              if (projectData.projectnumber != 0 &&
-                  userdata.selectedprojectnumber != 0 &&
-                  projectData.projectnumber == userdata.selectedprojectnumber)
-                projectData.selected = true;
-              else
-                projectData.selected = false;
+                projectData.projectnumber =
+                    testDBForField(document, 'projectnumber') ?? 0;
 
-              //add to map for referencing selected or not
-              projectDataMap.putIfAbsent(index, () => projectData);
+                if (projectData.projectnumber != 0 &&
+                    userdata.selectedprojectnumber != 0 &&
+                    projectData.projectnumber == userdata.selectedprojectnumber)
+                  projectData.selected = true;
+                else
+                  projectData.selected = false;
+
+                //add to map for referencing selected or not
+                projectDataMap.putIfAbsent(index, () => projectData);
+              } else {
+                projectData = projectDataMap[index];
+              }
 
               return ProjectSummaryWidget(index, projectData);
             },
@@ -94,12 +104,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
         title: Text(
           "Projects",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat Semi-Bold",
-            fontWeight: FontWeight.w600,
-            fontSize: 36,
-          ),
+          style: ThemeText.navBarHeader,
         ),
         automaticallyImplyLeading: false,
         /* actions: [

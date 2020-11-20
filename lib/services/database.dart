@@ -96,7 +96,7 @@ class DatabaseService {
       return await userCollection.doc(this.uid).set({
         'firstname': data.firstName,
         'lastname': data.lastName,
-        'selectedprojectnumber': data.selectedprojectnumber,
+        'selectedprojectnumber': 1, //project 1 is the default
         'createtimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
     else

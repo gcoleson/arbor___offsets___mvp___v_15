@@ -60,8 +60,9 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
       //write to db
 
     } else {
-      projectData.selected = false;
-      userdata.selectedprojectnumber = 0;
+      //don't allow deselecting projects
+      //projectData.selected = false;
+      //userdata.selectedprojectnumber = 0;
 
       //turn border off
       //turn selected text off
