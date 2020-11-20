@@ -118,7 +118,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
         backgroundColor: Color.fromARGB(255, 65, 127, 69),
       ),
       body: Container(
-        height: 600,
+        //height: 750,
         decoration: BoxDecoration(
           //color: Color.fromARGB(255, 237, 236, 228),
           color: Color.fromARGB(255, 255, 255, 255),
@@ -142,9 +142,9 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
         ),*/
             Positioned(
               left: 3,
-              top: 50,
+              top: 18,
               right: 1,
-              height: 550,
+              height: 650,
               child: buildProjectListWidget(context),
             ),
           ],
