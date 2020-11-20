@@ -6,6 +6,7 @@ import 'CartItem.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
 var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
@@ -394,23 +395,24 @@ Container checkoutCartDialogue(
                 fontWeight: FontWeight.w800),
           ),
         ),
-        StreamBuilder(
+        StreamBuilder<QuerySnapshot>(
             stream: databaseReference
                 .collection("projects")
-                .doc(userdata.selectedProjectId)
+                .where('projectnumber',
+                    isEqualTo: userdata.selectedprojectnumber)
                 .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData && userdata.selectedProjectId != '') {
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
                 return LinearProgressIndicator();
               }
               try {
-                String imageLink = snapshot.data['image-main'];
+                String imageLink = snapshot.data.docs[0].data()['image-main'];
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(imageLink),
                 );
               } catch (e) {
-                print(e);
+                print("Error was: " + e.toString());
                 return Text("trouble getting image");
               }
             }),
