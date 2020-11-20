@@ -95,11 +95,11 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
           ),
           backgroundColor: Color.fromARGB(255, 65, 127, 69),
         ),
-        body: Container(
+        body: SingleChildScrollView(
           child: Container(
-            constraints: BoxConstraints.expand(),
+            height: 2000,
+            margin: EdgeInsets.only(left: 1, top: 8, right: 5),
             decoration: BoxDecoration(
-              //color: AppColors.ternaryBackground,
               color: AppColors.white,
             ),
             child: Column(
@@ -201,10 +201,13 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                     ),
                   ),
                 ),
-                Container(
+                Html(
+                  data: projectData.description,
+                ),
+                /* Container(
                   margin: EdgeInsets.only(left: 17, top: 8, right: 8),
                   child: Container(
-                    height: 100,
+                    height: 240,
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 216, 216, 216),
                       border: Border.all(
@@ -213,14 +216,15 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                       ),
                     ),
                     child: Scrollbar(
-                        thickness: 5,
-                        child: SingleChildScrollView(
-                          child: Html(
-                            data: projectData.description,
-                          ),
-                        )),
-                  ),
-                ),
+                      thickness: 5,
+                      child: //SingleChildScrollView(
+                          //child:
+                          Html(
+                        data: projectData.description,
+                      ),
+                    ),
+                  ), 
+                ),*/
               ],
             ),
           ),

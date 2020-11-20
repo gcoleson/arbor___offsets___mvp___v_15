@@ -120,7 +120,6 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
       body: Container(
         //height: 750,
         decoration: BoxDecoration(
-          //color: Color.fromARGB(255, 237, 236, 228),
           color: Color.fromARGB(255, 255, 255, 255),
         ),
         child: Stack(
