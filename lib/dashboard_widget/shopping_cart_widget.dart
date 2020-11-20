@@ -375,6 +375,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
 
 Container checkoutCartDialogue(
     BuildContext context, List<CartItem> purchaseItemList) {
+  String projectName;
   return Container(
     alignment: Alignment.topCenter,
     //margin: EdgeInsetsGeometry.infinity,
@@ -396,55 +397,61 @@ Container checkoutCartDialogue(
           ),
         ),
         StreamBuilder<QuerySnapshot>(
-            stream: databaseReference
-                .collection("projects")
-                .where('projectnumber',
-                    isEqualTo: userdata.selectedprojectnumber)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) {
-                return LinearProgressIndicator();
-              }
-              try {
-                String imageLink = snapshot.data.docs[0].data()['image-main'];
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(imageLink),
-                );
-              } catch (e) {
-                print("Error was: " + e.toString());
-                return Text("trouble getting image");
-              }
-            }),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                "Your Project:",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.black,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Text(
-                "Amazonian Valparaiso",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 21,
-                  color: Colors.black,
-                  fontFamily: "Raleway",
-                ),
-              ),
-            ),
-          ],
+          stream: databaseReference
+              .collection("projects")
+              .where('projectnumber', isEqualTo: userdata.selectedprojectnumber)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return LinearProgressIndicator();
+            }
+            try {
+              String imageLink = snapshot.data.docs[0].data()['image-main'];
+              projectName = snapshot.data.docs[0].data()['title'];
+              projectName = projectName.split(":")[1];
+              return Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(imageLink),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          "Your Project:",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                            fontFamily: "Raleway",
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          projectName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 21,
+                            color: Colors.black,
+                            fontFamily: "Raleway",
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              );
+            } catch (e) {
+              print("Error was: " + e.toString());
+              return Text("trouble getting image");
+            }
+          },
         ),
         Container(
           margin: EdgeInsets.fromLTRB(9, 0, 9, 0),
