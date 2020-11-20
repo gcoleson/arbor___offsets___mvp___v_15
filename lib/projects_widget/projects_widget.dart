@@ -68,6 +68,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
                 projectData.sponsor = document['sponsor'];
                 projectData.sponsorlogo = document['sponsor-logo'];
                 projectData.title = document['title'];
+                projectData.projectId = document.id;
 
                 projectData.projectnumber =
                     testDBForField(document, 'projectnumber') ?? 0;
