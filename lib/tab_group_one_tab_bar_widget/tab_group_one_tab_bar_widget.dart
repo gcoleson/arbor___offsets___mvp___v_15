@@ -18,11 +18,19 @@ class TabGroupOneTabBarWidget extends StatefulWidget {
 }
 
 class _TabGroupOneTabBarWidgetState extends State<TabGroupOneTabBarWidget> {
-  List<Widget> _tabWidgets = [
-    ProjectsWidget(),
-    DashboardWidget(),
-    UserAccountWidget(),
-  ];
+  List<Widget> _tabWidgets;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabWidgets = [
+      ProjectsWidget(),
+      DashboardWidget(() => _onTabChanged(2)),
+      UserAccountWidget(),
+    ];
+  }
+
   int _currentIndex = 0;
 
   void _onTabChanged(int index) => this.setState(() => _currentIndex = index);

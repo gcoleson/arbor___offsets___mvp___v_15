@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'CartItem.dart';
 import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -115,13 +117,7 @@ Container buildTotalMonthsContainer(int totalMonths) {
                   child: Text(
                     "total months of impact",
                     textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 24,
-                    ),
+                    style: AppFonts.MonthlyImpactText,
                   ),
                 ),
               ),
@@ -198,13 +194,7 @@ Widget buildMonthsInARowContainer(int consecutiveMonths) {
                   child: Text(
                     "months in a row of impact",
                     textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 2, 2, 2),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 24,
-                    ),
+                    style: AppFonts.MonthlyImpactText,
                   ),
                 ),
               ),
@@ -230,14 +220,9 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
           height: 30,
           alignment: Alignment.topLeft,
           child: Text(
-            "Your Impact:",
+            "Your Climate Impact:",
             textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color.fromARGB(255, 65, 127, 69),
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w500,
-              fontSize: 28,
-            ),
+            style: AppFonts.ScreenSubhead,
           ),
         ),
         Row(
@@ -251,7 +236,7 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                     // horizontal, this produces 2 rows.
                     crossAxisCount: 3,
                     // Generate 100 widgets that display their index in the List.
-                    children: List.generate(9, (index) {
+                    children: List.generate(treesThisMonth.toInt(), (index) {
                       return Center(
                         child: Image.asset(
                           "assets/images/icons8-oak-tree-100-2-copy-9.png",
@@ -259,39 +244,64 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                         ),
                       );
                     }))),
-            Container(
-              height: 90,
+            Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
                     margin: EdgeInsets.all(5),
-                    child: AutoSizeText(
-                      //================================
-                      // treesThisMonth
-                      //=================================
-                      treesThisMonth.toString() + " trees earned this month.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 250, 195, 21),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w700,
+                    child: RichText(
+                      textAlign: TextAlign.end,
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 34,
+                          color: Color.fromARGB(255, 250, 195, 21),
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w700,
+                        ),
+                        //================================
+                        // treesThisMonth
+                        //=================================
+                        children: <TextSpan>[
+                          new TextSpan(
+                            text: treesThisMonth.toString() + " ",
+                            style: TextStyle(color: AppColors.highlightYellow),
+                          ),
+                          new TextSpan(
+                            text: "Arbor trees earned this month",
+                            style: TextStyle(color: AppColors.primaryDarkGreen),
+                          )
+                        ],
                       ),
                     ),
                   ),
                   Container(
                     child: Container(
                       margin: EdgeInsets.all(5),
-                      child: AutoSizeText(
-                        //========================
-                        // total trees
-                        //=======================
-                        totalTrees.toString() + " all-time!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 250, 195, 21),
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w700,
+                      child: RichText(
+                        textAlign: TextAlign.end,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 34,
+                            color: Color.fromARGB(255, 250, 195, 21),
+                            fontFamily: "Raleway",
+                            fontWeight: FontWeight.w700,
+                          ),
+                          //================================
+                          // treesThisMonth
+                          //=================================
+                          children: <TextSpan>[
+                            new TextSpan(
+                              text: totalTrees.toString(),
+                              style:
+                                  TextStyle(color: AppColors.highlightYellow),
+                            ),
+                            new TextSpan(
+                              text: " all-time!",
+                              style:
+                                  TextStyle(color: AppColors.primaryDarkGreen),
+                            )
+                          ],
                         ),
                       ),
                     ),

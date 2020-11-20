@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -19,46 +20,51 @@ import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
 import 'user_stats_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 List<CartItem> purchaseItemListItems = List<CartItem>();
 UserStats userStats = new UserStats();
 
 Widget loadUserData(BuildContext context) {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final User user = auth.currentUser;
+  // final FirebaseAuth auth = FirebaseAuth.instance;
+  // final User user = auth.currentUser;
 
   //TODO: Name should be used instead, email address is used temporarily
-  if (user != null) {
-    return Text(user.email,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Color.fromARGB(255, 2, 2, 2),
-          fontFamily: "Raleway",
-          fontWeight: FontWeight.w700,
-          fontSize: 21,
-        ));
-  } else if (userdata.dataLoadedFromDB) {
-    return Text(userdata.firstName + ' ' + userdata.lastName,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Color.fromARGB(255, 2, 2, 2),
-          fontFamily: "Raleway",
-          fontWeight: FontWeight.w700,
-          fontSize: 21,
-        ));
+  // if (user != null) {
+  //   return Text(user.email,
+  //       textAlign: TextAlign.left,
+  //       style: TextStyle(
+  //         color: Color.fromARGB(255, 2, 2, 2),
+  //         fontFamily: "Raleway",
+  //         fontWeight: FontWeight.w700,
+  //         fontSize: 21,
+  //       ));
+  // }
+
+  if (userdata.dataLoadedFromDB) {
+    return SizedBox.shrink();
+    // return Text(userdata.firstName + ' ' + userdata.lastName,
+    //     textAlign: TextAlign.left,
+    //     style: TextStyle(
+    //       color: Color.fromARGB(255, 2, 2, 2),
+    //       fontFamily: "Raleway",
+    //       fontWeight: FontWeight.w700,
+    //       fontSize: 21,
+    //     ));
   } else
     return new StreamBuilder(
       stream: databaseService.getUserData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Text("Loading User Data",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 21,
-              ));
+          return SizedBox.shrink();
+          // return Text("Loading User Data",
+          //     textAlign: TextAlign.left,
+          //     style: TextStyle(
+          //       color: Color.fromARGB(255, 2, 2, 2),
+          //       fontFamily: "Raleway",
+          //       fontWeight: FontWeight.w700,
+          //       fontSize: 21,
+          //     ));
         }
         var userDocument = snapshot.data;
 
@@ -69,34 +75,40 @@ Widget loadUserData(BuildContext context) {
           userdata.selectedprojectnumber =
               userDocument['selectedprojectnumber'];
           userdata.dataLoadedFromDB = true;
+          return SizedBox.shrink();
         } catch (error) {
           print('Get user data error');
           print(error.toString());
-          return Text(userdata.firstName + ' ' + userdata.lastName,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 21,
-              ));
+          return SizedBox.shrink();
+          // return Text(userdata.firstName + ' ' + userdata.lastName,
+          //     textAlign: TextAlign.left,
+          //     style: TextStyle(
+          //       color: Color.fromARGB(255, 2, 2, 2),
+          //       fontFamily: "Raleway",
+          //       fontWeight: FontWeight.w700,
+          //       fontSize: 21,
+          //     ));
         }
 
-        return Text(
-          userdata.firstName + ' ' + userdata.lastName,
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Color.fromARGB(255, 2, 2, 2),
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w700,
-            fontSize: 21,
-          ),
-        );
+        // return Text(
+        //   userdata.firstName + ' ' + userdata.lastName,
+        //   textAlign: TextAlign.left,
+        //   style: TextStyle(
+        //     color: Color.fromARGB(255, 2, 2, 2),
+        //     fontFamily: "Raleway",
+        //     fontWeight: FontWeight.w700,
+        //     fontSize: 21,
+        //   ),
+        // );
       },
     );
 }
 
 class DashboardWidget extends StatefulWidget {
+  final VoidCallback onUserIconPressed;
+
+  DashboardWidget(this.onUserIconPressed);
+
   @override
   _DashboardWidgetState createState() => _DashboardWidgetState();
 }
@@ -350,17 +362,19 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat",
+            fontFamily: "Montserrat Semi-Bold",
             fontWeight: FontWeight.w600,
-            fontSize: 24,
+            fontSize: 36,
           ),
         ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () => this.onItemPressed(context),
+            onPressed: this
+                .widget
+                .onUserIconPressed, // this is a void callback to tab group one tab bar
             icon: Image.asset(
-              "assets/images/icons8-account-100.png",
+              "assets/images/UserIcon.png",
             ),
           ),
         ],
@@ -395,8 +409,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       height: 50,
       margin: EdgeInsets.only(left: 20, right: 20),
       decoration: BoxDecoration(
-        //color: AppColors.secondaryBackground,
-        color: AppColors.backgroundBlue,
+        color: AppColors.primaryDarkGreen,
         borderRadius: Radii.k8pxRadius,
       ),
       child: Column(
@@ -415,7 +428,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                     "Checkout",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      //color: Color.fromARGB(255, 255, 255, 255),
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontFamily: "SF Pro Text",
                       fontWeight: FontWeight.w400,
                       fontSize: 17,
@@ -502,14 +515,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         child: SingleChildScrollView(
           child: Container(
             height: 600,
-            margin: EdgeInsets.only(left: 1, top: 16, right: 5),
+            margin: EdgeInsets.only(left: 1, top: 8, right: 5),
             child: buildProductsListWidget(context),
           ),
         ));
   }
 
   /*===============================================================================================
-  Building Buttons for items to purchase
+  Building Squares for each item to purchase
   ================================================================================================*/
   Widget buildGeneralButtonItemWidget(BuildContext context, int index,
       int startIndex, List<CartItem> cartList, String header) {
@@ -581,7 +594,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   }
 
   /*===============================================================================================
-  Scrollable area for each product?
+  Calculating all the items needed to go into each row
   ================================================================================================*/
   List<Widget> purchaseItemList() {
     List<Widget> returnList = new List();
@@ -596,6 +609,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       if (i == 0 ||
           (purchaseItemListItems[i].header !=
               purchaseItemListItems[i - 1].header)) {
+        print("total items: " + purchaseItemListItems.length.toString());
         tempWidget = (buildGeneralAreaContainer(
             header: purchaseItemListItems[i].header,
             description: purchaseItemListItems[i].description,

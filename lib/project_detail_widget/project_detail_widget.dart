@@ -103,7 +103,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           //color: AppColors.ternaryBackground,
-          color: AppColors.backgroundBlue,
+          color: AppColors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

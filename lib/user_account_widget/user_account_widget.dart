@@ -187,7 +187,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             margin: EdgeInsets.only(left: 20, right: 20),
             decoration: BoxDecoration(
               //color: AppColors.secondaryBackground,
-              color: AppColors.backgroundBlue,
+              color: AppColors.primaryDarkGreen,
               borderRadius: Radii.k8pxRadius,
             ),
             child: Column(

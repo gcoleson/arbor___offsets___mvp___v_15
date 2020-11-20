@@ -15,23 +15,41 @@ class _OneTimeCheckoutState extends State<OneTimeCheckout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WebView(
-        initialUrl: initialURL,
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (webViewController) => controller = webViewController,
-        onPageFinished: (String url) {
-          if (url == initialURL) {
-            redirectToStripe();
-          }
-        },
-        navigationDelegate: (NavigationRequest request) {
-          if (request.url.startsWith('https://yoursite.com/success.html')) {
-            Navigator.of(context).pop('success');
-          } else if (request.url.startsWith('https://example.com/cancel')) {
-            Navigator.of(context).pop('cancel');
-          }
-          return NavigationDecision.navigate;
-        },
+      backgroundColor: Color.fromARGB(255, 65, 127, 69),
+      // appBar: AppBar(
+      //   title: Text(
+      //     "Checkout",
+      //     textAlign: TextAlign.center,
+      //     style: TextStyle(
+      //       color: Color.fromARGB(255, 255, 255, 255),
+      //       fontFamily: "Montserrat Semi-Bold",
+      //       fontWeight: FontWeight.w600,
+      //       fontSize: 36,
+      //     ),
+      //   ),
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Color.fromARGB(255, 65, 127, 69),
+      // ),
+      body: SafeArea(
+        child: WebView(
+          initialUrl: initialURL,
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (webViewController) =>
+              controller = webViewController,
+          onPageFinished: (String url) {
+            if (url == initialURL) {
+              redirectToStripe();
+            }
+          },
+          navigationDelegate: (NavigationRequest request) {
+            if (request.url.startsWith('https://yoursite.com/success.html')) {
+              Navigator.of(context).pop('success');
+            } else if (request.url.startsWith('https://example.com/cancel')) {
+              Navigator.of(context).pop('cancel');
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
       ),
     );
   }
@@ -58,7 +76,9 @@ const String kStripeHtmlPage = '''
 <script src="https://js.stripe.com/v3/"></script>
 <head><title>Stripe checkout</title></head>
 <body>
-Hello Webview
+<div style="padding-top: 50px;">
+</div>
+Loading
 </body>
 </html>
 ''';

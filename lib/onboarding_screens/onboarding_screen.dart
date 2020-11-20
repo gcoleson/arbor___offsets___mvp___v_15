@@ -184,7 +184,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
     Image.asset("assets/images/forest-sun-shadow-green-HEIC.png",
         fit: BoxFit.cover),
     Column(children: [
-      Spacer(flex: 65),
+      Spacer(flex: 60),
       Stack(
         alignment: AlignmentDirectional.center,
         children: [
@@ -221,7 +221,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
           )
         ],
       ),
-      Spacer(flex: 375),
+      SizedBox(height: 22),
       Container(
           height: 44,
           child: _customTextField("assets/images/UserIcon.png", "Email",
@@ -232,6 +232,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
           child: _customTextField("assets/images/PasswordIcon.png", "Password",
               _passwordController, TextInputType.text, true)),
       _customButton("Join", register),
+      Spacer(flex: 334),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
           height: 21,
@@ -301,7 +302,7 @@ Widget myPage5Widget(BuildContext context, PageController controller) {
         ),
         Column(
           children: [
-            Spacer(flex: 68),
+            Spacer(flex: 75),
             Stack(
               alignment: AlignmentDirectional.center,
               children: [
@@ -338,7 +339,7 @@ Widget myPage5Widget(BuildContext context, PageController controller) {
                 )
               ],
             ),
-            Spacer(flex: 47),
+            SizedBox(height: 47),
             Container(
                 height: 44,
                 child: _customTextField("assets/images/UserIcon.png", "Email",
