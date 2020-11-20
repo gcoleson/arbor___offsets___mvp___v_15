@@ -2,150 +2,140 @@ import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 
 abstract class AppFonts {
-  // this is a comment
-//sample:
-//    static static TextStyle projectstatic TextStyle = TextStyle(
-//    color: AppColors.ternaryBackground,
-//    fontFamily: "Montserrat",
-//    fontWeight: FontWeight.w600,
-//    fontSize: mainFont	,
-//  );
-//}
-
-  static TextStyle arborSignupTitle = TextStyle(
+  static const TextStyle arborSignupTitle = TextStyle(
     fontFamily: 'Montserrat',
     color: AppColors.primaryDarkGreen,
     fontSize: 72,
     fontWeight: FontWeight.w600,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle treeImpactText = TextStyle(
+  static const TextStyle treeImpactText = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.primaryDarkGreen,
     fontSize: 34,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle treeImpactTextGold = TextStyle(
+  static const TextStyle treeImpactTextGold = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.highlightYellow,
     fontSize: 34,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle arborSubTitle = TextStyle(
+  static const TextStyle arborSubTitle = TextStyle(
     fontFamily: 'Montserrat',
     color: AppColors.primaryDarkGreen,
     fontSize: 36,
     fontWeight: FontWeight.w500,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle laterTextWhite = TextStyle(
+  static const TextStyle laterTextWhite = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.backgroundGrey,
     fontSize: 24,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle monthlyImpactText = TextStyle(
+  static const TextStyle monthlyImpactText = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 24,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle laterTextGreen = TextStyle(
+  static const TextStyle laterTextGreen = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.primaryDarkGreen,
     fontSize: 24,
     fontWeight: FontWeight.w500,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle bodyTextGold = TextStyle(
+  static const TextStyle bodyTextGold = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.highlightYellow,
     fontSize: 18,
     fontWeight: FontWeight.w500,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle bodyTextWhite = TextStyle(
+  static const TextStyle bodyTextWhite = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.backgroundGrey,
     fontSize: 18,
     fontWeight: FontWeight.w500,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle congratsSubhead = TextStyle(
+  static const TextStyle congratsSubhead = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.backgroundGrey,
     fontSize: 18,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
   );
-  static TextStyle introScreenHeadlineText = TextStyle(
+  static const TextStyle introScreenHeadlineText = TextStyle(
     fontFamily: 'Montserrat',
     color: AppColors.backgroundGrey,
     fontSize: 36,
     fontWeight: FontWeight.w800,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle navBarHeader = TextStyle(
+  static const TextStyle navBarHeader = TextStyle(
     fontFamily: 'Montserrat',
     color: AppColors.backgroundGrey,
     fontSize: 36,
     fontWeight: FontWeight.w600,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle screenSubhead = TextStyle(
+  static const TextStyle screenSubhead = TextStyle(
     fontFamily: 'Montserrat',
     color: AppColors.primaryDarkGreen,
     fontSize: 28,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle projectNameLarge = TextStyle(
+  static const TextStyle projectNameLarge = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 24,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle projectLabelHeadline = TextStyle(
+  static const TextStyle projectLabelHeadline = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 21,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle supportingLabel = TextStyle(
+  static const TextStyle supportingLabel = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.highlightYellow,
     fontSize: 18,
     fontWeight: FontWeight.w900,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle keyPointsBulletList = TextStyle(
+  static const TextStyle keyPointsBulletList = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 18,
     fontWeight: FontWeight.w500,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle sectionLabels = TextStyle(
+  static const TextStyle sectionLabels = TextStyle(
     fontFamily: 'Montserrat',
     color: AppColors.Black,
     fontSize: 18,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
   );
-  static TextStyle projectLabelSubhead = TextStyle(
+  static const TextStyle projectLabelSubhead = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 18,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
   );
-  static TextStyle iOSSystemTextCenterAlignBlackSB = TextStyle(
+  static const TextStyle iOSSystemTextCenterAlignBlackSB = TextStyle(
     fontFamily: 'SFProText',
     color: AppColors.Black,
     fontSize: 17,
@@ -153,7 +143,7 @@ abstract class AppFonts {
     fontStyle: FontStyle.normal,
     letterSpacing: -0.408,
   );
-  static TextStyle iOSSystemTextLeftAlignLightGrey = TextStyle(
+  static const TextStyle iOSSystemTextLeftAlignLightGrey = TextStyle(
     fontFamily: 'SFProText',
     //color: AppColors.Colors(0x4c3c3c43),
     fontSize: 17,
@@ -161,7 +151,7 @@ abstract class AppFonts {
     fontStyle: FontStyle.normal,
     letterSpacing: -0.408,
   );
-  static TextStyle iOSSystemTextCenterAlignGrey = TextStyle(
+  static const TextStyle iOSSystemTextCenterAlignGrey = TextStyle(
     fontFamily: 'SFProText',
     color: AppColors.mediumGreyScreen,
     fontSize: 17,
@@ -169,7 +159,7 @@ abstract class AppFonts {
     fontStyle: FontStyle.normal,
     letterSpacing: -0.408,
   );
-  static TextStyle iOSSystemTextLeftAlignBlack = TextStyle(
+  static const TextStyle iOSSystemTextLeftAlignBlack = TextStyle(
     fontFamily: 'SFProText',
     color: AppColors.Black,
     fontSize: 17,
@@ -177,28 +167,28 @@ abstract class AppFonts {
     fontStyle: FontStyle.normal,
     letterSpacing: -0.408,
   );
-  static TextStyle impactHead = TextStyle(
+  static const TextStyle impactHead = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 16,
     fontWeight: FontWeight.w500,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle bodyText = TextStyle(
+  static const TextStyle bodyText = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 16,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle offsetButtonLabels = TextStyle(
+  static const TextStyle offsetButtonLabels = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.primaryDarkGreen,
     fontSize: 14,
     fontWeight: FontWeight.w800,
     fontStyle: FontStyle.italic,
   );
-  static TextStyle tabButtonText = TextStyle(
+  static const TextStyle tabButtonText = TextStyle(
     fontFamily: 'SFProText',
     color: AppColors.Black,
     fontSize: 13,
@@ -206,14 +196,14 @@ abstract class AppFonts {
     fontStyle: FontStyle.normal,
     letterSpacing: -0.078,
   );
-  static TextStyle impactDescription = TextStyle(
+  static const TextStyle impactDescription = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.brownGrey,
     fontSize: 12,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.normal,
   );
-  static TextStyle smallIncidentals = TextStyle(
+  static const TextStyle smallIncidentals = TextStyle(
     fontFamily: 'Raleway',
     color: AppColors.primaryDarkGreen,
     fontSize: 12,
