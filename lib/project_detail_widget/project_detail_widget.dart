@@ -7,6 +7,7 @@
     */
 
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -80,168 +81,149 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Project Details",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
+        appBar: AppBar(
+          title: Text(
+            "Project Details",
+            textAlign: TextAlign.center,
+            style: AppFonts.navBarHeader,
           ),
-        ),
-        leading: IconButton(
-          onPressed: () => this.onItemPressed(context),
-          icon: Image.asset(
-            "assets/images/icons8-left-50.png",
+          leading: IconButton(
+            onPressed: () => this.onItemPressed(context),
+            icon: Image.asset(
+              "assets/images/icons8-left-50.png",
+            ),
           ),
+          backgroundColor: Color.fromARGB(255, 65, 127, 69),
         ),
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
-      ),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          //color: AppColors.ternaryBackground,
-          color: AppColors.white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(height: 283, child: buildCarouselSlider()),
-            Container(
-              height: 76,
-              margin: EdgeInsets.only(left: 10, top: 9, right: 10),
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    right: 68,
-                    bottom: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 2),
-                          child: AutoSizeText(
-                            widget.projectData.brief,
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 21,
+        body: Container(
+          child: Container(
+            constraints: BoxConstraints.expand(),
+            decoration: BoxDecoration(
+              //color: AppColors.ternaryBackground,
+              color: AppColors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(height: 283, child: buildCarouselSlider()),
+                Container(
+                  height: 100,
+                  margin: EdgeInsets.only(left: 10, top: 9, right: 10),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        right: 68,
+                        bottom: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 2),
+                              child: AutoSizeText(
+                                projectData.title,
+                                textAlign: TextAlign.left,
+                                maxLines: 2,
+                                style: AppFonts.projectLabelHeadline,
+                              ),
                             ),
-                          ),
-                        ),
-                        Container(
-                          height: 21,
-                          margin: EdgeInsets.only(left: 14, top: 24, right: 11),
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                child: AutoSizeText(
-                                  "${widget.projectData.location} ",
-                                  textAlign: TextAlign.left,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 2, 2, 2),
-                                    fontFamily: "Raleway",
-                                    fontWeight: FontWeight.w300,
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 18,
+                            Container(
+                              height: 21,
+                              margin: EdgeInsets.only(left: 2),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: AutoSizeText(
+                                      "${widget.projectData.location} ",
+                                      textAlign: TextAlign.left,
+                                      maxLines: 1,
+                                      style: AppFonts.projectLabelSubhead,
+                                    ),
                                   ),
-                                ),
+                                  Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      _launchURL();
+                                    },
+                                    child: Text("Map  >",
+                                        textAlign: TextAlign.right,
+                                        style: AppFonts.projectLabelSubhead),
+                                  ),
+                                ],
                               ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  _launchURL();
-                                },
-                                child: Text("Map  >",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 2, 2, 2),
-                                      fontFamily: "Raleway",
-                                      fontWeight: FontWeight.w300,
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 18,
-                                    )),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 200,
+                        child: Text("In partnership with: ",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Color.fromARGB(255, 67, 82, 88),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                            ))),
+                    Container(
+                      child: Image.network(widget.projectData.sponsorlogo,
+                          width: 125, fit: BoxFit.fill),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 10, right: 10),
+                  child: LinearPercentIndicator(
+                    percent: widget.projectData.percent.toDouble() / 100,
+                    progressColor: Color.fromARGB(255, 0, 122, 255),
+                    lineHeight: 20,
+                    center: AutoSizeText(
+                      "${widget.projectData.percent}% Funded",
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 2, 2, 2),
+                        fontFamily: "Raleway",
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            Column(
-              children: [
+                ),
                 Container(
-                    width: 200,
-                    child: Text("In partnership with: ",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          color: Color.fromARGB(255, 2, 2, 2),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ))),
-                Container(
-                  child: Image.network(widget.projectData.sponsorlogo,
-                      width: 100, fit: BoxFit.fill),
+                  margin: EdgeInsets.only(left: 17, top: 8, right: 8),
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 216, 216, 216),
+                      border: Border.all(
+                        width: 2,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                    ),
+                    child: Scrollbar(
+                        thickness: 5,
+                        child: SingleChildScrollView(
+                          child: Html(
+                            data: projectData.description,
+                          ),
+                        )),
+                  ),
                 ),
               ],
             ),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 10, right: 10),
-              child: LinearPercentIndicator(
-                percent: widget.projectData.percent.toDouble() / 100,
-                lineHeight: 20,
-                center: AutoSizeText(
-                  "${widget.projectData.percent}% Funded",
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 2, 2, 2),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 17, top: 8, right: 8),
-              child: Container(
-                height: 250,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 216, 216, 216),
-                  border: Border.all(
-                    width: 2,
-                    color: Color.fromARGB(255, 0, 0, 0),
-                  ),
-                ),
-                child: Scrollbar(
-                    thickness: 5,
-                    child: SingleChildScrollView(
-                      child: Html(
-                        data: projectData.description,
-                      ),
-                    )),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }
