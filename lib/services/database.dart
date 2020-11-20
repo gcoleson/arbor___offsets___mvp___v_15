@@ -23,6 +23,7 @@ class ProjectData {
   String sponsorlogo;
   String title;
   bool selected;
+  String projectId;
 }
 
 UserData userdata = UserData.instance;
@@ -38,6 +39,7 @@ class UserData {
   int timestamp = 1604201604913;
   int selectedprojectnumber = 0; //starts at 1, zero is no project selected
   bool dataLoadedFromDB = false;
+  String selectedProjectId = '';
 }
 
 class UserMessages {
@@ -97,6 +99,7 @@ class DatabaseService {
         'firstname': data.firstName,
         'lastname': data.lastName,
         'selectedprojectnumber': data.selectedprojectnumber,
+        'selectedProjectId': data.selectedProjectId,
         'createtimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
     else
@@ -104,6 +107,7 @@ class DatabaseService {
         'firstname': data.firstName,
         'lastname': data.lastName,
         'selectedprojectnumber': data.selectedprojectnumber,
+        'selectedProjectId': data.selectedProjectId,
         'lastwitetimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
   }

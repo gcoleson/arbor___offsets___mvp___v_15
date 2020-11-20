@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CartItem.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 
 Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
 var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
@@ -383,12 +384,26 @@ Container checkoutCartDialogue(
               fontFamily: "Montserrat",
               fontWeight: FontWeight.w800),
         ),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image(
-            image: AssetImage("assets/images/greg.PNG"),
-          ),
-        ),
+        StreamBuilder(
+            stream: databaseReference
+                .collection("projects")
+                .doc(userdata.selectedProjectId)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData && userdata.selectedProjectId != '') {
+                return LinearProgressIndicator();
+              }
+              try {
+                String imageLink = snapshot.data['image-main'];
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(imageLink),
+                );
+              } catch (e) {
+                print(e);
+                return Text("trouble getting image");
+              }
+            }),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

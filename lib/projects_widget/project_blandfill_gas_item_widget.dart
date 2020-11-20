@@ -54,6 +54,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
       });
 
       userdata.selectedprojectnumber = projectData.projectnumber;
+      userdata.selectedProjectId = projectData.projectId;
 
       //turn border on
       //turn selected text on
@@ -62,6 +63,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
     } else {
       projectData.selected = false;
       userdata.selectedprojectnumber = 0;
+      userdata.selectedProjectId = '';
 
       //turn border off
       //turn selected text off
