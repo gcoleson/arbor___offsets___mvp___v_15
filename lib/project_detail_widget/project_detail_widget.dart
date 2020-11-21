@@ -112,9 +112,9 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                   child: Stack(
                     children: [
                       Positioned(
-                        left: 0,
+                        left: 1,
                         top: 0,
-                        right: 68,
+                        right: 1,
                         bottom: 1,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -134,7 +134,6 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                               child: Row(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(left: 10),
                                     child: AutoSizeText(
                                       "${widget.projectData.location} ",
                                       textAlign: TextAlign.left,
@@ -160,8 +159,8 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                     ],
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                         width: 200,
@@ -204,27 +203,6 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                 Html(
                   data: projectData.description,
                 ),
-                /* Container(
-                  margin: EdgeInsets.only(left: 17, top: 8, right: 8),
-                  child: Container(
-                    height: 240,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 216, 216, 216),
-                      border: Border.all(
-                        width: 2,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ),
-                    child: Scrollbar(
-                      thickness: 5,
-                      child: //SingleChildScrollView(
-                          //child:
-                          Html(
-                        data: projectData.description,
-                      ),
-                    ),
-                  ), 
-                ),*/
               ],
             ),
           ),
