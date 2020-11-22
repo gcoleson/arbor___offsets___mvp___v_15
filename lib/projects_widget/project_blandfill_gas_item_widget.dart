@@ -14,6 +14,19 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+var loadingBuilder2 =
+    (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+  if (loadingProgress == null) return child;
+  return Center(
+    child: CircularProgressIndicator(
+      value: loadingProgress.expectedTotalBytes != null
+          ? loadingProgress.cumulativeBytesLoaded /
+              loadingProgress.expectedTotalBytes
+          : null,
+    ),
+  );
+};
+
 class ProjectSummaryWidget extends StatefulWidget {
   final ProjectData projectData;
   final index;
@@ -99,6 +112,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
                         borderRadius: BorderRadius.circular(10.0),
                         child: Image.network(
                           imageDummy,
+                          loadingBuilder: loadingBuilder2,
                           fit: BoxFit.fill,
                           height: 280,
                         ),

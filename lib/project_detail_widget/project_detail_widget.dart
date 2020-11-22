@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
@@ -48,8 +49,8 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
 
     imgList.forEach((element) {
       if (element != null) {
-        Widget test =
-            new Image.network(element, fit: BoxFit.cover, width: 1000.0);
+        Widget test = new Image.network(element,
+            loadingBuilder: loadingBuilder2, fit: BoxFit.cover, width: 1000.0);
         imageSliders.add(test);
       }
     });
@@ -175,7 +176,9 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                             ))),
                     Container(
                       child: Image.network(widget.projectData.sponsorlogo,
-                          width: 125, fit: BoxFit.fill),
+                          loadingBuilder: loadingBuilder2,
+                          width: 125,
+                          fit: BoxFit.fill),
                     ),
                   ],
                 ),
