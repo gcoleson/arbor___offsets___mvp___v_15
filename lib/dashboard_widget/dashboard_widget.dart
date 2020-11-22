@@ -313,7 +313,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   alignment: Alignment.center,
                   child: IconButton(
                     icon: Image.network(iconName, fit: BoxFit.fill),
-                    onPressed: () {},
+                    onPressed: () {
+                      //todo remove hack to get the icon to be clickable
+                      //whole button should be clickable
+                      setState(() {
+                        toggleItemSelected(index);
+                      });
+                    },
                   )),
               Text(iconText,
                   textAlign: TextAlign.center,
