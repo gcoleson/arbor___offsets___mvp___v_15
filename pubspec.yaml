@@ -24,12 +24,12 @@ dependencies:
   webview_flutter: ^0.3.22+1
   
   # Database
-  firebase_core: ^0.5.0
+  firebase_core: ^0.5.2+1
 
   # User Auth
-  firebase_auth: ^0.18.1
+  firebase_auth: ^0.18.3+1
   # Analytics
-  firebase_analytics: ^6.0.2
+  firebase_analytics: ^6.2.0
 
   # Performance
   firebase_performance: ^0.4.0

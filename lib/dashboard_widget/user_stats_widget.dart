@@ -114,8 +114,9 @@ Container buildTotalMonthsContainer(int totalMonths) {
                 alignment: Alignment.topLeft,
                 child: Container(
                   margin: EdgeInsets.only(top: 7),
-                  child: Text(
+                  child: AutoSizeText(
                     "total months of impact",
+                    maxLines: 1,
                     textAlign: TextAlign.right,
                     style: AppFonts.monthlyImpactText,
                   ),
@@ -191,8 +192,9 @@ Widget buildMonthsInARowContainer(int consecutiveMonths) {
                 alignment: Alignment.topLeft,
                 child: Container(
                   margin: EdgeInsets.only(top: 7),
-                  child: Text(
+                  child: AutoSizeText(
                     "months in a row of impact",
+                    maxLines: 1,
                     textAlign: TextAlign.right,
                     style: AppFonts.monthlyImpactText,
                   ),

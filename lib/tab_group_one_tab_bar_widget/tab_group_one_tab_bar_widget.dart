@@ -37,6 +37,9 @@ class _TabGroupOneTabBarWidgetState extends State<TabGroupOneTabBarWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'Height:${MediaQuery.of(context).size.height} Width:${MediaQuery.of(context).size.width}');
+
     return Scaffold(
       body: _tabWidgets[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

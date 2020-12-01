@@ -11,6 +11,7 @@ import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dar
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -18,17 +19,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-FirebaseAnalytics analytics;
-
-const appVersion =
-    String.fromEnvironment('APP_VERSION', defaultValue: 'development');
+const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '.1');
 const appDate = String.fromEnvironment('APP_DATE', defaultValue: 'none');
 
 void main() async {
+  print("App Starting");
+
   //Boiler plate code ot get firebase initialized
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+  print("Init Firebase");
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -43,19 +44,12 @@ void main() async {
       databaseService.uid = user.uid;
 
       databaseService.updateUserMessagesSystemType("signin");
-
-      //check for user data, if not make a record
-
     }
     //todo add error handling
   });
 
-  // Enabling analytics for Firebase
-  analytics = FirebaseAnalytics();
-
   print('App Version:' + appVersion + ' Date:' + appDate);
 
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
       (_) => runApp(ChangeNotifierProvider(
           create: (context) => ProjectModel(), child: App())));
@@ -66,14 +60,32 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     //if we are not signed in then put up signin
     //else go to app
+
+    FirebaseAnalytics analytics = FirebaseAnalytics();
+    print("Init Analytics");
+
+    analytics.setAnalyticsCollectionEnabled(true);
+    analytics.setCurrentScreen(screenName: 'testscreen');
+    analytics.logEvent(name: "TestLog");
+
     if (databaseService?.uid == null) {
       print("uid null");
       return MaterialApp(
-        home: MyHomePage(),
+        routes: {'home': (context) => MyHomePage()},
+        initialRoute: 'home',
+        //home: MyHomePage(),
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
       );
     } else {
       return MaterialApp(
-        home: TabGroupOneTabBarWidget(),
+        routes: {'tab': (context) => TabGroupOneTabBarWidget()},
+        initialRoute: 'tab',
+        //home: TabGroupOneTabBarWidget(),
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
       );
     }
   }
