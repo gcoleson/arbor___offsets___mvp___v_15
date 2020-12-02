@@ -210,4 +210,16 @@ abstract class AppFonts {
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
   );
+
+  static const TextStyle selectedNavBarLabel = TextStyle(
+    fontFamily: 'SFProText',
+    color: AppColors.Black,
+    fontSize: 10,
+  );
+
+  static const TextStyle unselectedNavBarLabel = TextStyle(
+    fontFamily: 'SFProText',
+    color: AppColors.highlightBlue,
+    fontSize: 10,
+  );
 }
