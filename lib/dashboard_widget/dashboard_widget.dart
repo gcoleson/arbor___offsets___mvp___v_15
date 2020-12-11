@@ -623,6 +623,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     Widget tempWidget;
 
     //sort the list
+    purchaseItemListItems.sort((a, b) => a.price.compareTo(b.price));
     purchaseItemListItems.sort((a, b) => a.header.compareTo(b.header));
 
     for (var i = 0; i < purchaseItemListItems.length; i++) {
