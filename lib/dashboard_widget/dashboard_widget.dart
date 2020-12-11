@@ -518,7 +518,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 108,
                 childAspectRatio: 1.13684,
-                mainAxisSpacing: 30,
+                mainAxisSpacing: 18,
               ),
               itemBuilder: itemBuilder,
             ),
