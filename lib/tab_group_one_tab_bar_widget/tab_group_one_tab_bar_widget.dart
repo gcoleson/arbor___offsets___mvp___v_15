@@ -7,6 +7,7 @@
     */
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/user_account_widget/user_account_widget.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,8 @@ class _TabGroupOneTabBarWidgetState extends State<TabGroupOneTabBarWidget> {
   void initState() {
     super.initState();
 
+    analytics.setCurrentScreen(screenName: 'TabIndex:0');
+
     _tabWidgets = [
       ProjectsWidget(),
       DashboardWidget(() => _onTabChanged(2)),
@@ -38,79 +41,77 @@ class _TabGroupOneTabBarWidgetState extends State<TabGroupOneTabBarWidget> {
 
   void _onTabChanged(int index) {
     this.setState(() => _currentIndex = index);
+    analytics.logEvent(name: 'TabIndex:$index');
+    analytics.setCurrentScreen(screenName: 'TabIndex:$index');
   }
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'Height:${MediaQuery.of(context).size.height} Width:${MediaQuery.of(context).size.width}');
+    //print(
+    //    'Height:${MediaQuery.of(context).size.height} Width:${MediaQuery.of(context).size.width}');
 
     return Scaffold(
       body: _tabWidgets[_currentIndex],
-      bottomNavigationBar: SizedBox(
-        height: 50,
-        child: BottomNavigationBar(
-          selectedLabelStyle: AppFonts.selectedNavBarLabel,
-          unselectedLabelStyle: AppFonts.unselectedNavBarLabel,
-          selectedItemColor: AppColors.highlightBlue,
-          unselectedItemColor: Colors.black,
-          //fixedColor: Color.fromARGB(255, 85, 85, 85),
-          currentIndex: _currentIndex,
-          onTap: (index) => this._onTabChanged(index),
-          items: [
-            BottomNavigationBarItem(
-              icon: Image.asset(
+      bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: AppFonts.selectedNavBarLabel,
+        unselectedLabelStyle: AppFonts.unselectedNavBarLabel,
+        selectedItemColor: AppColors.highlightBlue,
+        unselectedItemColor: Colors.black,
+        currentIndex: _currentIndex,
+        onTap: (index) => this._onTabChanged(index),
+        items: [
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              "assets/images/icons8-photo-editor-100.png",
+              width: 26,
+              height: 26,
+            ),
+            activeIcon: ColorFiltered(
+              child: Image.asset(
                 "assets/images/icons8-photo-editor-100.png",
                 width: 26,
                 height: 26,
               ),
-              activeIcon: ColorFiltered(
-                child: Image.asset(
-                  "assets/images/icons8-photo-editor-100.png",
-                  width: 26,
-                  height: 26,
-                ),
-                colorFilter:
-                    ColorFilter.mode(AppColors.highlightBlue, BlendMode.srcIn),
-              ),
-              label: 'Projects',
+              colorFilter:
+                  ColorFilter.mode(AppColors.highlightBlue, BlendMode.srcIn),
             ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
+            label: 'Projects',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              "assets/images/icons8-control-panel-64.png",
+              width: 26,
+              height: 26,
+            ),
+            activeIcon: ColorFiltered(
+              child: Image.asset(
                 "assets/images/icons8-control-panel-64.png",
                 width: 26,
                 height: 26,
               ),
-              activeIcon: ColorFiltered(
-                child: Image.asset(
-                  "assets/images/icons8-control-panel-64.png",
-                  width: 26,
-                  height: 26,
-                ),
-                colorFilter:
-                    ColorFilter.mode(AppColors.highlightBlue, BlendMode.srcIn),
-              ),
-              label: 'Dashboard',
+              colorFilter:
+                  ColorFilter.mode(AppColors.highlightBlue, BlendMode.srcIn),
             ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              "assets/images/icons8-account-100.png",
+              width: 26,
+              height: 26,
+            ),
+            activeIcon: ColorFiltered(
+              child: Image.asset(
                 "assets/images/icons8-account-100.png",
                 width: 26,
                 height: 26,
               ),
-              activeIcon: ColorFiltered(
-                child: Image.asset(
-                  "assets/images/icons8-account-100.png",
-                  width: 26,
-                  height: 26,
-                ),
-                colorFilter:
-                    ColorFilter.mode(AppColors.highlightBlue, BlendMode.srcIn),
-              ),
-              label: 'Profile',
+              colorFilter:
+                  ColorFilter.mode(AppColors.highlightBlue, BlendMode.srcIn),
             ),
-          ],
-        ),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

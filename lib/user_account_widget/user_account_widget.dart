@@ -9,12 +9,15 @@
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/values/radii.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internationalization/internationalization.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../main.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
@@ -50,7 +53,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Container(
             margin: EdgeInsets.only(left: 10, top: 5, bottom: 10),
             child: Text(
-              "Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.timestamp, isUtc: true))}",
+              "Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp, isUtc: true))}",
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(255, 2, 2, 2),
@@ -184,9 +187,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Container(
             width: 300,
             height: 50,
-            margin: EdgeInsets.only(left: 20, right: 20),
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
             decoration: BoxDecoration(
-              //color: AppColors.secondaryBackground,
               color: AppColors.primaryDarkGreen,
               borderRadius: Radii.k8pxRadius,
             ),
@@ -217,6 +219,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ],
             ),
           ),
+          Text(
+            'Version:' + packageInfo.version + '.' + packageInfo.buildNumber,
+            style: TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontFamily: "SF Pro Text",
+              fontWeight: FontWeight.w400,
+              fontSize: 8,
+            ),
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );
@@ -327,7 +339,7 @@ class UserAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //FocusScope.of(context).unfocus();
+    analytics.logEvent(name: 'UserAccountScreen');
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -335,12 +347,7 @@ class UserAccountWidget extends StatelessWidget {
         title: Text(
           "Profile",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
+          style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 65, 127, 69),

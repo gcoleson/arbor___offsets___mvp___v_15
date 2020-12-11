@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../main.dart';
 import 'CartItem.dart';
 import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
@@ -71,10 +72,11 @@ Widget loadUserData(BuildContext context) {
         try {
           userdata.firstName = userDocument['firstname'];
           userdata.lastName = userDocument['lastname'];
-          userdata.timestamp = userDocument['timestamp'];
+          userdata.createtimestamp = userDocument['createtimestamp'];
           userdata.selectedprojectnumber =
               userDocument['selectedprojectnumber'];
           userdata.dataLoadedFromDB = true;
+          print('Loaded User Data');
           return SizedBox.shrink();
         } catch (error) {
           print('Get user data error');
@@ -130,9 +132,22 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
       purchaseItemListItems[index].boxSelected = true;
+
+      analytics.logEvent(name: 'add_to_cart:USD', parameters: {
+        'imageText': purchaseItemListItems[index].imageText,
+        'header': purchaseItemListItems[index].header,
+        'price': purchaseItemListItems[index].price,
+        'coincount': purchaseItemListItems[index].coinCount,
+      });
     } else {
       //turn border off
       purchaseItemListItems[index].boxSelected = false;
+      analytics.logEvent(name: 'remove_from_cart:USD', parameters: {
+        'imageText': purchaseItemListItems[index].imageText,
+        'header': purchaseItemListItems[index].header,
+        'price': purchaseItemListItems[index].price,
+        'coincount': purchaseItemListItems[index].coinCount,
+      });
     }
   }
 
@@ -348,6 +363,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   @override
   Widget build(BuildContext context) {
     // user statistics
+    analytics.logEvent(name: 'DashboardScreen');
 
     //Stream data collection
     var userStatStreamBuilder = StreamBuilder(

@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
@@ -68,6 +69,11 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
 
       userdata.selectedprojectnumber = projectData.projectnumber;
       userdata.selectedProjectId = projectData.projectId;
+      analytics.logEvent(name: 'SlectProject', parameters: {
+        'number': projectData.projectnumber,
+        'title': projectData.title,
+        'sponsor': projectData.sponsor
+      });
 
       //turn border on
       //turn selected text on
@@ -82,6 +88,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
       //turn selected text off
       //write to db
     }
+    print('Update user data slected project:${userdata.selectedprojectnumber}');
     databaseService.updateUserData(userdata, false);
 
     var counter = context.read<ProjectModel>();
@@ -156,6 +163,11 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
             ),
             GestureDetector(
               onTap: () {
+                analytics.logEvent(name: 'DetailProject', parameters: {
+                  'number': projectData.projectnumber,
+                  'title': projectData.title
+                });
+
                 setState(() {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>

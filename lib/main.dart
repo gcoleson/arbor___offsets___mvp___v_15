@@ -18,17 +18,31 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '.1');
 const appDate = String.fromEnvironment('APP_DATE', defaultValue: 'none');
+FirebaseAnalytics analytics = FirebaseAnalytics();
+
+PackageInfo packageInfo;
 
 void main() async {
   print("App Starting");
 
   //Boiler plate code ot get firebase initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  packageInfo = await PackageInfo.fromPlatform();
+
+  print(packageInfo.appName +
+      ',' +
+      packageInfo.packageName +
+      ',' +
+      packageInfo.version +
+      ',' +
+      packageInfo.buildNumber);
 
   await Firebase.initializeApp();
   print("Init Firebase");
@@ -46,6 +60,7 @@ void main() async {
       databaseService.uid = user.uid;
 
       databaseService.updateUserMessagesSystemType("signin");
+      analytics.logLogin();
     }
     //todo add error handling
   });
@@ -69,19 +84,16 @@ class App extends StatelessWidget {
     //if we are not signed in then put up signin
     //else go to app
 
-    FirebaseAnalytics analytics = FirebaseAnalytics();
-    print("Init Analytics");
-
     analytics.setAnalyticsCollectionEnabled(true);
-    analytics.setCurrentScreen(screenName: 'testscreen');
-    analytics.logEvent(name: "TestLog");
+    print("Analytics Enabled");
+    analytics.setCurrentScreen(screenName: 'StartScreen');
 
     if (databaseService?.uid == null) {
       print("uid null");
+      analytics.logTutorialBegin();
       return MaterialApp(
-        routes: {'home': (context) => MyHomePage()},
-        initialRoute: 'home',
-        //home: MyHomePage(),
+        routes: {'onboard': (context) => MyHomePage()},
+        initialRoute: 'onboard',
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),
         ],
@@ -90,7 +102,6 @@ class App extends StatelessWidget {
       return MaterialApp(
         routes: {'tab': (context) => TabGroupOneTabBarWidget()},
         initialRoute: 'tab',
-        //home: TabGroupOneTabBarWidget(),
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),
         ],

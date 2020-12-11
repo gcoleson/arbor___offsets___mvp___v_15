@@ -36,8 +36,8 @@ class UserData {
   int carbonOffsetMe = 20;
   int carbonOffsetFriends = 10;
   int carbonOffsetCommunity = 5;
-  int timestamp = 1604201604913;
-  int selectedprojectnumber = 0; //starts at 1, zero is no project selected
+  int createtimestamp = 1604201604913;
+  int selectedprojectnumber = 1; //starts at 1, zero is no project selected
   bool dataLoadedFromDB = false;
   String selectedProjectId = '';
 }
@@ -94,7 +94,8 @@ class DatabaseService {
     }
     print('Update UID:${this.uid} db entry');
 
-    if (create)
+    if (create) {
+      print('Create user db');
       return await userCollection.doc(this.uid).set({
         'firstname': data.firstName,
         'lastname': data.lastName,
@@ -102,7 +103,8 @@ class DatabaseService {
         'selectedProjectId': data.selectedProjectId,
         'createtimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
-    else
+    } else {
+      print('Update user db');
       return await userCollection.doc(this.uid).set({
         'firstname': data.firstName,
         'lastname': data.lastName,
@@ -110,6 +112,7 @@ class DatabaseService {
         'selectedProjectId': data.selectedProjectId,
         'lastwitetimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
+    }
   }
 
   Future<void> updateUserMessagesSystemType(String messageBoday) async {
@@ -168,7 +171,7 @@ class DatabaseService {
           'totalTrees': 0,
           'treesThisMonth': 0,
           'prevMonthOfPurchase': new DateTime.utc(1997, 9, 24)
-        })
+        }, SetOptions(merge: true))
         .then((value) => print("User stats successfully updated"))
         .catchError((e) => print('Failed to update user data: $e'));
   }

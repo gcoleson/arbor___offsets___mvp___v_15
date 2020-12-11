@@ -1,3 +1,4 @@
+import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ void switchPage(PageController controller, int pageNum) {
 }
 
 Widget myPage1Widget(BuildContext context) {
+  analytics.logEvent(name: 'Onboarding-1');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/bridge-1850679.png", fit: BoxFit.cover),
@@ -51,6 +53,7 @@ Widget myPage1Widget(BuildContext context) {
 }
 
 Widget myPage2Widget(BuildContext context) {
+  analytics.logEvent(name: 'Onboarding-2');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/plant-5310423.png", fit: BoxFit.cover),
@@ -89,6 +92,7 @@ Widget myPage2Widget(BuildContext context) {
 }
 
 Widget myPage3Widget(BuildContext context) {
+  analytics.logEvent(name: 'Onboarding-3');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/mountains-919040.png", fit: BoxFit.cover),
@@ -144,6 +148,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
 
   // Function called on button pressed to register new user
   register() async {
+    analytics.logTutorialComplete();
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -154,12 +159,18 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
       //save uid in class
       databaseService.uid = userCredential.user.uid;
 
-      // create a new document for the user with the uid
-      await databaseService.updateUserData(userdata, true);
+      try {
+        // create a new document for the user with the uid
+        await databaseService.updateUserData(userdata, true);
 
-      await databaseService.updateUserMessagesSystemType("User Created");
+        await databaseService.updateUserMessagesSystemType("User Created");
 
-      await databaseService.updateUserStats();
+        await databaseService.updateUserStats();
+      } catch (error) {
+        print('DB error:' + error.toString());
+      }
+
+      analytics.logSignUp(signUpMethod: null);
 
       //go to main screen
       Navigator.of(context).push(
@@ -177,6 +188,8 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
       _showDialog1(context, e.toString());
     }
   }
+
+  analytics.logEvent(name: 'Signup');
 
   // UI
   return Container(
@@ -291,6 +304,8 @@ Widget myPage5Widget(BuildContext context, PageController controller) {
       _showDialog1(context, e.toString());
     }
   }
+
+  analytics.logEvent(name: 'Signin');
 
   return Container(
     child: Stack(

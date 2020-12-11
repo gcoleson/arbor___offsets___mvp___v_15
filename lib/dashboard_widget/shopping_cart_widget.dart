@@ -1,3 +1,4 @@
+import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
 import 'package:http/http.dart' as http;
@@ -362,6 +363,12 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
     ),
   );
 
+  analytics.logEvent(name: 'begin_checkout', parameters: {
+    'count': returnList.length,
+    'total': totalCost.toStringAsFixed(2).padRight(4, '0'),
+    'coins': totalCoins,
+  });
+
   //returnList.add(value);
 
   return Expanded(
@@ -484,6 +491,7 @@ Container checkoutCartDialogue(
           child: _customButton(
             "Checkout",
             () async {
+              analytics.logEvent(name: 'purchase');
               onCheckoutLoading(context);
               String sessionId = 'error';
               //final sessionId = await Server().createCheckout();
@@ -528,6 +536,7 @@ Container checkoutCartDialogue(
               if (response.body != null && response.body != 'error') {
                 sessionId = jsonDecode(response.body)['id'];
                 print('Checkout Success!!!!');
+                analytics.logEvent(name: 'purchase');
               }
 
               if (sessionId != 'error') {
@@ -538,6 +547,8 @@ Container checkoutCartDialogue(
                               sessionId: sessionId,
                             )));
                 if (outcome == "success") {
+                  analytics.logEvent(name: 'purchase_complete');
+
                   FocusScope.of(context).unfocus();
                   Navigator.of(context).pop();
                   databaseService.addOrder(order_list, totalTrees);
@@ -545,6 +556,8 @@ Container checkoutCartDialogue(
                   paymentSuccessBuildDialogue(context);
                 } else if (outcome == "failure") {
                   print("Payment was a failure");
+                  analytics.logEvent(name: 'purchase:failure');
+
                   Navigator.of(context).pop();
                   paymentFailureBuildDialogue(context);
                 }
@@ -553,6 +566,7 @@ Container checkoutCartDialogue(
                 //Scaffold.of(context).showSnackBar(snackBar);
                 //_congratulationsDialogue();
               } else {
+                analytics.logEvent(name: 'purchase:checkout_fail');
                 print('Checkout Entry has failed');
               }
             },

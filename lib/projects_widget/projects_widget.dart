@@ -6,6 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
@@ -14,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+
+import '../main.dart';
 
 Map<int, ProjectData> projectDataMap = Map();
 
@@ -37,6 +40,8 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
 
   Widget buildProjectListWidget(BuildContext context) {
     try {
+      analytics.logEvent(name: 'ProjectScreen');
+
       return StreamBuilder<QuerySnapshot>(
         stream: databaseReference.collection("projects").snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -108,43 +113,17 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
           style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
-        /* actions: [
-          IconButton(
-            onPressed: () => this.onItemPressed(context),
-            icon: Image.asset(
-              "assets/images/icons8-account-100.png",
-            ),
-          ),
-        ], */
         backgroundColor: Color.fromARGB(255, 65, 127, 69),
       ),
       body: Container(
-        //height: 750,
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 255, 255, 255),
         ),
         child: Stack(
           children: [
-            /*Positioned(
-          left: 10,
-          top: 10,
-          height: 30,
-          child: Text(
-            "August 2020",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: AppColors.secondaryText,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w500,
-              fontSize: 28,
-            ),
-          ),
-        ),*/
-            Positioned(
-              left: 3,
-              top: 18,
-              right: 1,
-              height: 650,
+            loadUserData(context),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: buildProjectListWidget(context),
             ),
           ],
