@@ -14,7 +14,7 @@ void switchPage(PageController controller, int pageNum) {
 }
 
 Widget myPage1Widget(BuildContext context) {
-  analytics.logEvent(name: 'Onboarding-1');
+  analytics.logEvent(name: 'Onboarding_1');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/bridge-1850679.png", fit: BoxFit.cover),
@@ -53,7 +53,7 @@ Widget myPage1Widget(BuildContext context) {
 }
 
 Widget myPage2Widget(BuildContext context) {
-  analytics.logEvent(name: 'Onboarding-2');
+  analytics.logEvent(name: 'Onboarding_2');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/plant-5310423.png", fit: BoxFit.cover),
@@ -92,7 +92,7 @@ Widget myPage2Widget(BuildContext context) {
 }
 
 Widget myPage3Widget(BuildContext context) {
-  analytics.logEvent(name: 'Onboarding-3');
+  analytics.logEvent(name: 'Onboarding_3');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
       Image.asset("assets/images/mountains-919040.png", fit: BoxFit.cover),

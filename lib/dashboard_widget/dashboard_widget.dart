@@ -133,7 +133,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       //turn border on
       purchaseItemListItems[index].boxSelected = true;
 
-      analytics.logEvent(name: 'add_to_cart:USD', parameters: {
+      analytics.logEvent(name: 'add_to_cart', parameters: {
         'imageText': purchaseItemListItems[index].imageText,
         'header': purchaseItemListItems[index].header,
         'price': purchaseItemListItems[index].price,
@@ -142,7 +142,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     } else {
       //turn border off
       purchaseItemListItems[index].boxSelected = false;
-      analytics.logEvent(name: 'remove_from_cart:USD', parameters: {
+      analytics.logEvent(name: 'remove_from_cart', parameters: {
         'imageText': purchaseItemListItems[index].imageText,
         'header': purchaseItemListItems[index].header,
         'price': purchaseItemListItems[index].price,
@@ -551,12 +551,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     //keep returning widgets until the headers don't match
 
     if (((startIndex + index) < cartList.length) &&
-        (cartList[startIndex + index].header == header))
+        (cartList[startIndex + index].header == header)) {
+      print('Added purchse item:${cartList[startIndex + index].imageText}');
       return generalButtonItemWidget(
           startIndex + index,
           cartList[startIndex + index].imageIcon,
           cartList[startIndex + index].imageText);
-    else
+    } else
       return null;
   }
 
@@ -632,7 +633,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       if (i == 0 ||
           (purchaseItemListItems[i].header !=
               purchaseItemListItems[i - 1].header)) {
-        print("total items: " + purchaseItemListItems.length.toString());
         tempWidget = (buildGeneralAreaContainer(
             header: purchaseItemListItems[i].header,
             description: purchaseItemListItems[i].description,

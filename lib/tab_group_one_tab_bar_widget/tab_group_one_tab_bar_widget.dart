@@ -41,7 +41,7 @@ class _TabGroupOneTabBarWidgetState extends State<TabGroupOneTabBarWidget> {
 
   void _onTabChanged(int index) {
     this.setState(() => _currentIndex = index);
-    analytics.logEvent(name: 'TabIndex:$index');
+    analytics.logEvent(name: 'TabIndex_$index');
     analytics.setCurrentScreen(screenName: 'TabIndex:$index');
   }
 

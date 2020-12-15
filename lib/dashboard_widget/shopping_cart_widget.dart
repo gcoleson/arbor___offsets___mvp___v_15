@@ -164,7 +164,6 @@ Future checkoutCartBuildDialogue(
           overflow: Overflow.visible,
           fit: StackFit.expand,
           children: [
-            //Text("data")
             checkoutCartDialogue(context, purchaseItemList),
             Positioned(
               right: 10,
@@ -383,6 +382,10 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
 Container checkoutCartDialogue(
     BuildContext context, List<CartItem> purchaseItemList) {
   String projectName;
+  double totalTrees = 0;
+  double totalCoins = 0;
+  double totalMoney = 0;
+
   return Container(
     alignment: Alignment.topCenter,
     //margin: EdgeInsetsGeometry.infinity,
@@ -501,7 +504,6 @@ Container checkoutCartDialogue(
               String checkout_json;
               var checkout_list = [];
               var order_list = [];
-              double totalTrees = 0;
 
               for (var i = 0; i < purchaseItemList.length; i++) {
                 //check to see that headers don't match, if so make another area in the cart
@@ -517,7 +519,9 @@ Container checkoutCartDialogue(
                     'trees': purchaseItemList[i].treeCount
                   });
 
-                  totalTrees += purchaseItemList[i].treeCount.toInt();
+                  totalTrees += purchaseItemList[i].treeCount;
+                  totalCoins += purchaseItemList[i].coinCount;
+                  totalMoney += purchaseItemList[i].price;
                 }
               }
 
@@ -536,7 +540,12 @@ Container checkoutCartDialogue(
               if (response.body != null && response.body != 'error') {
                 sessionId = jsonDecode(response.body)['id'];
                 print('Checkout Success!!!!');
-                analytics.logEvent(name: 'purchase');
+                analytics.logEvent(name: 'purchase', parameters: {
+                  'items': purchaseItemList.length,
+                  'trees': totalTrees,
+                  'coins': totalCoins,
+                  'total': totalMoney
+                });
               }
 
               if (sessionId != 'error') {
@@ -547,7 +556,12 @@ Container checkoutCartDialogue(
                               sessionId: sessionId,
                             )));
                 if (outcome == "success") {
-                  analytics.logEvent(name: 'purchase_complete');
+                  analytics.logEvent(name: 'purchase_complete', parameters: {
+                    'items': purchaseItemList.length,
+                    'trees': totalTrees,
+                    'coins': totalCoins,
+                    'total': totalMoney
+                  });
 
                   FocusScope.of(context).unfocus();
                   Navigator.of(context).pop();
@@ -556,7 +570,7 @@ Container checkoutCartDialogue(
                   paymentSuccessBuildDialogue(context);
                 } else if (outcome == "failure") {
                   print("Payment was a failure");
-                  analytics.logEvent(name: 'purchase:failure');
+                  analytics.logEvent(name: 'purchase_failure');
 
                   Navigator.of(context).pop();
                   paymentFailureBuildDialogue(context);
@@ -566,7 +580,7 @@ Container checkoutCartDialogue(
                 //Scaffold.of(context).showSnackBar(snackBar);
                 //_congratulationsDialogue();
               } else {
-                analytics.logEvent(name: 'purchase:checkout_fail');
+                analytics.logEvent(name: 'purchase_checkout_fail');
                 print('Checkout Entry has failed');
               }
             },
