@@ -485,47 +485,45 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   /*===============================================================================================
   Checkout Button
   ================================================================================================*/
-  Container buildCheckoutButtonContainer() {
-    return Container(
-      width: 300,
-      height: 50,
-      margin: EdgeInsets.only(left: 20, right: 20),
-      decoration: BoxDecoration(
-        color: AppColors.primaryDarkGreen,
-        borderRadius: Radii.k8pxRadius,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Builder(
-            builder: (BuildContext context) {
-              return GestureDetector(
-                onTap: () {
-                  checkoutCartBuildDialogue(context, purchaseItemListItems);
-                  print('Return Dashboard');
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  child: AutoSizeText(
-                    "Checkout",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontFamily: "SF Pro Text",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 17,
-                      letterSpacing: -0.408,
-                      height: 1.29412,
-                    ),
-                  ),
-                ),
-              );
-            },
+  Widget buildCheckoutButtonContainer() {
+    return GestureDetector(
+        onTap: () {
+          checkoutCartBuildDialogue(context, purchaseItemListItems);
+        },
+        child: Container(
+          width: 300,
+          height: 50,
+          margin: EdgeInsets.only(left: 20, right: 20),
+          decoration: BoxDecoration(
+            color: AppColors.primaryDarkGreen,
+            borderRadius: Radii.k8pxRadius,
           ),
-        ],
-      ),
-    );
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    alignment: Alignment.center,
+                    child: AutoSizeText(
+                      "Checkout",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontFamily: "SF Pro Text",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17,
+                        letterSpacing: -0.408,
+                        height: 1.29412,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ));
   }
 
   /*===============================================================================================
