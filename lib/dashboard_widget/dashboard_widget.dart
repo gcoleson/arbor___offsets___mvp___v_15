@@ -118,6 +118,56 @@ class DashboardWidget extends StatefulWidget {
 class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
 
+  //TODO: Make the screens dynamic and not overflow for all typoes of screen resolutions
+  Future checkoutCartBuildDialogue(
+      BuildContext context, List<CartItem> purchaseItemList) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
+          insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+          content: Stack(
+            overflow: Overflow.visible,
+            fit: StackFit.expand,
+            children: [
+              checkoutCartDialogue(context, purchaseItemList),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: Container(
+                  color: Color.fromARGB(0, 0, 0, 0),
+                  height: 40,
+                  width: 40,
+                  child: FlatButton(
+                    onPressed: () {
+                      clearCheckoutHighlights();
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.transparent,
+                    child: Text(
+                      "X",
+                      style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 28,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Color getProductBorderSelectColor(int index) {
     if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
@@ -159,6 +209,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           });
         },
         child: generalButtonItemContainer(index, iconName, iconText));
+  }
+
+  void clearCheckoutHighlights() {
+    setState(() {
+      for (var i = 0; i < purchaseItemListItems.length; i++) {
+        purchaseItemListItems[i].boxSelected = false;
+      }
+    });
   }
 
   Widget buildHighlightedCartItems()
@@ -357,6 +415,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   ================================================================================================*/
   @override
   void initState() {
+    print('Init Dashboard');
     super.initState();
   }
 
@@ -364,6 +423,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   Widget build(BuildContext context) {
     // user statistics
     analytics.logEvent(name: 'DashboardScreen');
+    print('Build Dashboard');
 
     //Stream data collection
     var userStatStreamBuilder = StreamBuilder(
@@ -443,6 +503,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               return GestureDetector(
                 onTap: () {
                   checkoutCartBuildDialogue(context, purchaseItemListItems);
+                  print('Return Dashboard');
                 },
                 child: Container(
                   alignment: Alignment.center,

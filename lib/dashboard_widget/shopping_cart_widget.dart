@@ -146,53 +146,6 @@ Container form() {
 }
 //}
 
-//TODO: Make the screens dynamic and not overflow for all typoes of screen resolutions
-Future checkoutCartBuildDialogue(
-    BuildContext context, List<CartItem> purchaseItemList) {
-  return showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        contentPadding: EdgeInsets.all(0.0),
-        insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
-        ),
-        content: Stack(
-          overflow: Overflow.visible,
-          fit: StackFit.expand,
-          children: [
-            checkoutCartDialogue(context, purchaseItemList),
-            Positioned(
-              right: 10,
-              top: 10,
-              child: Container(
-                color: Color.fromARGB(0, 0, 0, 0),
-                height: 40,
-                width: 40,
-                child: FlatButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  color: Colors.transparent,
-                  child: Text(
-                    "X",
-                    style: TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 28,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
 Widget buildLineItems(List<CartItem> purchaseItemList)
 //loop through all items and make into a grid 2x
 {
