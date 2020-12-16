@@ -26,7 +26,6 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
         return CircularProgressIndicator();
       }
       try {
-        print("User Data Loaded");
         userStats.consecutiveMonths = snapshot.data["consecutiveMonths"];
         userStats.totalMonths = snapshot.data["totalMonths"];
         userStats.totalTrees = snapshot.data["totalTrees"];
@@ -134,7 +133,6 @@ Container buildTotalMonthsContainer(int totalMonths) {
   Stream Builder for Months in a row
   ================================================================================================*/
 Widget buildMonthsInARowContainer(int consecutiveMonths) {
-  print("consecutive months are: " + consecutiveMonths.toString());
   return Container(
     height: 50,
     margin: EdgeInsets.only(left: 1, top: 20),

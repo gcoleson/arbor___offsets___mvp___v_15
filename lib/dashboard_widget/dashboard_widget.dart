@@ -76,7 +76,6 @@ Widget loadUserData(BuildContext context) {
           userdata.selectedprojectnumber =
               userDocument['selectedprojectnumber'];
           userdata.dataLoadedFromDB = true;
-          print('Loaded User Data');
           return SizedBox.shrink();
         } catch (error) {
           print('Get user data error');
@@ -415,7 +414,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   ================================================================================================*/
   @override
   void initState() {
-    print('Init Dashboard');
     super.initState();
   }
 
@@ -423,7 +421,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   Widget build(BuildContext context) {
     // user statistics
     analytics.logEvent(name: 'DashboardScreen');
-    print('Build Dashboard');
 
     //Stream data collection
     var userStatStreamBuilder = StreamBuilder(
@@ -533,6 +530,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     @required String header,
     @required String description,
     @required IndexedWidgetBuilder itemBuilder,
+    @required int itemCount,
   }) {
     return Container(
       width: 416,
@@ -574,6 +572,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             margin: EdgeInsets.only(left: 14, top: 9),
             child: GridView.builder(
               scrollDirection: Axis.horizontal,
+              itemCount: itemCount,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 108,
                 childAspectRatio: 1.13684,
@@ -611,7 +610,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
     if (((startIndex + index) < cartList.length) &&
         (cartList[startIndex + index].header == header)) {
-      print('Added purchse item:${cartList[startIndex + index].imageText}');
       return generalButtonItemWidget(
           startIndex + index,
           cartList[startIndex + index].imageIcon,
@@ -621,18 +619,20 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   }
 
   /*===============================================================================================
+  Count the Building Squares for each item to purchase
+  ================================================================================================*/
+
+  /*===============================================================================================
   Stream Builder for Products
   ================================================================================================*/
   Widget buildProductsListWidget(BuildContext context) {
     try {
       if (purchaseItemList().isNotEmpty) {
-        print('not empty purchase list');
         return Column(
           children: purchaseItemList(),
           crossAxisAlignment: CrossAxisAlignment.start,
         );
       } else {
-        print('empty purchase list');
         return StreamBuilder<QuerySnapshot>(
           stream: databaseReference.collection("products").snapshots(),
           builder:
@@ -654,7 +654,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               item.documentID = document.id;
               item.price = document['price'];
               item.treeCount = double.parse(document['treecount'].toString());
-              print(document['coincount']);
 
               item.coinCount = 5.0;
               item.boxSelected = false;
@@ -675,6 +674,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     }
   }
 
+  int itemCountInArea(int start, String header) {
+    int i;
+    purchaseItemListItems.sort((a, b) => a.header.compareTo(b.header));
+    for (i = 0; start < purchaseItemListItems.length; i++, start++) {
+      if (purchaseItemListItems[start].header != header) {
+        break;
+      }
+    }
+    return i;
+  }
+
   /*===============================================================================================
   Calculating all the items needed to go into each row
   ================================================================================================*/
@@ -693,14 +703,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           (purchaseItemListItems[i].header !=
               purchaseItemListItems[i - 1].header)) {
         tempWidget = (buildGeneralAreaContainer(
-            header: purchaseItemListItems[i].header,
-            description: purchaseItemListItems[i].description,
-            itemBuilder: (context, index) => buildGeneralButtonItemWidget(
-                context,
-                index,
-                i,
-                purchaseItemListItems,
-                purchaseItemListItems[i].header)));
+          itemCount: itemCountInArea(i, purchaseItemListItems[i].header),
+          header: purchaseItemListItems[i].header,
+          description: purchaseItemListItems[i].description,
+          itemBuilder: (context, index) => buildGeneralButtonItemWidget(context,
+              index, i, purchaseItemListItems, purchaseItemListItems[i].header),
+        ));
 
         returnList.add(tempWidget);
       }
