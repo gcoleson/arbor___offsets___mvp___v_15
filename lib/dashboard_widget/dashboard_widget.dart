@@ -422,18 +422,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     // user statistics
     analytics.logEvent(name: 'DashboardScreen');
 
-    //Stream data collection
-    var userStatStreamBuilder = StreamBuilder(
-        stream: databaseReference
-            .collection("users")
-            .doc(databaseService.uid)
-            .snapshots(),
-        builder: (context, snapshot) {
-          userStats.consecutiveMonths = snapshot.data["consecutiveMonths"];
-          print("I am called");
-          return SizedBox.shrink();
-        });
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -465,9 +453,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               loadUserData(context),
-              // buildImpactContainer(3, 3),
-              // buildMonthsInARowContainer(3),
-              // buildTotalMonthsContainer(3),
               buildUserStats(context, userStats),
               buildLiveClimatePositveAlign(),
               buildOffsetPurchaseListContainer(context),
@@ -594,8 +579,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         thickness: 5,
         child: SingleChildScrollView(
           child: Container(
-            height: 600,
-            margin: EdgeInsets.only(left: 1, top: 8, right: 5),
+            margin: EdgeInsets.only(left: 1, top: 8, right: 5, bottom: 8),
             child: buildProductsListWidget(context),
           ),
         ));

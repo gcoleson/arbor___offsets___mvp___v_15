@@ -149,7 +149,6 @@ Container form() {
 Widget buildLineItems(List<CartItem> purchaseItemList)
 //loop through all items and make into a grid 2x
 {
-  SingleChildScrollView productColumn;
   List<Widget> returnList = new List();
   double totalCost = 0;
   double totalTrees = 0;
@@ -320,8 +319,6 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
     'total': totalCost.toStringAsFixed(2).padRight(4, '0'),
     'coins': totalCoins,
   });
-
-  //returnList.add(value);
 
   return Expanded(
     child: SingleChildScrollView(
