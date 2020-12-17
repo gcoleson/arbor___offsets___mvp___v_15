@@ -457,6 +457,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               buildLiveClimatePositveAlign(),
               buildOffsetPurchaseListContainer(context),
               buildCheckoutButtonContainer(),
+              //add some space below the checkout button
+              Container(
+                height: 20,
+              )
             ],
           )
         ],
