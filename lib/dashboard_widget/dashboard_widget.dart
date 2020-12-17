@@ -612,20 +612,27 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   Widget buildProductsListWidget(BuildContext context) {
     try {
       if (purchaseItemList().isNotEmpty) {
+        print('PurchaseItemList not empty');
         return Column(
           children: purchaseItemList(),
           crossAxisAlignment: CrossAxisAlignment.start,
         );
       } else {
         return StreamBuilder<QuerySnapshot>(
-          stream: databaseReference.collection("products").snapshots(),
+          stream: databaseReference
+              .collection("products")
+              .snapshots(includeMetadataChanges: true),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) return LinearProgressIndicator();
 
-            final int messageCount = snapshot.data.docs.length;
+            /*print(snapshot.data.metadata.isFromCache
+                ? "NOT FROM NETWORK"
+                : "FROM NETWORK");*/
 
-            for (var i = 0; i < messageCount; i++) {
+            final int productCount = snapshot.data.docs.length;
+
+            for (var i = 0; i < productCount; i++) {
               //loop through all records
               DocumentSnapshot document = snapshot.data.docs[i];
 
@@ -638,9 +645,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               item.documentID = document.id;
               item.price = document['price'];
               item.treeCount = double.parse(document['treecount'].toString());
-
               item.coinCount = 5.0;
               item.boxSelected = false;
+
+              //check to make sure we have not added this document yet
+              if (purchaseItemListItems.isNotEmpty) {
+                purchaseItemListItems.removeWhere(
+                    (element) => element.documentID == item.documentID);
+              }
 
               purchaseItemListItems.add(item);
             }
