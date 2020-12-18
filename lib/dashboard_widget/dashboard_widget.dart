@@ -22,6 +22,10 @@ import 'UserStats.dart';
 import 'user_stats_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:arbor___offsets___mvp___v_15/projects_widget/arbor_explanation.dart';
 
 List<CartItem> purchaseItemListItems = List<CartItem>();
 UserStats userStats = new UserStats();
@@ -419,6 +423,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    checkFirstTimeOpen().then((value) {
+      if (value == "error") {
+        firstTimeOpen("opened", context);
+      } else {
+        print(value);
+      }
+    });
     // user statistics
     analytics.logEvent(name: 'DashboardScreen');
 
@@ -738,4 +749,45 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       ),
     );
   }
+}
+
+Future<String> checkFirstTimeOpen() async {
+  String value;
+  try {
+    final directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/data2.txt');
+    value = await file.readAsString();
+  } catch (e) {
+    value = "error";
+  }
+  return value;
+}
+
+Future firstTimeOpen(String text, BuildContext context) async {
+  showDialog(
+    context: context,
+    builder: (_) => new CupertinoAlertDialog(
+      title: new Text("Select an Activity"),
+      content: new Text(
+          "Pick an activity to reverse its climate impact. Arbor automatically calculates the cost of undoing its negative impact."),
+      actions: [
+        CupertinoDialogAction(
+          child: Text("Got it"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        CupertinoDialogAction(
+          child: Text("Tell Me More"),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => arborExplanation()));
+          },
+        ),
+      ],
+    ),
+  );
+  final Directory directory = await getApplicationDocumentsDirectory();
+  final File file = File('${directory.path}/data2.txt');
+  await file.writeAsString(text);
 }

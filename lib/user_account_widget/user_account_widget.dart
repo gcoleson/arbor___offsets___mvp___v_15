@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internationalization/internationalization.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:arbor___offsets___mvp___v_15/projects_widget/arbor_explanation.dart';
 
 import '../main.dart';
 
@@ -240,8 +241,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         setState(() {
           isExpandedTest[index] = !isExpanded;
         });
-        if (index == 1 && !isExpanded) {
+        if (index == 2 && !isExpanded) {
           launch(emailLaunchUri.toString());
+        }
+        if (index == 1 && !isExpanded) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => arborExplanation()));
         }
       },
       expandedHeaderPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -307,6 +312,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         //   body: Text("test 3"),
         //   isExpanded: isExpandedTest[2],
         // ),
+        ExpansionPanel(
+          canTapOnHeader: true,
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return ListTile(
+              title: Text(
+                "How Arbor Works",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 65, 127, 69),
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 28,
+                ),
+              ),
+            );
+          },
+          body: Text("test"),
+          //isExpanded: isExpandedTest[1]
+        ),
 
         ExpansionPanel(
           canTapOnHeader: true,
@@ -326,7 +350,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           },
           body: Text("test"),
           //isExpanded: isExpandedTest[1]
-        )
+        ),
       ],
     );
   }

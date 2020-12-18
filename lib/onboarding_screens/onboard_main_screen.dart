@@ -74,6 +74,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  bool isVisible = true;
   final _controller = new PageController();
 
   static const _kDuration = const Duration(milliseconds: 300);
@@ -93,25 +94,44 @@ class MyHomePageState extends State<MyHomePage> {
       type: MaterialType.transparency,
       child: Stack(
         children: <Widget>[
-          PageView(controller: _controller, children: _onboardingScreens),
+          PageView(
+            controller: _controller,
+            children: _onboardingScreens,
+            onPageChanged: (value) {
+              print(_onboardingScreens.length - 1);
+              if (value >= _onboardingScreens.length - 1) {
+                setState(() {
+                  isVisible = false;
+                });
+              } else {
+                setState(() {
+                  isVisible = true;
+                });
+              }
+            },
+          ),
           new Positioned(
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-            child: new Container(
-              color: Colors.grey[800].withOpacity(0.5),
-              padding: const EdgeInsets.all(20.0),
-              child: new Center(
-                child: new DotsIndicator(
-                  controller: _controller,
-                  itemCount: _onboardingScreens.length,
-                  onPageSelected: (int page) {
-                    _controller.animateToPage(
-                      page,
-                      duration: _kDuration,
-                      curve: _kCurve,
-                    );
-                  },
+            child: Visibility(
+              visible: isVisible,
+              child: new Container(
+                color: Colors.grey[800].withOpacity(0.5),
+                padding: const EdgeInsets.all(20.0),
+                child: new Center(
+                  child: new DotsIndicator(
+                    controller: _controller,
+                    itemCount: _onboardingScreens.length - 1,
+                    onPageSelected: (int page) {
+                      print("========");
+                      _controller.animateToPage(
+                        page,
+                        duration: _kDuration,
+                        curve: _kCurve,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
