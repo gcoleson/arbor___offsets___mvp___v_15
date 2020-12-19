@@ -4,6 +4,7 @@ import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_gr
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'onboard_main_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 void switchPage(PageController controller, int pageNum) {
   controller.animateToPage(
@@ -286,6 +287,7 @@ Widget myPage5Widget(BuildContext context) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwirdResetController = TextEditingController();
 
   void signIn() async {
     try {
@@ -317,6 +319,7 @@ Widget myPage5Widget(BuildContext context) {
   analytics.logEvent(name: 'Signin');
 
   return new Scaffold(
+    resizeToAvoidBottomPadding: false,
     body: Container(
       child: Stack(
         fit: StackFit.expand,
@@ -380,7 +383,9 @@ Widget myPage5Widget(BuildContext context) {
                       true)),
               _customButton("Sign In", signIn),
               FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    passwordResetDialog(context, _passwirdResetController);
+                  },
                   child: Text(
                     "Forgot Password?",
                     style: TextStyle(
@@ -494,4 +499,47 @@ Row _customTextField(String imageFilePath, String customLabelText,
       Spacer(flex: 14)
     ],
   );
+}
+
+Future passwordResetDialog(
+    BuildContext context, TextEditingController controller) async {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+          height: 300,
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(30),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Spacer(),
+              Text(
+                "Type your email",
+                style: AppFonts.arborSubTitle,
+              ),
+              Spacer(),
+              _customTextField(
+                  "", "email", controller, TextInputType.emailAddress, false),
+              Spacer(),
+              _customButton(
+                  "Password Reset", () => resetPassword(controller.text)),
+              Spacer(),
+              _customButton("Cancel", () => Navigator.pop(context)),
+              Spacer(),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Future<void> resetPassword(String email) async {
+  await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 }
