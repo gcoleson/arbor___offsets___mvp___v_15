@@ -255,6 +255,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
   var iOsSystemBackgroundsLightSystemBack2 = Color.fromARGB(255, 255, 255, 255);
 
+/*
   /*===============================================================================================
   Deprecated: old dialogue builder for the congrtulations dialogue box
   ================================================================================================*/
@@ -285,7 +286,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           );
         });
   }
+*/
 
+/*
   /*===============================================================================================
   Deprecated: original dialogue box for congratulation of payment
   ================================================================================================*/
@@ -355,6 +358,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           ],
         ));
   }
+*/
 
   /*===============================================================================================
   Container for squares that contain product
@@ -658,9 +662,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               item.imageText = document['imagetext'];
               item.imageIcon = document['imageicon'];
               item.documentID = document.id;
-              item.price = document['price'];
-              item.treeCount = double.parse(document['treecount'].toString());
-              item.coinCount = 5.0;
+              item.price = document['price'] + .0;
+              item.treeCount = document['treecount'] + .0;
+              //item.coinCount = 5.0;
+              item.coinCount = document['coincount'] + .0;
               item.boxSelected = false;
 
               //check to make sure we have not added this document yet

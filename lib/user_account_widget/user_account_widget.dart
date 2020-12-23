@@ -245,8 +245,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           launch(emailLaunchUri.toString());
         }
         if (index == 1 && !isExpanded) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => arborExplanation()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => arborExplanation()));
         }
       },
       expandedHeaderPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),

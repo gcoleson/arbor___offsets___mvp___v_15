@@ -22,14 +22,22 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
         .doc(databaseService.uid)
         .snapshots(),
     builder: (context, snapshot) {
+      print('3');
       if (!snapshot.hasData) {
         return CircularProgressIndicator();
       }
       try {
         userStats.consecutiveMonths = snapshot.data["consecutiveMonths"];
+
         userStats.totalMonths = snapshot.data["totalMonths"];
-        userStats.totalTrees = snapshot.data["totalTrees"];
-        userStats.treesThisMonth = snapshot.data["treesThisMonth"];
+
+        double dummy = snapshot.data["totalTrees"];
+        userStats.totalTrees = dummy.toInt();
+
+        dummy = snapshot.data["treesThisMonth"];
+        userStats.treesThisMonth = dummy.toInt();
+
+        print("stats");
         return Column(
           children: [
             buildImpactContainer(
@@ -40,6 +48,7 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
         );
       } catch (error) {
         print(error.toString());
+
         return Column(
           children: [
             buildImpactContainer(0, 0),
