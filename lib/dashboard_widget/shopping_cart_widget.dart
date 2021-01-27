@@ -479,7 +479,11 @@ Container checkoutCartDialogue(
               final http.Response response = await http.post(
                 'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop',
                 body: json.encode(
-                  {'items': checkout_list},
+                  {
+                    'items': checkout_list,
+                    'projectName': 'project number: ' +
+                        userdata.selectedprojectnumber.toString()
+                  },
                 ),
               );
               Navigator.pop(context);
