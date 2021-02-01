@@ -160,8 +160,9 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          "Projects",
+          'Projects',
           textAlign: TextAlign.center,
           style: AppFonts.navBarHeader,
         ),

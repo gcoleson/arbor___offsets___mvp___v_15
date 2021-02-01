@@ -145,7 +145,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
                         right: 10,
                         bottom: 10,
                         child: AutoSizeText(
-                          projectData.selected ? "Selected:" : '',
+                          projectData.selected ? "Supporting" : '',
                           textAlign: TextAlign.right,
                           maxLines: 1,
                           style: TextStyle(
@@ -198,17 +198,20 @@ class ProjectTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 30,
-      child: AutoSizeText(
-        projectData.title,
-        textAlign: TextAlign.left,
-        maxLines: 2,
-        style: TextStyle(
-          color: Color.fromARGB(255, 0, 0, 0),
-          fontFamily: "Raleway",
-          fontWeight: FontWeight.w500,
-          fontSize: 21,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Container(
+        width: 386,
+        height: 30,
+        child: AutoSizeText(
+          projectData.title,
+          maxLines: 2,
+          style: TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0),
+            fontFamily: "Raleway-Light",
+            fontWeight: FontWeight.w300,
+            fontSize: 21,
+          ),
         ),
       ),
     );
@@ -225,17 +228,19 @@ class ProjectInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      margin: EdgeInsets.only(left: 13, right: 15, bottom: 3),
-      child: Row(
-        children: [
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Container(
+        height: 40,
+        width: 389,
+        margin: EdgeInsets.only(left: 0, right: 15, bottom: 3),
+        child: Row(children: [
           Expanded(
             flex: 1,
             child: Align(
               alignment: Alignment.topLeft,
               child: Container(
-                child: AutoSizeText(
+                child: Text(
                   projectData.brief,
                   textAlign: TextAlign.left,
                   style: TextStyle(
@@ -250,21 +255,23 @@ class ProjectInfoWidget extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: AutoSizeText(
+          Container(
+            width: 124,
+            height: 22,
+            margin: const EdgeInsets.only(right: 0.0),
+            child: Text(
               "${projectData.percent}" "% Funded",
               maxLines: 1,
               textAlign: TextAlign.right,
               style: TextStyle(
                 color: Color.fromARGB(255, 242, 106, 44),
-                fontFamily: "Raleway",
+                fontFamily: "Montserrat-Bold",
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
               ),
             ),
           ),
-        ],
+        ]),
       ),
     );
   }
