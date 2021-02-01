@@ -477,7 +477,7 @@ Container checkoutCartDialogue(
 
               // First Ping Firebase for session ID for stripe checkout
               final http.Response response = await http.post(
-                'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop',
+                'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
                 body: json.encode(
                   {
                     'items': checkout_list,
