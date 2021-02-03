@@ -22,7 +22,6 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
         .doc(databaseService.uid)
         .snapshots(),
     builder: (context, snapshot) {
-      print('3');
       if (!snapshot.hasData) {
         return CircularProgressIndicator();
       }
@@ -31,11 +30,24 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 
         userStats.totalMonths = snapshot.data["totalMonths"];
 
-        double dummy = snapshot.data["totalTrees"];
-        userStats.totalTrees = dummy.toInt();
+        var dummy1;
 
-        dummy = snapshot.data["treesThisMonth"];
-        userStats.treesThisMonth = dummy.toInt();
+        dummy1 = snapshot.data["totalTrees"];
+
+        if (dummy1 is int) {
+          userStats.totalTrees = dummy1;
+        } else {
+          userStats.totalTrees = dummy1.toInt();
+        }
+
+        var dummy2;
+        dummy2 = snapshot.data["treesThisMonth"];
+
+        if (dummy2 is int) {
+          userStats.treesThisMonth = dummy2;
+        } else {
+          userStats.treesThisMonth = dummy2.toInt();
+        }
 
         print("stats");
         return Column(

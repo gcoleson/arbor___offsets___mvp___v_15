@@ -205,10 +205,10 @@ class ProjectTitleWidget extends StatelessWidget {
         height: 30,
         child: AutoSizeText(
           projectData.title,
-          maxLines: 2,
+          maxLines: 1,
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
-            fontFamily: "Raleway-Light",
+            fontFamily: "Raleway",
             fontWeight: FontWeight.w300,
             fontSize: 21,
           ),
@@ -233,18 +233,19 @@ class ProjectInfoWidget extends StatelessWidget {
       child: Container(
         height: 40,
         width: 389,
-        margin: EdgeInsets.only(left: 0, right: 15, bottom: 3),
+        //margin: EdgeInsets.only(left: 0, right: 15, bottom: 3),
         child: Row(children: [
           Expanded(
             flex: 1,
             child: Align(
               alignment: Alignment.topLeft,
               child: Container(
-                child: Text(
+                height: 40,
+                child: AutoSizeText(
                   projectData.brief,
+                  maxLines: 2,
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    //color: AppColors.primaryText,
                     color: AppColors.Black,
                     fontFamily: "Raleway",
                     fontWeight: FontWeight.w300,

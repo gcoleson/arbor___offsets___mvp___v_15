@@ -401,7 +401,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       });
                     },
                   )),
-              Text(iconText,
+              AutoSizeText(iconText,
+                  maxLines: 3,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color.fromARGB(255, 65, 127, 69),
@@ -538,14 +539,15 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   }) {
     return Container(
       width: 416,
-      height: 190,
+      //height: 190,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             margin: EdgeInsets.only(left: 4),
-            child: Text(
+            child: AutoSizeText(
               header,
+              maxLines: 1,
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(255, 2, 2, 2),
@@ -558,8 +560,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           Container(
             width: 382,
             margin: EdgeInsets.only(left: 4, top: 2),
-            child: Text(
+            child: AutoSizeText(
               description,
+              maxLines: 2,
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(255, 2, 2, 2),
