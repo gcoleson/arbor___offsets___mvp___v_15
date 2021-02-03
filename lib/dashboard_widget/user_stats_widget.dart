@@ -212,7 +212,7 @@ Widget buildMonthsInARowContainer(int consecutiveMonths) {
                 child: Container(
                   margin: EdgeInsets.only(top: 7),
                   child: AutoSizeText(
-                    "months in a row of impact",
+                    "test months in a row of impact",
                     maxLines: 1,
                     textAlign: TextAlign.right,
                     style: AppFonts.monthlyImpactText,
