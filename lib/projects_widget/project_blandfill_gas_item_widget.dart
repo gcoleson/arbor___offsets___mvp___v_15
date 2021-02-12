@@ -14,6 +14,7 @@ import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+//import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 var loadingBuilder2 =
     (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
@@ -100,6 +101,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
     var imageDummy = projectData.imagemain;
 
     return Consumer<ProjectModel>(builder: (context, projectdata, child) {
+      //add true or false statement, boolean
       return Container(
         constraints: BoxConstraints.expand(height: 360),
         decoration: BoxDecoration(
@@ -107,6 +109,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
         ),
         child: Column(
           children: [
+            //this is where the padding goes...
             Container(
               height: 280,
               child: Container(
@@ -228,17 +231,15 @@ class ProjectInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Container(
-        height: 40,
-        width: 389,
-        //margin: EdgeInsets.only(left: 0, right: 15, bottom: 3),
-        child: Row(children: [
-          Expanded(
-            flex: 1,
-            child: Align(
-              alignment: Alignment.topLeft,
+    return Container(
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Expanded(
+            flex: 3,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 44,
+                maxWidth: 389,
+              ),
               child: Container(
                 height: 40,
                 child: AutoSizeText(
@@ -254,26 +255,21 @@ class ProjectInfoWidget extends StatelessWidget {
                   ),
                 ),
               ),
+            )),
+        Expanded(
+          child: Text(
+            "${projectData.percent}" "% Funded",
+            maxLines: 1,
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Color.fromARGB(255, 242, 106, 44),
+              fontFamily: "Montserrat-Bold",
+              fontWeight: FontWeight.w900,
+              fontSize: 18,
             ),
           ),
-          Container(
-            width: 124,
-            height: 22,
-            margin: const EdgeInsets.only(right: 0.0),
-            child: Text(
-              "${projectData.percent}" "% Funded",
-              maxLines: 1,
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: Color.fromARGB(255, 242, 106, 44),
-                fontFamily: "Montserrat-Bold",
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-              ),
-            ),
-          ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 }
