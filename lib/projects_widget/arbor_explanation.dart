@@ -59,7 +59,7 @@ Widget step(BuildContext context) {
         ),
         generateItem(
             "See Your Impact",
-            "Your imapct will be shown at the top of your dashboard.",
+            "Your impact will be shown at the top of your dashboard.",
             "assets/images/icons8ControlPanel64.png"),
         Container(
           height: 45,

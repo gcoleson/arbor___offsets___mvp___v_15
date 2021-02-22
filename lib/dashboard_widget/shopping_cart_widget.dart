@@ -813,7 +813,7 @@ Container successDialogue() {
         Container(
           padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Text(
-            "By eliminiating your climate impact, you're helping reversing climate change!",
+            "By eliminating your climate impact, you're helping reverse climate change!",
             textAlign: TextAlign.center,
             style: AppFonts.congratsSubhead,
           ),
