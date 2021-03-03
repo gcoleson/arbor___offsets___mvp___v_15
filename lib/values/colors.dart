@@ -23,6 +23,15 @@ class AppColors {
   static const Color brownGrey = Color.fromARGB(255, 142, 137, 107);
   static const Color mediumGreyScreen = Color.fromARGB(92, 60, 60, 67);
   static const Color lightGreenScreen = Color.fromARGB(50, 120, 120, 128);
+  static const Color customBody = Color.fromARGB(77, 60, 60, 67);
+  static const Color customBodyTransp = Color.fromARGB(153, 60, 60, 67);
+  static const Color cancelRed = Color.fromARGB(255, 214, 41, 41);
+  static const Color iOsSystemFillsLight2SecondaryFillCol =
+      Color.fromARGB(41, 120, 120, 128);
+  static const Color iOsSystemGraySystemGray1Light =
+      Color.fromARGB(255, 142, 142, 147);
+  static const Color iOsSystemTintsSystemRedLight =
+      Color.fromARGB(255, 255, 59, 48);
 
 //these are the original Hex values (to double-check in Zeplin or Sketch:
   //primaryDarkGreen = #417F45
