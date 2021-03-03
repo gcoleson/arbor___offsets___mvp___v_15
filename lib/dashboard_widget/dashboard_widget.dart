@@ -112,6 +112,7 @@ Widget loadUserData(BuildContext context) {
 class DashboardWidget extends StatefulWidget {
   final VoidCallback onUserIconPressed;
   bool val = true;
+
   DashboardWidget(this.onUserIconPressed);
 
   @override
@@ -119,7 +120,14 @@ class DashboardWidget extends StatefulWidget {
 }
 
 class _DashboardWidgetState extends State<DashboardWidget> {
+  bool isSubscribed = false;
+
   void onItemPressed(BuildContext context) {}
+
+  void onSubscriptionSwitched(value) {
+    print(isSubscribed);
+    isSubscribed = !isSubscribed;
+  }
 
   //TODO: Make the screens dynamic and not overflow for all typoes of screen resolutions
   Future checkoutCartBuildDialogue(
@@ -139,7 +147,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             overflow: Overflow.visible,
             fit: StackFit.expand,
             children: [
-              checkoutCartDialogue(context, purchaseItemList),
+              checkoutCartDialogue(context, purchaseItemList,
+                  onSubscriptionSwitched, isSubscribed),
               Positioned(
                 right: 10,
                 top: 10,
