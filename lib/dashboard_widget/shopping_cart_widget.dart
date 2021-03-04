@@ -475,20 +475,78 @@ Container checkoutCartDialogue(
                 }
               }
 
+              String customerId;
+              bool isCustomer;
+
+              print(databaseService.uid);
+
+              // var sub = databaseReference
+              //     .collection("users")
+              //     .doc(databaseService.uid)
+              //     .snapshots()
+              //     .listen((event) {
+              //   if (event.data().containsKey("customerId")) {
+              //     print("reach1");
+              //     isCustomer = true;
+              //     event.get("customerId");
+              //   } else {
+              //     print("reach2");
+              //     isCustomer = false;
+              //   }
+              // });
+
+              print("reach4");
+              DocumentSnapshot ds = await databaseReference
+                  .collection('users')
+                  .doc(databaseService.uid)
+                  .get();
+
+              isCustomer = ds.data().containsKey("customerId");
+
+              // if (ds.exists) {
+              //   customerId = ds.get('customerId');
+              //   print("customer Id doesn't exist");
+              // } else {
+              //   customerId = "Error: customer ID is empty";
+              //   print(customerId);
+              // }
+
+              print(customerId);
+
+              http.Response response;
+
+              if (isCustomer) {
+                customerId = ds.get("customerId");
+                response = await http.post(
+                  'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop',
+                  body: json.encode(
+                    {
+                      'customerIdClient': customerId,
+                      'items': checkout_list,
+                      'projectName': 'project number: ' +
+                          userdata.selectedprojectnumber.toString()
+                    },
+                  ),
+                  // body: json.encode(
+                  //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
+                  // ),
+                );
+              } else {
+                response = await http.post(
+                  'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop2',
+                  body: json.encode(
+                    {
+                      'items': checkout_list,
+                      'projectName': 'project number: ' +
+                          userdata.selectedprojectnumber.toString()
+                    },
+                  ),
+                  // body: json.encode(
+                  //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
+                  // ),
+                );
+              }
               // First Ping Firebase for session ID for stripe checkout
-              final http.Response response = await http.post(
-                'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop',
-                body: json.encode(
-                  {
-                    'items': checkout_list,
-                    'projectName': 'project number: ' +
-                        userdata.selectedprojectnumber.toString()
-                  },
-                ),
-                // body: json.encode(
-                //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
-                // ),
-              );
               Navigator.pop(context);
 
               print(jsonDecode(response.body));
