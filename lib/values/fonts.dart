@@ -89,6 +89,13 @@ abstract class AppFonts {
   static const TextStyle screenSubhead = TextStyle(
     fontFamily: 'Montserrat-Medium',
     color: AppColors.primaryDarkGreen,
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal,
+  );
+  static const TextStyle unactivatedItemTextCenter = TextStyle(
+    fontFamily: 'Montserrat-Medium',
+    color: AppColors.primaryDarkGreen,
     fontSize: 28,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
@@ -205,7 +212,7 @@ abstract class AppFonts {
   );
   static const TextStyle smallIncidentals = TextStyle(
     fontFamily: 'Raleway-LightItalic',
-    color: AppColors.Black,
+    color: AppColors.primaryDarkGreen,
     fontSize: 12,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
@@ -244,7 +251,7 @@ abstract class AppFonts {
 
   static const TextStyle body2Bold2Dark1LabelColor2CenterAligned = TextStyle(
     fontFamily: 'SFProText-SemiBold',
-    color: AppColors.Black,
+    color: AppColors.white,
     fontSize: 17,
   );
 

@@ -257,15 +257,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ExpansionPanel(
           canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(
-                "Change Email or Password",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 65, 127, 69),
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
+            return Container(
+              color: AppColors.transparentScreen,
+              child: ListTile(
+                title: Text(
+                  "Change Email or Password",
+                  textAlign: TextAlign.left,
+                  style: AppFonts.screenSubhead,
                 ),
               ),
             );
@@ -277,15 +275,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ExpansionPanel(
           canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(
-                "Manage Upcoming Payments",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 65, 127, 69),
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
+            return Container(
+              color: AppColors.transparentScreen,
+              child: ListTile(
+                title: AutoSizeText(
+                  "Manage Upcoming Payments",
+                  textAlign: TextAlign.left,
+                  style: AppFonts.screenSubhead,
                 ),
               ),
             );
@@ -317,15 +313,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ExpansionPanel(
           canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(
-                "How Arbor Works",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 65, 127, 69),
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
+            return Container(
+              color: AppColors.transparentScreen,
+              child: ListTile(
+                title: Text(
+                  "How Arbor Works",
+                  textAlign: TextAlign.left,
+                  style: AppFonts.screenSubhead,
                 ),
               ),
             );
@@ -337,15 +331,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ExpansionPanel(
           canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(
-                "Contact Us",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 65, 127, 69),
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
+            return Container(
+              color: AppColors.transparentScreen,
+              child: ListTile(
+                title: Text(
+                  "Contact Us",
+                  textAlign: TextAlign.left,
+                  style: AppFonts.screenSubhead,
                 ),
               ),
             );
@@ -360,13 +352,139 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
 // TODO: Add upcoming payment handling here
 Widget buildManageUpcomingPayments() {
-  return Column(
+  return Column(children: [
+    SizedBox(height: 15),
+    Container(
+      width: 308,
+      height: 30,
+      alignment: Alignment.topLeft,
+      child: Text(
+        'Bundle: Conservation Projects',
+        style: AppFonts.projectLabelHeadline,
+      ),
+    ),
+    SizedBox(
+      height: 1,
+    ),
+    Container(
+      width: 308,
+      height: 30,
+      alignment: Alignment.topLeft,
+      child: Text(
+        '18.50	renewing 3/12/21',
+        style: AppFonts.projectLabelSubhead,
+      ),
+    ),
+    SizedBox(
+      height: 1,
+    ),
+    Container(
+      width: 308,
+      height: 16,
+      alignment: Alignment.topLeft,
+      child: Text(
+        'Active',
+        style: AppFonts.activeSubscriptionLabel,
+      ),
+    ),
+    Divider(
+      height: 32,
+      thickness: 2,
+      color: AppColors.divider,
+      indent: 63,
+      endIndent: 20,
+    ),
+    Container(
+      width: 308,
+      height: 30,
+      alignment: Alignment.topLeft,
+      child: Text(
+        'Bundle: Conservation Projects',
+        style: AppFonts.projectLabelHeadline,
+      ),
+    ),
+    SizedBox(
+      height: 1,
+    ),
+    Container(
+      width: 308,
+      height: 30,
+      alignment: Alignment.topLeft,
+      child: Text(
+        '18.50	renewing 3/12/21',
+        style: AppFonts.projectLabelSubhead,
+      ),
+    ),
+    SizedBox(
+      height: 1,
+    ),
+    Container(
+      width: 308,
+      height: 16,
+      alignment: Alignment.topLeft,
+      child: Text(
+        'Active',
+        style: AppFonts.activeSubscriptionLabel,
+      ),
+    ),
+    SizedBox(height: 40),
+    ButtonTheme(
+        minWidth: 344,
+        height: 50,
+        child: RaisedButton(
+            color: Colors.red,
+            key: null,
+            onPressed: () {},
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0)),
+            child: Text(
+              "Manage Subscriptions",
+              style: AppFonts.body2Bold2Dark1LabelColor2CenterAligned,
+            ))),
+    SizedBox(height: 10),
+    ButtonTheme(
+        minWidth: 344,
+        height: 50,
+        child: RaisedButton(
+            color: Colors.red,
+            key: null,
+            onPressed: () {},
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0)),
+            child: Text(
+              "Cancel Selected",
+              style: AppFonts.body2Bold2Dark1LabelColor2CenterAligned,
+
+//screen with no upcoming payments
+              /*Column(
     children: [
-      Text(
-        "write upcoming payments here",
+      Column(
+          children: [
+            Container(
+              width: 344,
+              height: 71,
+              child: Text(
+                "You have no upcoming recurring monthly",
+                textAlign: TextAlign.center,
+                style: AppFonts.unactivatedItemTextCenter,
+              ),
+            ),
+          ],
+      ),
+      SizedBox(height: 21),
+      Container(
+          width: 344,
+          height: 35,
+          child: Text(
+            "To activate one, start a purchase on your Dashboard and select “Repeat This Purchase Monthly” on your shopping cart screen.",
+            textAlign: TextAlign.center,
+            style: AppFonts.smallIncidentals,
+          ),
       )
-    ],
-  );
+    ],*/
+            ))),
+    SizedBox(height: 30),
+  ]);
 }
 
 class UserAccountWidget extends StatelessWidget {

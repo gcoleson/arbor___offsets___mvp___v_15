@@ -26,6 +26,7 @@ class AppColors {
   static const Color customBody = Color.fromARGB(77, 60, 60, 67);
   static const Color customBodyTransp = Color.fromARGB(153, 60, 60, 67);
   static const Color cancelRed = Color.fromARGB(255, 214, 41, 41);
+  static const Color divider = Color.fromARGB(255, 232, 232, 232);
   static const Color iOsSystemFillsLight2SecondaryFillCol =
       Color.fromARGB(41, 120, 120, 128);
   static const Color iOsSystemGraySystemGray1Light =
