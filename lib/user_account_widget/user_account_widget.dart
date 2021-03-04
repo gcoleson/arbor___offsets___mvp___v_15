@@ -241,10 +241,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         setState(() {
           isExpandedTest[index] = !isExpanded;
         });
-        if (index == 2 && !isExpanded) {
+        if (index == 3 && !isExpanded) {
           launch(emailLaunchUri.toString());
         }
-        if (index == 1 && !isExpanded) {
+        if (index == 2 && !isExpanded) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -274,26 +274,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           isExpanded: isExpandedTest[0],
         ),
 
-        //TODO: Scope Reduction revisit this later!
-        // ExpansionPanel(
-        //   canTapOnHeader: true,
-        //   headerBuilder: (BuildContext context, bool isExpanded) {
-        //     return ListTile(
-        //       title: Text(
-        //         "Change Payment",
-        //         textAlign: TextAlign.left,
-        //         style: TextStyle(
-        //           color: Color.fromARGB(255, 65, 127, 69),
-        //           fontFamily: "Montserrat",
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 28,
-        //         ),
-        //       ),
-        //     );
-        //   },
-        //   body: Text("test 2"),
-        //   isExpanded: isExpandedTest[1],
-        // ),
+        ExpansionPanel(
+          canTapOnHeader: true,
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return ListTile(
+              title: Text(
+                "Manage Upcoming Payments",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 65, 127, 69),
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 28,
+                ),
+              ),
+            );
+          },
+          body: buildManageUpcomingPayments(),
+          isExpanded: isExpandedTest[1],
+        ),
 
         //TODO: Scope Reduction Revisit Later
         // ExpansionPanel(
@@ -357,6 +356,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       ],
     );
   }
+}
+
+// TODO: Add upcoming payment handling here
+Widget buildManageUpcomingPayments() {
+  return Column(
+    children: [
+      Text(
+        "write upcoming payments here",
+      )
+    ],
+  );
 }
 
 class UserAccountWidget extends StatelessWidget {
