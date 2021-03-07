@@ -148,6 +148,7 @@ Container form() {
 
 Widget buildLineItems(List<CartItem> purchaseItemList)
 //loop through all items and make into a grid 2x
+
 {
   List<Widget> returnList = new List();
   double totalCost = 0;
@@ -427,10 +428,62 @@ Container checkoutCartDialogue(
           ),
         ),
         buildLineItems(purchaseItemList),
+        SizedBox(height: 17.5),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 9.0),
+                    child: Text(
+                      "Repeat this purchase monthly:",
+                      textAlign: TextAlign.left,
+                      style: AppFonts.impactHead,
+                    ))),
+            Align(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 11.0),
+                child: Switch.adaptive(
+                  value: val,
+                  onChanged: switchChanged,
+                  activeTrackColor: Colors.green,
+                  activeColor: Colors.white,
+                ),
+              ),
+              /*Switch(
+                              value: val,
+                              onChanged: (bool v) {
+                                setState(() {
+                                  val = v;
+                                  print(val);
+                                });
+                                //activeColor: Colors.green),
+                                // Text(message)
+                              },
+                            ), */
+            )
+          ],
+        ),
+        SizedBox(height: 8),
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 354,
+                height: 56,
+                child: Text(
+                  "When toggled on, you'll erase the above action automatically every month until canceled.",
+                  textAlign: TextAlign.center,
+                  style: AppFonts.smallIncidentals,
+                ),
+              )
+            ]),
         Container(
           padding: EdgeInsets.fromLTRB(8, 11, 8, 11),
           child: Text(
-            "Eliminate your carbon Impact now!",
+            "Eliminate your climate impact now!",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -442,7 +495,7 @@ Container checkoutCartDialogue(
         Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
           child: _customButton(
-            "Checkout",
+            "Continue Checkout",
             () async {
               analytics.logEvent(name: 'purchase');
               onCheckoutLoading(context);
@@ -619,6 +672,8 @@ Container checkoutCartDialogue(
   );
 }
 
+void onChanged(bool value) {}
+
 void onCheckoutLoading(BuildContext context) {
   showDialog(
     context: context,
@@ -724,7 +779,6 @@ Container failureDialogue(BuildContext context) {
             fontWeight: FontWeight.w600,
           ),
         ),
-        Spacer(),
         Text(
           "You're seconds away from erasing your climate impact.",
           textAlign: TextAlign.center,
@@ -874,7 +928,7 @@ Container successDialogue() {
         Container(
           padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Text(
-            "By eliminiating your climate impact, you're helping reversing climate change!",
+            "By eliminating your climate impact, you're helping reversing climate change!",
             textAlign: TextAlign.center,
             style: AppFonts.congratsSubhead,
           ),
@@ -912,3 +966,18 @@ Container successDialogue() {
     // ),
   );
 }
+
+bool val = false;
+var textValue = 'Switch off';
+void switchChanged(bool value) {
+  if (val == false) {
+    setState(() {
+      val = true;
+    });
+  } else
+    setState(() {
+      val = false;
+    });
+}
+
+void setState(Null Function() param0) {}

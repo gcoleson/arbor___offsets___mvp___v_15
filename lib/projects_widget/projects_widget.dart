@@ -76,6 +76,7 @@ Future firstTimeOpen(String text, BuildContext context) async {
 }
 
 class _ProjectsWidgetState extends State<ProjectsWidget> {
+  //boolean
   void onItemPressed(BuildContext context) {}
 
   Widget buildProjectListWidget(BuildContext context) {
@@ -132,6 +133,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
               }
 
               return ProjectSummaryWidget(index, projectData);
+              //flip it
 
               // return Text(
               //   "Tap a project name for full details. Tap an image to select a project",
@@ -175,6 +177,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
         ),
         child: Column(
           children: [
+            //comment this out, place in project_landfill_gas_item
             Padding(
               padding: const EdgeInsets.fromLTRB(11, 9, 11, 9),
               child: Text(
