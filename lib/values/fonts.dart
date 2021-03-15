@@ -318,4 +318,18 @@ abstract class AppFonts {
     color: AppColors.Black,
     fontSize: 13,
   );
+  static const TextStyle projectLabelHeadlineCancel = TextStyle(
+    fontFamily: 'Raleway-Light',
+    color: AppColors.cancelRed,
+    fontSize: 21,
+    fontWeight: FontWeight.w300,
+    fontStyle: FontStyle.normal,
+  );
+  static const TextStyle projectLabelSubheadCancel = TextStyle(
+    fontFamily: 'Raleway-LightItalic',
+    color: AppColors.cancelRed,
+    fontSize: 18,
+    fontWeight: FontWeight.w300,
+    fontStyle: FontStyle.italic,
+  );
 }

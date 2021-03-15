@@ -70,6 +70,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
 
       userdata.selectedprojectnumber = projectData.projectnumber;
       userdata.selectedProjectId = projectData.projectId;
+      userdata.selectedProjectTitle = projectData.title;
       analytics.logEvent(name: 'SlectProject', parameters: {
         'number': projectData.projectnumber,
         'title': projectData.title,

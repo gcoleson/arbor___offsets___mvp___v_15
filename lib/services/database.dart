@@ -40,6 +40,7 @@ class UserData {
   int selectedprojectnumber = 1; //starts at 1, zero is no project selected
   bool dataLoadedFromDB = false;
   String selectedProjectId = '';
+  String selectedProjectTitle = "Conservation: Rimba Raya Reserve";
 }
 
 class UserMessages {

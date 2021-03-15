@@ -446,7 +446,7 @@ Container checkoutCartDialogue(
                 padding: const EdgeInsets.only(right: 11.0),
                 child: Switch.adaptive(
                   value: val,
-                  onChanged: switchChanged,
+                  onChanged: temp,
                   activeTrackColor: Colors.green,
                   activeColor: Colors.white,
                 ),
@@ -556,15 +556,15 @@ Container checkoutCartDialogue(
 
               isCustomer = ds.data().containsKey("customerId");
 
-              // if (ds.exists) {
-              //   customerId = ds.get('customerId');
-              //   print("customer Id doesn't exist");
-              // } else {
-              //   customerId = "Error: customer ID is empty";
-              //   print(customerId);
-              // }
+              if (ds.exists) {
+                customerId = ds.get('customerId');
+                print("customer Id doesn't exist");
+              } else {
+                customerId = "Error: customer ID is empty";
+                print(customerId);
+              }
 
-              print(customerId);
+              print(isCustomer);
 
               http.Response response;
 
@@ -576,8 +576,8 @@ Container checkoutCartDialogue(
                     {
                       'customerIdClient': customerId,
                       'items': checkout_list,
-                      'projectName': 'project number: ' +
-                          userdata.selectedprojectnumber.toString()
+                      'projectId': userdata.selectedprojectnumber.toString(),
+                      'projectTitle': userdata.selectedProjectTitle,
                     },
                   ),
                   // body: json.encode(
@@ -589,9 +589,10 @@ Container checkoutCartDialogue(
                   'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop2',
                   body: json.encode(
                     {
+                      'customerIdClient': customerId,
                       'items': checkout_list,
-                      'projectName': 'project number: ' +
-                          userdata.selectedprojectnumber.toString()
+                      'projectId': userdata.selectedprojectnumber.toString(),
+                      'projectTitle': userdata.selectedProjectTitle,
                     },
                   ),
                   // body: json.encode(
@@ -969,15 +970,19 @@ Container successDialogue() {
 
 bool val = false;
 var textValue = 'Switch off';
-void switchChanged(bool value) {
-  if (val == false) {
-    setState(() {
-      val = true;
-    });
-  } else
-    setState(() {
-      val = false;
-    });
+// void switchChanged(bool value) {
+//   if (val == false) {
+//     setState(() {
+//       val = true;
+//     });
+//   } else
+//     setState(() {
+//       val = false;
+//     });
+// }
+
+void temp(bool val) {
+  return;
 }
 
-void setState(Null Function() param0) {}
+//void setState(Null Function() param0) {}

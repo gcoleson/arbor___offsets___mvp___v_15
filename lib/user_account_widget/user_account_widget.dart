@@ -17,6 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:internationalization/internationalization.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/arbor_explanation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'subscriptionItem.dart';
 
 import '../main.dart';
 
@@ -39,7 +44,11 @@ convertDate(int date) {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  final Future<List<SubscriptionItem>> subscriptionListGet = subLoad();
   var isExpandedTest = [false, false, false, false];
+  int _selectedIndex = 0;
+  List<SubscriptionItem> records = [];
+  List<_SubscriptionTile> tiles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -251,6 +260,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   fullscreenDialog: true,
                   builder: (context) => arborExplanation()));
         }
+        if (index == 1 && !isExpanded) {
+          subLoad();
+        }
       },
       expandedHeaderPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       children: [
@@ -286,7 +298,96 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
             );
           },
-          body: buildManageUpcomingPayments(),
+          body: Column(
+            children: [
+              FutureBuilder<List<SubscriptionItem>>(
+                future: subscriptionListGet,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<SubscriptionItem>> snapshot) {
+                  records.clear();
+                  records.addAll(snapshot.data);
+                  print(records.toString());
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      _SubscriptionTile tile = _SubscriptionTile(
+                        projectTitle: snapshot.data[index].projectName,
+                        nextBillingCycleStart:
+                            snapshot.data[index].nextBillingDate,
+                        subscriptionId: snapshot.data[index].subscriptionId,
+                        onSelect: () {
+                          _selectedIndex = index;
+                          tiles[_selectedIndex].changeFont2Cancel();
+                          print(_selectedIndex);
+                        },
+                      );
+
+                      tiles.add(tile);
+                      return tile;
+                      // tag
+                      // ListTileTheme(
+                      //   selectedColor: Colors.amber,
+                      //   child: ListTile(
+                      //     focusColor: Colors.amber,
+                      //     subtitle: Text(
+                      //         snapshot.data[index].nextBillingDate.toString() +
+                      //             "\n" +
+                      //             "Active",
+                      //         style: AppFonts.projectLabelSubhead),
+                      //     title: Text(
+                      //       'Bundle: ' + snapshot.data[index].projectName,
+                      //       style: AppFonts.projectLabelHeadline,
+                      //     ),
+                      //     isThreeLine: true,
+                      //     selected: index == _selectedIndex,
+                      //     onTap: () {
+                      //       setState(
+                      //         () {
+                      //           _selectedIndex = index;
+                      //         },
+                      //       );
+                      //     },
+                      //   ),
+                      // );
+                    },
+                  );
+                },
+              ),
+              ButtonTheme(
+                minWidth: 344,
+                height: 50,
+                child: RaisedButton(
+                  color: Colors.red,
+                  key: null,
+                  onPressed: () async {
+                    // ping firebase to get the list of subscription
+                    print(records[_selectedIndex].subscriptionId);
+                    http.Response response;
+                    response = await http.post(
+                      'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
+                      body: json.encode(
+                        {
+                          'cancelledSubId':
+                              records[_selectedIndex].subscriptionId
+                        },
+                      ),
+                    );
+                    if (response.body != null && response.body != 'error') {
+                      print("done");
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
+                  child: Text(
+                    "Cancel Selected",
+                    style: AppFonts.body2Bold2Dark1LabelColor2CenterAligned,
+                  ),
+                ),
+              ),
+            ],
+          ),
           isExpanded: isExpandedTest[1],
         ),
 
@@ -351,7 +452,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 // TODO: Add upcoming payment handling here
-Widget buildManageUpcomingPayments() {
+Widget buildManageUpcomingPayments(
+    BuildContext context, Future<List<SubscriptionItem>> subscriptionList) {
+  int _selectedIndex = 0;
+
+  /*
   return Column(children: [
     SizedBox(height: 15),
     Container(
@@ -485,6 +590,7 @@ Widget buildManageUpcomingPayments() {
             ))),
     SizedBox(height: 30),
   ]);
+  */
 }
 
 class UserAccountWidget extends StatelessWidget {
@@ -513,6 +619,155 @@ class UserAccountWidget extends StatelessWidget {
           color: Colors.white,
         ),
         child: MyStatefulWidget(),
+      ),
+    );
+  }
+}
+
+Future<List<SubscriptionItem>> subLoad() async {
+  // this is the item that we want to return
+  List<SubscriptionItem> subscriptionList = [];
+
+  // get reference of the user
+  DocumentSnapshot ds = await databaseReference
+      .collection('users')
+      .doc(databaseService.uid)
+      .get();
+
+  // check to make sure that the user is a customer that has done business with us
+  bool isCustomer = ds.data().containsKey("customerId");
+  String customerId;
+
+  // if the user is a customer then grab the customer Id
+  if (isCustomer) {
+    customerId = ds.get('customerId');
+    print(customerId);
+  } else {
+    subscriptionList.add(SubscriptionItem(
+        "error", "error", DateTime.fromMillisecondsSinceEpoch(0)));
+    return subscriptionList;
+  }
+
+  // ping firebase to get the list of subscription
+  http.Response response;
+  response = await http.post(
+    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getSubscriptionList',
+    body: json.encode(
+      {'customerIdClient': customerId},
+    ),
+  );
+
+  // get list of all the subscriptions
+  List<dynamic> subscriptionInfo = jsonDecode(response.body)['data'];
+
+  // Loop through all the subscription items and grab the necessary info
+  subscriptionInfo.forEach((element) {
+    // grab the necessary data for each list
+    String projectTitle = element['metadata']['projectTitle'];
+    String subscriptionId = element['id'];
+    DateTime nextBillingDate = DateTime.fromMillisecondsSinceEpoch(
+        element['current_period_end'] * 1000);
+    print(element['id']);
+
+    // Add to list of projects user is subscribed to
+    subscriptionList
+        .add(SubscriptionItem(projectTitle, subscriptionId, nextBillingDate));
+    subscriptionList.add(SubscriptionItem("projectName", "subscriptionId",
+        DateTime.fromMillisecondsSinceEpoch(0)));
+  });
+  return subscriptionList;
+}
+
+class _SubscriptionTile extends StatelessWidget {
+  _SubscriptionTile(
+      {Key key,
+      this.nextBillingCycleStart,
+      this.projectTitle,
+      this.subscriptionId,
+      this.onSelect})
+      : super(key: key);
+
+  TextStyle headlineStyle = AppFonts.projectLabelHeadline;
+  TextStyle subheadStyle = AppFonts.projectLabelSubhead;
+  String projectTitle;
+  DateTime nextBillingCycleStart;
+  String subscriptionId;
+  VoidCallback onSelect;
+
+  void changeFont2Cancel() {
+    headlineStyle = AppFonts.projectLabelHeadlineCancel;
+    subheadStyle = AppFonts.projectLabelSubheadCancel;
+    print("reached");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onSelect,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 86,
+            child: Image.asset(
+              "assets/images/cancel-sub-icon.png",
+              height: 29,
+              width: 27,
+            ),
+          ),
+          Expanded(
+            flex: 308,
+            child: Column(
+              children: [
+                SizedBox(height: 15),
+                Container(
+                  width: 308,
+                  height: 30,
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Bundle: ' + projectTitle,
+                    style: headlineStyle,
+                  ),
+                ),
+                SizedBox(
+                  height: 1,
+                ),
+                Container(
+                  width: 308,
+                  height: 30,
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    // '18.50	renewing ' + nextBillingCycleStart.toString(),
+                    nextBillingCycleStart.month.toString() +
+                        "/" +
+                        nextBillingCycleStart.day.toString() +
+                        "/" +
+                        nextBillingCycleStart.year.toString(),
+                    style: subheadStyle,
+                  ),
+                ),
+                SizedBox(
+                  height: 1,
+                ),
+                Container(
+                  width: 308,
+                  height: 16,
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Active',
+                    style: AppFonts.activeSubscriptionLabel,
+                  ),
+                ),
+                Divider(
+                  height: 32,
+                  thickness: 2,
+                  color: AppColors.divider,
+                  indent: 63,
+                  endIndent: 20,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
