@@ -553,22 +553,24 @@ Container checkoutCartDialogue(
                   .collection('users')
                   .doc(databaseService.uid)
                   .get();
+              print("reach5");
 
               isCustomer = ds.data().containsKey("customerId");
 
-              if (ds.exists) {
-                customerId = ds.get('customerId');
-                print("customer Id doesn't exist");
-              } else {
-                customerId = "Error: customer ID is empty";
-                print(customerId);
-              }
-
               print(isCustomer);
+
+              // if (ds.exists) {
+              //   customerId = ds.get('customerId');
+              //   print("customer Id doesn't exist");
+              // } else {
+              //   print("Error: customer ID is empty");
+              // }
+              // print("AAAAAAAAAAAAAAAAAAA" + isCustomer.toString());
 
               http.Response response;
 
               if (isCustomer) {
+                print("this is correct");
                 customerId = ds.get("customerId");
                 response = await http.post(
                   'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop',
@@ -585,11 +587,11 @@ Container checkoutCartDialogue(
                   // ),
                 );
               } else {
+                print("this is incorrect");
                 response = await http.post(
                   'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop2',
                   body: json.encode(
                     {
-                      'customerIdClient': customerId,
                       'items': checkout_list,
                       'projectId': userdata.selectedprojectnumber.toString(),
                       'projectTitle': userdata.selectedProjectTitle,

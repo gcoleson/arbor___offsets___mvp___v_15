@@ -22,6 +22,7 @@ import 'dart:convert';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'subscriptionItem.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../main.dart';
 
@@ -44,7 +45,7 @@ convertDate(int date) {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  final Future<List<SubscriptionItem>> subscriptionListGet = subLoad();
+  Future<List<SubscriptionItem>> subscriptionListGet = subLoad();
   var isExpandedTest = [false, false, false, false];
   int _selectedIndex = 0;
   List<SubscriptionItem> records = [];
@@ -304,55 +305,80 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 future: subscriptionListGet,
                 builder: (BuildContext context,
                     AsyncSnapshot<List<SubscriptionItem>> snapshot) {
-                  records.clear();
-                  records.addAll(snapshot.data);
-                  print(records.toString());
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      _SubscriptionTile tile = _SubscriptionTile(
-                        projectTitle: snapshot.data[index].projectName,
-                        nextBillingCycleStart:
-                            snapshot.data[index].nextBillingDate,
-                        subscriptionId: snapshot.data[index].subscriptionId,
-                        onSelect: () {
-                          _selectedIndex = index;
-                          tiles[_selectedIndex].changeFont2Cancel();
-                          print(_selectedIndex);
-                        },
-                      );
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return CircularProgressIndicator(
+                      backgroundColor: Colors.blue,
+                    );
+                  } else {
+                    records.clear();
+                    records.addAll(snapshot.data);
+                    print(records.toString());
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        _SubscriptionTile tile =
+                            _SubscriptionTile(records[index], () {});
+                        return InkWell(
+                          child: tile,
+                          onTap: () {
+                            _selectedIndex = index;
+                            setState(() {
+                              records.forEach((element) {
+                                element.isSelected = false;
+                              });
+                              records[index].isSelected = true;
+                            });
+                          },
+                        );
+                        // onSelect: () {
+                        //   _selectedIndex = index;
+                        //   tiles[_selectedIndex].changeFont2Cancel();
+                        //   print(_selectedIndex);
+                        // },
+                        // );
+                        //   projectTitle: snapshot.data[index].projectName,
+                        //   nextBillingCycleStart:
+                        //       snapshot.data[index].nextBillingDate,
+                        //   subscriptionId: snapshot.data[index].subscriptionId,
+                        //   onSelect: () {
+                        //     _selectedIndex = index;
+                        //     tiles[_selectedIndex].changeFont2Cancel();
+                        //     print(_selectedIndex);
+                        //   },
+                        // );
 
-                      tiles.add(tile);
-                      return tile;
-                      // tag
-                      // ListTileTheme(
-                      //   selectedColor: Colors.amber,
-                      //   child: ListTile(
-                      //     focusColor: Colors.amber,
-                      //     subtitle: Text(
-                      //         snapshot.data[index].nextBillingDate.toString() +
-                      //             "\n" +
-                      //             "Active",
-                      //         style: AppFonts.projectLabelSubhead),
-                      //     title: Text(
-                      //       'Bundle: ' + snapshot.data[index].projectName,
-                      //       style: AppFonts.projectLabelHeadline,
-                      //     ),
-                      //     isThreeLine: true,
-                      //     selected: index == _selectedIndex,
-                      //     onTap: () {
-                      //       setState(
-                      //         () {
-                      //           _selectedIndex = index;
-                      //         },
-                      //       );
-                      //     },
-                      //   ),
-                      // );
-                    },
-                  );
+                        tiles.add(tile);
+                        return tile;
+                        // tag
+                        // ListTileTheme(
+                        //   selectedColor: Colors.amber,
+                        //   child: ListTile(
+                        //     focusColor: Colors.amber,
+                        //     subtitle: Text(
+                        //         snapshot.data[index].nextBillingDate.toString() +
+                        //             "\n" +
+                        //             "Active",
+                        //         style: AppFonts.projectLabelSubhead),
+                        //     title: Text(
+                        //       'Bundle: ' + snapshot.data[index].projectName,
+                        //       style: AppFonts.projectLabelHeadline,
+                        //     ),
+                        //     isThreeLine: true,
+                        //     selected: index == _selectedIndex,
+                        //     onTap: () {
+                        //       setState(
+                        //         () {
+                        //           _selectedIndex = index;
+                        //         },
+                        //       );
+                        //     },
+                        //   ),
+                        // );
+                      },
+                    );
+                  }
                 },
               ),
               ButtonTheme(
@@ -361,23 +387,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: RaisedButton(
                   color: Colors.red,
                   key: null,
-                  onPressed: () async {
-                    // ping firebase to get the list of subscription
-                    print(records[_selectedIndex].subscriptionId);
-                    http.Response response;
-                    response = await http.post(
-                      'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
-                      body: json.encode(
-                        {
-                          'cancelledSubId':
-                              records[_selectedIndex].subscriptionId
-                        },
-                      ),
-                    );
-                    if (response.body != null && response.body != 'error') {
-                      print("done");
-                    }
-                  },
+                  onPressed: cancelDialogue,
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(30.0)),
                   child: Text(
@@ -449,6 +459,69 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       ],
     );
   }
+
+  Future cancelDialogue() async {
+    showDialog(
+      context: context,
+      builder: (_) => new CupertinoAlertDialog(
+        title: new Text("Cancel Recurring Purchase"),
+        content:
+            new Text("Are you sure you want to stop supporting this project?"),
+        actions: [
+          CupertinoDialogAction(
+            child: Text("No"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text("Yes"),
+            onPressed: () async {
+              onCheckoutLoading(context);
+              await cancelSelectedSub();
+              subscriptionListGet = subLoad();
+              Navigator.pop(context);
+              setState(() {});
+              Navigator.pop(context);
+              cancelSuccessDialogue();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future cancelSuccessDialogue() async {
+    showDialog(
+      context: context,
+      builder: (_) => new CupertinoAlertDialog(
+        content: new Text("Your subscription has been successfully cancelled"),
+        actions: [
+          CupertinoDialogAction(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future cancelSelectedSub() async {
+    // ping firebase to get the list of subscription
+    print(records[_selectedIndex].subscriptionId);
+    http.Response response;
+    response = await http.post(
+      'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
+      body: json.encode(
+        {'cancelledSubId': records[_selectedIndex].subscriptionId},
+      ),
+    );
+    if (response.body != null && response.body != 'error') {
+      print("done");
+    }
+  }
 }
 
 // TODO: Add upcoming payment handling here
@@ -492,7 +565,7 @@ Widget buildManageUpcomingPayments(
         style: AppFonts.activeSubscriptionLabel,
       ),
     ),
-    Divider(
+    Divider(S
       height: 32,
       thickness: 2,
       color: AppColors.divider,
@@ -643,8 +716,6 @@ Future<List<SubscriptionItem>> subLoad() async {
     customerId = ds.get('customerId');
     print(customerId);
   } else {
-    subscriptionList.add(SubscriptionItem(
-        "error", "error", DateTime.fromMillisecondsSinceEpoch(0)));
     return subscriptionList;
   }
 
@@ -669,106 +740,147 @@ Future<List<SubscriptionItem>> subLoad() async {
         element['current_period_end'] * 1000);
     print(element['id']);
 
-    // Add to list of projects user is subscribed to
-    subscriptionList
-        .add(SubscriptionItem(projectTitle, subscriptionId, nextBillingDate));
-    subscriptionList.add(SubscriptionItem("projectName", "subscriptionId",
-        DateTime.fromMillisecondsSinceEpoch(0)));
+    //Add to list of projects user is subscribed to
+    subscriptionList.add(
+        SubscriptionItem(projectTitle, subscriptionId, nextBillingDate, false));
+    // subscriptionList.add(SubscriptionItem("projectName", "subscriptionId",
+    //     DateTime.fromMillisecondsSinceEpoch(0)));
   });
   return subscriptionList;
 }
 
 class _SubscriptionTile extends StatelessWidget {
-  _SubscriptionTile(
-      {Key key,
-      this.nextBillingCycleStart,
-      this.projectTitle,
-      this.subscriptionId,
-      this.onSelect})
-      : super(key: key);
+  final SubscriptionItem _item;
 
-  TextStyle headlineStyle = AppFonts.projectLabelHeadline;
-  TextStyle subheadStyle = AppFonts.projectLabelSubhead;
-  String projectTitle;
-  DateTime nextBillingCycleStart;
-  String subscriptionId;
-  VoidCallback onSelect;
-
-  void changeFont2Cancel() {
-    headlineStyle = AppFonts.projectLabelHeadlineCancel;
-    subheadStyle = AppFonts.projectLabelSubheadCancel;
-    print("reached");
-  }
+  final VoidCallback onSelect;
+  _SubscriptionTile(this._item, this.onSelect);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onSelect,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 86,
-            child: Image.asset(
-              "assets/images/cancel-sub-icon.png",
-              height: 29,
-              width: 27,
-            ),
+    return Row(
+      children: [
+        Expanded(
+          flex: 86,
+          child: Column(
+            children: [
+              _item.isSelected
+                  ? Image.asset(
+                      "assets/images/cancel-sub-icon.png",
+                      height: 29,
+                      width: 27,
+                    )
+                  : Container(
+                      width: 0,
+                      height: 0,
+                    ),
+              Container(
+                height: 40,
+              ),
+            ],
           ),
-          Expanded(
-            flex: 308,
-            child: Column(
-              children: [
-                SizedBox(height: 15),
-                Container(
-                  width: 308,
-                  height: 30,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Bundle: ' + projectTitle,
-                    style: headlineStyle,
+        ),
+        Expanded(
+          flex: 308,
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              Container(
+                width: 308,
+                height: 30,
+                alignment: Alignment.topLeft,
+                child: Text(
+                  _item.projectName,
+                  style: TextStyle(
+                    fontFamily: 'Raleway-Light',
+                    color: _item.isSelected ? Colors.red : Colors.black,
+                    fontSize: 21,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
                   ),
                 ),
-                SizedBox(
-                  height: 1,
-                ),
-                Container(
-                  width: 308,
-                  height: 30,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    // '18.50	renewing ' + nextBillingCycleStart.toString(),
-                    nextBillingCycleStart.month.toString() +
-                        "/" +
-                        nextBillingCycleStart.day.toString() +
-                        "/" +
-                        nextBillingCycleStart.year.toString(),
-                    style: subheadStyle,
+              ),
+              SizedBox(
+                height: 1,
+              ),
+              Container(
+                width: 308,
+                height: 30,
+                alignment: Alignment.topLeft,
+                child: Text(
+                  // '18.50	renewing ' + nextBillingCycleStart.toString(),
+                  _item.nextBillingDate.month.toString() +
+                      "/" +
+                      _item.nextBillingDate.day.toString() +
+                      "/" +
+                      _item.nextBillingDate.year.toString(),
+                  style: TextStyle(
+                    fontFamily: 'Raleway-LightItalic',
+                    color: _item.isSelected ? Colors.red : Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.italic,
                   ),
                 ),
-                SizedBox(
-                  height: 1,
+              ),
+              SizedBox(
+                height: 1,
+              ),
+              Container(
+                width: 308,
+                height: 16,
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Active',
+                  style: AppFonts.activeSubscriptionLabel,
                 ),
-                Container(
-                  width: 308,
-                  height: 16,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Active',
-                    style: AppFonts.activeSubscriptionLabel,
-                  ),
-                ),
-                Divider(
-                  height: 32,
-                  thickness: 2,
-                  color: AppColors.divider,
-                  indent: 63,
-                  endIndent: 20,
-                ),
-              ],
-            ),
+              ),
+              Divider(
+                height: 32,
+                thickness: 2,
+                color: AppColors.divider,
+                indent: 63,
+                endIndent: 20,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Spacer(
+          flex: 20,
+        )
+      ],
     );
   }
+}
+
+void onCheckoutLoading(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+          height: 200,
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(30),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Spacer(),
+              CircularProgressIndicator(),
+              Spacer(),
+              Text(
+                "Loading",
+                style: AppFonts.arborSubTitle,
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
