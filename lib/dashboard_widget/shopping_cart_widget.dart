@@ -338,7 +338,7 @@ class CheckoutCartContents extends StatefulWidget {
 }
 
 class _CheckoutCartContentsState extends State<CheckoutCartContents> {
-  bool val = false;
+  bool isSubscription = false;
 
   @override
   Widget build(BuildContext context) {
@@ -445,7 +445,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
             ),
           ),
           buildLineItems(widget.purchaseItemList),
-          SizedBox(height: 17.5),
+          //SizedBox(height: 17.5),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -462,7 +462,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 11.0),
                   child: Switch.adaptive(
-                    value: val,
+                    value: isSubscription,
                     onChanged: temp,
                     activeTrackColor: Colors.green,
                     activeColor: Colors.white,
@@ -482,33 +482,26 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
               )
             ],
           ),
-          SizedBox(height: 8),
+          //SizedBox(height: 8),
           Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 354,
-                  height: 56,
+                Spacer(
+                  flex: 27,
+                ),
+                Expanded(
+                  flex: 354,
                   child: Text(
                     "When toggled on, you'll erase the above action automatically every month until canceled.",
                     textAlign: TextAlign.center,
                     style: AppFonts.smallIncidentals,
                   ),
-                )
+                ),
+                Spacer(
+                  flex: 27,
+                ),
               ]),
-          Container(
-            padding: EdgeInsets.fromLTRB(8, 11, 8, 11),
-            child: Text(
-              "Eliminate your climate impact now!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Montserrat",
-                fontSize: 28,
-              ),
-            ),
-          ),
           Container(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
             child: _customButton(
@@ -588,12 +581,25 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 // print("AAAAAAAAAAAAAAAAAAA" + isCustomer.toString());
 
                 http.Response response;
+                print(databaseService.uid);
 
-                if (isCustomer) {
+                if (!isSubscription) {
+                  // First Ping Firebase for session ID for stripe checkout
+                  response = await http.post(
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
+                    body: json.encode(
+                      {
+                        'items': checkout_list,
+                        'projectName': 'project number: ' +
+                            userdata.selectedprojectnumber.toString()
+                      },
+                    ),
+                  );
+                } else if (isCustomer) {
                   print("this is correct");
                   customerId = ds.get("customerId");
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop',
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSub',
                     body: json.encode(
                       {
                         'customerIdClient': customerId,
@@ -609,9 +615,10 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 } else {
                   print("this is incorrect");
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/stripeDevelop2',
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSub',
                     body: json.encode(
                       {
+                        'userId': databaseService.uid,
                         'items': checkout_list,
                         'projectId': userdata.selectedprojectnumber.toString(),
                         'projectTitle': userdata.selectedProjectTitle,
@@ -697,9 +704,9 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
 
   void temp(bool newVal) {
     setState(() {
-      val = newVal;
+      isSubscription = newVal;
     });
-    print(val);
+    print(isSubscription);
   }
 }
 

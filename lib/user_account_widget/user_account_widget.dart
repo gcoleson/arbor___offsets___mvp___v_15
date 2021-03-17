@@ -350,6 +350,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     records.clear();
                     records.addAll(snapshot.data);
                     print(records.toString());
+                    // set default selection
+                    records[_selectedIndex].isSelected = true;
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -503,8 +505,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               onCheckoutLoading(context);
               await cancelSelectedSub();
               subscriptionListGet = subLoad();
+
               Navigator.pop(context);
-              setState(() {});
+              setState(() {
+                if (records.isEmpty) {
+                  _selectedIndex = 0;
+                  hasSubscriptions = false;
+                  print("records empty");
+                }
+              });
               Navigator.pop(context);
               cancelSuccessDialogue();
             },
@@ -781,16 +790,25 @@ Future<List<SubscriptionItem>> subLoad() async {
 
   // Loop through all the subscription items and grab the necessary info
   subscriptionInfo.forEach((element) {
+    double amountDue = 0;
     // grab the necessary data for each list
     String projectTitle = element['metadata']['projectTitle'];
     String subscriptionId = element['id'];
     DateTime nextBillingDate = DateTime.fromMillisecondsSinceEpoch(
         element['current_period_end'] * 1000);
+
+    List<dynamic> itemList = element["items"]["data"];
+
+    itemList.forEach((element) {
+      amountDue += element["price"]["unit_amount"];
+    });
+    amountDue /= 100;
+    print("amount due is = " + amountDue.toString());
     print(element['id']);
 
     //Add to list of projects user is subscribed to
-    subscriptionList.add(
-        SubscriptionItem(projectTitle, subscriptionId, nextBillingDate, false));
+    subscriptionList.add(SubscriptionItem(
+        projectTitle, subscriptionId, nextBillingDate, false, amountDue));
     // subscriptionList.add(SubscriptionItem("projectName", "subscriptionId",
     //     DateTime.fromMillisecondsSinceEpoch(0)));
   });
@@ -856,7 +874,10 @@ class _SubscriptionTile extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Text(
                   // '18.50	renewing ' + nextBillingCycleStart.toString(),
-                  _item.nextBillingDate.month.toString() +
+                  "\$" +
+                      _item.amountDue.toString() +
+                      "    renewing " +
+                      _item.nextBillingDate.month.toString() +
                       "/" +
                       _item.nextBillingDate.day.toString() +
                       "/" +

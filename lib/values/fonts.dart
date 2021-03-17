@@ -212,7 +212,7 @@ abstract class AppFonts {
   );
   static const TextStyle smallIncidentals = TextStyle(
     fontFamily: 'Raleway-LightItalic',
-    color: AppColors.primaryDarkGreen,
+    color: AppColors.Black,
     fontSize: 12,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
