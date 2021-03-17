@@ -50,6 +50,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   List<SubscriptionItem> records = [];
   List<_SubscriptionTile> tiles = [];
+  bool hasSubscriptions = true;
 
   @override
   Widget build(BuildContext context) {
@@ -306,10 +307,46 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<SubscriptionItem>> snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
-                    return CircularProgressIndicator(
-                      backgroundColor: Colors.blue,
+                    hasSubscriptions = false;
+                    return Container(
+                      child: Text(
+                        "Loading...",
+                      ),
+                    );
+                  } else if (snapshot.data.length <= 0) {
+                    hasSubscriptions = false;
+
+                    return Column(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              width: 344,
+                              height: 71,
+                              child: Text(
+                                "You have no upcoming recurring monthly",
+                                textAlign: TextAlign.center,
+                                style: AppFonts.unactivatedItemTextCenter,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 21),
+                        Container(
+                          width: 344,
+                          height: 35,
+                          child: Text(
+                            "To activate one, start a purchase on your Dashboard and select “Repeat This Purchase Monthly” on your shopping cart screen.",
+                            textAlign: TextAlign.center,
+                            style: AppFonts.smallIncidentals,
+                          ),
+                        ),
+                        SizedBox(height: 30),
+                      ],
                     );
                   } else {
+                    hasSubscriptions = true;
+
                     records.clear();
                     records.addAll(snapshot.data);
                     print(records.toString());
@@ -381,21 +418,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   }
                 },
               ),
-              ButtonTheme(
-                minWidth: 344,
-                height: 50,
-                child: RaisedButton(
-                  color: Colors.red,
-                  key: null,
-                  onPressed: cancelDialogue,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                  child: Text(
-                    "Cancel Selected",
-                    style: AppFonts.body2Bold2Dark1LabelColor2CenterAligned,
-                  ),
-                ),
-              ),
+              cancelButton(),
             ],
           ),
           isExpanded: isExpandedTest[1],
@@ -520,6 +543,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
     if (response.body != null && response.body != 'error') {
       print("done");
+    }
+  }
+
+  Widget cancelButton() {
+    if (hasSubscriptions) {
+      return ButtonTheme(
+        minWidth: 344,
+        height: 50,
+        child: RaisedButton(
+          color: Colors.red,
+          key: null,
+          onPressed: cancelDialogue,
+          shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(30.0)),
+          child: Text(
+            "Cancel Selected",
+            style: AppFonts.body2Bold2Dark1LabelColor2CenterAligned,
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        width: 0,
+        height: 0,
+      );
     }
   }
 }

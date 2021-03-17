@@ -139,7 +139,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             overflow: Overflow.visible,
             fit: StackFit.expand,
             children: [
-              checkoutCartDialogue(context, purchaseItemList),
+              CheckoutCartContents(purchaseItemList),
               Positioned(
                 right: 10,
                 top: 10,
