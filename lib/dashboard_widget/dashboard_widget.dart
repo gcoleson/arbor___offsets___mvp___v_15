@@ -111,7 +111,7 @@ Widget loadUserData(BuildContext context) {
 
 class DashboardWidget extends StatefulWidget {
   final VoidCallback onUserIconPressed;
-
+  bool val = true;
   DashboardWidget(this.onUserIconPressed);
 
   @override
@@ -139,7 +139,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             overflow: Overflow.visible,
             fit: StackFit.expand,
             children: [
-              checkoutCartDialogue(context, purchaseItemList),
+              CheckoutCartContents(purchaseItemList),
               Positioned(
                 right: 10,
                 top: 10,

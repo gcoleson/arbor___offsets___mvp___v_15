@@ -11,6 +11,14 @@ class ShoppingCartPage extends StatefulWidget {
 }
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
+  bool value = false;
+
+  void onChanged(bool value) {
+    setState(() {
+      value = value;
+    });
+  }
+
   List<Dish> _dishes = List<Dish>();
 
   List<Dish> _cartList = List<Dish>();

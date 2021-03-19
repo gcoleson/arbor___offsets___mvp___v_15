@@ -148,6 +148,7 @@ Container form() {
 
 Widget buildLineItems(List<CartItem> purchaseItemList)
 //loop through all items and make into a grid 2x
+
 {
   List<Widget> returnList = new List();
   double totalCost = 0;
@@ -329,234 +330,371 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
   );
 }
 
-Container checkoutCartDialogue(
-    BuildContext context, List<CartItem> purchaseItemList) {
-  String projectName;
-  double totalTrees = 0;
-  double totalCoins = 0;
-  double totalMoney = 0;
+class CheckoutCartContents extends StatefulWidget {
+  @override
+  _CheckoutCartContentsState createState() => _CheckoutCartContentsState();
+  final List<CartItem> purchaseItemList;
+  const CheckoutCartContents(this.purchaseItemList);
+}
 
-  return Container(
-    alignment: Alignment.topCenter,
-    //margin: EdgeInsetsGeometry.infinity,
-    padding: EdgeInsets.all(0),
-    constraints: BoxConstraints.expand(),
+class _CheckoutCartContentsState extends State<CheckoutCartContents> {
+  bool isSubscription = false;
 
-    child: Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
-          child: Text(
-            "Shopping Cart:",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 36,
-                color: Colors.white,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w800),
-          ),
-        ),
-        StreamBuilder<QuerySnapshot>(
-          stream: databaseReference
-              .collection("projects")
-              .where('projectnumber', isEqualTo: userdata.selectedprojectnumber)
-              .snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return LinearProgressIndicator();
-            }
-            try {
-              String imageLink = snapshot.data.docs[0].data()['image-main'];
-              projectName = snapshot.data.docs[0].data()['title'];
-              projectName = projectName.split(":")[1];
-              return Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(imageLink),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          "Your Project:",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.black,
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          projectName,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 21,
-                            color: Colors.black,
-                            fontFamily: "Raleway",
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              );
-            } catch (e) {
-              print("Error was: " + e.toString());
-              return Text("trouble getting image");
-            }
-          },
-        ),
-        Container(
-          margin: EdgeInsets.fromLTRB(9, 0, 9, 0),
-          child: Text(
-            "Erase these actions by funding your project",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w800,
+  @override
+  Widget build(BuildContext context) {
+    return checkoutCartDialogue(context);
+  }
+
+  Container checkoutCartDialogue(
+    BuildContext context,
+  ) {
+    String projectName;
+    double totalTrees = 0;
+    double totalCoins = 0;
+    double totalMoney = 0;
+
+    return Container(
+      alignment: Alignment.topCenter,
+      //margin: EdgeInsetsGeometry.infinity,
+      padding: EdgeInsets.all(0),
+      constraints: BoxConstraints.expand(),
+
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
+            child: Text(
+              "Shopping Cart:",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 36,
+                  color: Colors.white,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w800),
             ),
           ),
-        ),
-        buildLineItems(purchaseItemList),
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 11, 8, 11),
-          child: Text(
-            "Eliminate your carbon Impact now!",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: "Montserrat",
-              fontSize: 28,
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-          child: _customButton(
-            "Checkout",
-            () async {
-              analytics.logEvent(name: 'purchase');
-              onCheckoutLoading(context);
-              String sessionId = 'error';
-              //final sessionId = await Server().createCheckout();
-              print(purchaseItemList[0].documentID);
-              print(purchaseItemList[0].imageText);
-
-              String checkout_json;
-              var checkout_list = [];
-              var order_list = [];
-
-              for (var i = 0; i < purchaseItemList.length; i++) {
-                //check to see that headers don't match, if so make another area in the cart
-                //always do the first one
-                if (purchaseItemList[i].boxSelected == true) {
-                  checkout_list.add(
-                    {'docID': purchaseItemList[i].documentID, 'quantity': 1},
-                  );
-
-                  order_list.add({
-                    'item': purchaseItemList[i].imageText,
-                    'quantity': 1,
-                    'trees': purchaseItemList[i].treeCount
-                  });
-
-                  totalTrees += purchaseItemList[i].treeCount;
-                  totalCoins += purchaseItemList[i].coinCount;
-                  totalMoney += purchaseItemList[i].price;
-                }
+          StreamBuilder<QuerySnapshot>(
+            stream: databaseReference
+                .collection("projects")
+                .where('projectnumber',
+                    isEqualTo: userdata.selectedprojectnumber)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return LinearProgressIndicator();
               }
-
-              // First Ping Firebase for session ID for stripe checkout
-              final http.Response response = await http.post(
-                'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
-                body: json.encode(
-                  {
-                    'items': checkout_list,
-                    'projectName': 'project number: ' +
-                        userdata.selectedprojectnumber.toString()
-                  },
+              try {
+                String imageLink = snapshot.data.docs[0].data()['image-main'];
+                projectName = snapshot.data.docs[0].data()['title'];
+                projectName = projectName.split(":")[1];
+                return Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(imageLink),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Your Project:",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            projectName,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 21,
+                              color: Colors.black,
+                              fontFamily: "Raleway",
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              } catch (e) {
+                print("Error was: " + e.toString());
+                return Text("trouble getting image");
+              }
+            },
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(9, 0, 9, 0),
+            child: Text(
+              "Erase these actions by funding your project",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+          buildLineItems(widget.purchaseItemList),
+          //SizedBox(height: 17.5),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: Text(
+                        "Repeat this purchase monthly:",
+                        textAlign: TextAlign.left,
+                        style: AppFonts.impactHead,
+                      ))),
+              Align(
+                child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Switch.adaptive(
+                        activeColor: Colors.green,
+                        value: isSubscription,
+                        onChanged: repeatPurchaseOnChanged)),
+              )
+            ],
+          ),
+          Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Spacer(
+                  flex: 27,
                 ),
-              );
-              Navigator.pop(context);
+                Expanded(
+                  flex: 354,
+                  child: Text(
+                    "When toggled on, you'll fund the above impact on the climate every month until canceled.",
+                    textAlign: TextAlign.center,
+                    style: AppFonts.smallIncidentals,
+                  ),
+                ),
+                Spacer(
+                  flex: 27,
+                ),
+              ]),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+            child: _customButton(
+              "Continue Checkout",
+              () async {
+                analytics.logEvent(name: 'purchase');
+                onCheckoutLoading(context);
+                String sessionId = 'error';
+                //final sessionId = await Server().createCheckout();
+                print(widget.purchaseItemList[0].documentID);
+                print(widget.purchaseItemList[0].imageText);
 
-              print(jsonDecode(response.body));
+                String checkout_json;
+                var checkout_list = [];
+                var order_list = [];
 
-              //then decode the json returned
-              if (response.body != null && response.body != 'error') {
-                sessionId = jsonDecode(response.body)['id'];
-                print('Checkout Success!!!!');
-                analytics.logEvent(name: 'purchase', parameters: {
-                  'items': purchaseItemList.length,
-                  'trees': totalTrees,
-                  'coins': totalCoins,
-                  'total': totalMoney
-                });
-              }
+                for (var i = 0; i < widget.purchaseItemList.length; i++) {
+                  //check to see that headers don't match, if so make another area in the cart
+                  //always do the first one
+                  if (widget.purchaseItemList[i].boxSelected == true) {
+                    checkout_list.add(
+                      {
+                        'docID': widget.purchaseItemList[i].documentID,
+                        'quantity': 1
+                      },
+                    );
 
-              if (sessionId != 'error') {
-                // Call the one time checkout screen with session ID
-                final outcome =
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => OneTimeCheckout(
-                              sessionId: sessionId,
-                            )));
-                if (outcome == "success") {
-                  analytics.logEvent(name: 'purchase_complete', parameters: {
-                    'items': purchaseItemList.length,
+                    order_list.add({
+                      'item': widget.purchaseItemList[i].imageText,
+                      'quantity': 1,
+                      'trees': widget.purchaseItemList[i].treeCount
+                    });
+
+                    totalTrees += widget.purchaseItemList[i].treeCount;
+                    totalCoins += widget.purchaseItemList[i].coinCount;
+                    totalMoney += widget.purchaseItemList[i].price;
+                  }
+                }
+
+                String customerId;
+                bool isCustomer;
+
+                print(databaseService.uid);
+
+                // var sub = databaseReference
+                //     .collection("users")
+                //     .doc(databaseService.uid)
+                //     .snapshots()
+                //     .listen((event) {
+                //   if (event.data().containsKey("customerId")) {
+                //     print("reach1");
+                //     isCustomer = true;
+                //     event.get("customerId");
+                //   } else {
+                //     print("reach2");
+                //     isCustomer = false;
+                //   }
+                // });
+
+                print("reach4");
+                DocumentSnapshot ds = await databaseReference
+                    .collection('users')
+                    .doc(databaseService.uid)
+                    .get();
+                print("reach5");
+
+                isCustomer = ds.data().containsKey("customerId");
+
+                print(isCustomer);
+
+                // if (ds.exists) {
+                //   customerId = ds.get('customerId');
+                //   print("customer Id doesn't exist");
+                // } else {
+                //   print("Error: customer ID is empty");
+                // }
+                // print("AAAAAAAAAAAAAAAAAAA" + isCustomer.toString());
+
+                http.Response response;
+                print(databaseService.uid);
+
+                if (!isSubscription) {
+                  // First Ping Firebase for session ID for stripe checkout
+                  response = await http.post(
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
+                    body: json.encode(
+                      {
+                        'items': checkout_list,
+                        'projectName': 'project number: ' +
+                            userdata.selectedprojectnumber.toString()
+                      },
+                    ),
+                  );
+                } else if (isCustomer) {
+                  print("this is correct");
+                  customerId = ds.get("customerId");
+                  response = await http.post(
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSub',
+                    body: json.encode(
+                      {
+                        'customerIdClient': customerId,
+                        'items': checkout_list,
+                        'projectId': userdata.selectedprojectnumber.toString(),
+                        'projectTitle': userdata.selectedProjectTitle,
+                      },
+                    ),
+                    // body: json.encode(
+                    //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
+                    // ),
+                  );
+                } else {
+                  print("this is incorrect");
+                  response = await http.post(
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSub',
+                    body: json.encode(
+                      {
+                        'userId': databaseService.uid,
+                        'items': checkout_list,
+                        'projectId': userdata.selectedprojectnumber.toString(),
+                        'projectTitle': userdata.selectedProjectTitle,
+                      },
+                    ),
+                    // body: json.encode(
+                    //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
+                    // ),
+                  );
+                }
+                // First Ping Firebase for session ID for stripe checkout
+                Navigator.pop(context);
+
+                print(jsonDecode(response.body));
+
+                //then decode the json returned
+                if (response.body != null && response.body != 'error') {
+                  sessionId = jsonDecode(response.body)['id'];
+                  print('Checkout Success!!!!');
+                  analytics.logEvent(name: 'purchase', parameters: {
+                    'items': widget.purchaseItemList.length,
                     'trees': totalTrees,
                     'coins': totalCoins,
                     'total': totalMoney
                   });
-
-                  FocusScope.of(context).unfocus();
-                  Navigator.of(context).pop();
-                  databaseService.addOrder(order_list, totalTrees);
-
-                  paymentSuccessBuildDialogue(context);
-                } else if (outcome == "failure") {
-                  print("Payment was a failure");
-                  analytics.logEvent(name: 'purchase_failure');
-
-                  Navigator.of(context).pop();
-                  paymentFailureBuildDialogue(context);
                 }
-                final snackBar =
-                    SnackBar(content: Text('SessionId: $sessionId'));
-                //Scaffold.of(context).showSnackBar(snackBar);
-                //_congratulationsDialogue();
-              } else {
-                analytics.logEvent(name: 'purchase_checkout_fail');
-                print('Checkout Entry has failed');
-              }
-            },
-          ),
-        ),
-      ],
-    ),
 
-    decoration: BoxDecoration(
-      color: Color.fromARGB(255, 28, 151, 211),
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
+                if (sessionId != 'error') {
+                  // Call the one time checkout screen with session ID
+                  final outcome =
+                      await Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => OneTimeCheckout(
+                                sessionId: sessionId,
+                              )));
+                  if (outcome == "success") {
+                    analytics.logEvent(name: 'purchase_complete', parameters: {
+                      'items': widget.purchaseItemList.length,
+                      'trees': totalTrees,
+                      'coins': totalCoins,
+                      'total': totalMoney
+                    });
+
+                    FocusScope.of(context).unfocus();
+                    Navigator.of(context).pop();
+                    databaseService.addOrder(order_list, totalTrees);
+
+                    paymentSuccessBuildDialogue(context);
+                  } else if (outcome == "failure") {
+                    print("Payment was a failure");
+                    analytics.logEvent(name: 'purchase_failure');
+
+                    Navigator.of(context).pop();
+                    paymentFailureBuildDialogue(context);
+                  }
+                  final snackBar =
+                      SnackBar(content: Text('SessionId: $sessionId'));
+                  //Scaffold.of(context).showSnackBar(snackBar);
+                  //_congratulationsDialogue();
+                } else {
+                  analytics.logEvent(name: 'purchase_checkout_fail');
+                  print('Checkout Entry has failed');
+                }
+              },
+            ),
+          ),
+        ],
       ),
-    ),
-    // child: Stack(
-    //   fit: StackFit.loose,
-    //   children: [
-    //     Image.asset("assets/images/WelcomeBackScreen.png"),
-    //   ],
-    // ),
-  );
+
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 28, 151, 211),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+      ),
+      // child: Stack(
+      //   fit: StackFit.loose,
+      //   children: [
+      //     Image.asset("assets/images/WelcomeBackScreen.png"),
+      //   ],
+      // ),
+    );
+  }
+
+  void repeatPurchaseOnChanged(bool newVal) {
+    setState(() {
+      isSubscription = newVal;
+    });
+  }
 }
+
+void onChanged(bool value) {}
 
 void onCheckoutLoading(BuildContext context) {
   showDialog(
@@ -663,7 +801,6 @@ Container failureDialogue(BuildContext context) {
             fontWeight: FontWeight.w600,
           ),
         ),
-        Spacer(),
         Text(
           "You're seconds away from erasing your climate impact.",
           textAlign: TextAlign.center,
@@ -813,7 +950,7 @@ Container successDialogue() {
         Container(
           padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Text(
-            "By eliminating your climate impact, you're helping reverse climate change!",
+            "By eliminating your climate impact, you're helping reversing climate change!",
             textAlign: TextAlign.center,
             style: AppFonts.congratsSubhead,
           ),
@@ -851,3 +988,5 @@ Container successDialogue() {
     // ),
   );
 }
+
+//void setState(Null Function() param0) {}
