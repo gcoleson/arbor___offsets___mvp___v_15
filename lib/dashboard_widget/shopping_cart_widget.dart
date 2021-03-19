@@ -452,7 +452,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
             children: [
               Align(
                   child: Padding(
-                      padding: const EdgeInsets.only(left: 9.0),
+                      padding: const EdgeInsets.only(left: 6.0),
                       child: Text(
                         "Repeat this purchase monthly:",
                         textAlign: TextAlign.left,
@@ -460,29 +460,14 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                       ))),
               Align(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 11.0),
-                  child: Switch.adaptive(
-                    value: isSubscription,
-                    onChanged: temp,
-                    activeTrackColor: Colors.green,
-                    activeColor: Colors.white,
-                  ),
-                ),
-                /*Switch(
-                              value: val,
-                              onChanged: (bool v) {
-                                setState(() {
-                                  val = v;
-                                  print(val);
-                                });
-                                //activeColor: Colors.green),
-                                // Text(message)
-                              },
-                            ), */
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Switch.adaptive(
+                        activeColor: Colors.green,
+                        value: isSubscription,
+                        onChanged: repeatPurchaseOnChanged)),
               )
             ],
           ),
-          //SizedBox(height: 8),
           Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -493,7 +478,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 Expanded(
                   flex: 354,
                   child: Text(
-                    "When toggled on, you'll erase the above action automatically every month until canceled.",
+                    "When toggled on, you'll fund the above impact on the climate every month until canceled.",
                     textAlign: TextAlign.center,
                     style: AppFonts.smallIncidentals,
                   ),
@@ -702,11 +687,10 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
     );
   }
 
-  void temp(bool newVal) {
+  void repeatPurchaseOnChanged(bool newVal) {
     setState(() {
       isSubscription = newVal;
     });
-    print(isSubscription);
   }
 }
 

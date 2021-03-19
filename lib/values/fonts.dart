@@ -44,6 +44,13 @@ abstract class AppFonts {
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
   );
+  static const TextStyle monthlyImpactTextSmall = TextStyle(
+    fontFamily: 'Raleway-Bold',
+    color: AppColors.Black,
+    fontSize: 21,
+    fontWeight: FontWeight.w700,
+    fontStyle: FontStyle.normal,
+  );
   static const TextStyle laterTextGreen = TextStyle(
     fontFamily: 'Raleway-Medium',
     color: AppColors.primaryDarkGreen,
@@ -175,7 +182,7 @@ abstract class AppFonts {
     letterSpacing: -0.408,
   );
   static const TextStyle impactHead = TextStyle(
-    fontFamily: 'Raleway-Medium',
+    fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 16,
     fontWeight: FontWeight.w500,
@@ -211,7 +218,7 @@ abstract class AppFonts {
     fontStyle: FontStyle.normal,
   );
   static const TextStyle smallIncidentals = TextStyle(
-    fontFamily: 'Raleway-LightItalic',
+    fontFamily: 'Raleway',
     color: AppColors.Black,
     fontSize: 12,
     fontWeight: FontWeight.w300,

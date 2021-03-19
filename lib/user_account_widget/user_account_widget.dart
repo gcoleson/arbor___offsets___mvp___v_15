@@ -163,7 +163,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           Row(
             children: [
-              Text(
+              AutoSizeText(
                 "Reenter New Password",
                 textAlign: TextAlign.left,
                 style: TextStyle(
@@ -174,7 +174,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
               ),
               Container(
-                width: 200,
+                width: 165,
                 child: TextField(
                   controller: TextEditingController(),
                   keyboardType: TextInputType.emailAddress,
@@ -316,6 +316,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   } else if (snapshot.data.length <= 0) {
                     hasSubscriptions = false;
 
+                    print('Here 4');
+
                     return Column(
                       children: [
                         Column(
@@ -324,7 +326,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               width: 344,
                               height: 71,
                               child: Text(
-                                "You have no upcoming recurring monthly",
+                                "You have no upcoming payments",
                                 textAlign: TextAlign.center,
                                 style: AppFonts.unactivatedItemTextCenter,
                               ),
@@ -336,7 +338,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           width: 344,
                           height: 35,
                           child: Text(
-                            "To activate one, start a purchase on your Dashboard and select “Repeat This Purchase Monthly” on your shopping cart screen.",
+                            "To activate one, start a purchase on your Dashboard and select “chase Monthly” on your Shopping Cart screen.",
                             textAlign: TextAlign.center,
                             style: AppFonts.smallIncidentals,
                           ),
@@ -346,75 +348,44 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     );
                   } else {
                     hasSubscriptions = true;
-
                     records.clear();
                     records.addAll(snapshot.data);
-                    print(records.toString());
+                    records.forEach((element) {
+                      print('element');
+                      print(element.projectName);
+                    });
+                    print('Here');
                     // set default selection
-                    records[_selectedIndex].isSelected = true;
+                    records[_selectedIndex].isSelected = false;
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) {
+                        print('Here 1');
                         _SubscriptionTile tile =
                             _SubscriptionTile(records[index], () {});
-                        return InkWell(
+                        print('record:${records[index].projectName}');
+                        return tile;
+                        /* InkWell(
                           child: tile,
                           onTap: () {
                             _selectedIndex = index;
-                            setState(() {
-                              records.forEach((element) {
-                                element.isSelected = false;
-                              });
+                            print('tap');
+                            print('index:$index');
+                            print(
+                                'selected index:${records[index].isSelected}');
+                            /* setState(() {
+                              //records.forEach((element) {
+                              //  element.isSelected = false;
+                              //});
                               records[index].isSelected = true;
-                            });
+                              print(
+                                  'selected index:${records[index].isSelected}');
+                            }) 
+                            ;*/
                           },
-                        );
-                        // onSelect: () {
-                        //   _selectedIndex = index;
-                        //   tiles[_selectedIndex].changeFont2Cancel();
-                        //   print(_selectedIndex);
-                        // },
-                        // );
-                        //   projectTitle: snapshot.data[index].projectName,
-                        //   nextBillingCycleStart:
-                        //       snapshot.data[index].nextBillingDate,
-                        //   subscriptionId: snapshot.data[index].subscriptionId,
-                        //   onSelect: () {
-                        //     _selectedIndex = index;
-                        //     tiles[_selectedIndex].changeFont2Cancel();
-                        //     print(_selectedIndex);
-                        //   },
-                        // );
-
-                        tiles.add(tile);
-                        return tile;
-                        // tag
-                        // ListTileTheme(
-                        //   selectedColor: Colors.amber,
-                        //   child: ListTile(
-                        //     focusColor: Colors.amber,
-                        //     subtitle: Text(
-                        //         snapshot.data[index].nextBillingDate.toString() +
-                        //             "\n" +
-                        //             "Active",
-                        //         style: AppFonts.projectLabelSubhead),
-                        //     title: Text(
-                        //       'Bundle: ' + snapshot.data[index].projectName,
-                        //       style: AppFonts.projectLabelHeadline,
-                        //     ),
-                        //     isThreeLine: true,
-                        //     selected: index == _selectedIndex,
-                        //     onTap: () {
-                        //       setState(
-                        //         () {
-                        //           _selectedIndex = index;
-                        //         },
-                        //       );
-                        //     },
-                        //   ),
-                        // );
+                        ); */
                       },
                     );
                   }
@@ -504,6 +475,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             onPressed: () async {
               onCheckoutLoading(context);
               await cancelSelectedSub();
+              print('cancelSelectedSub return');
               subscriptionListGet = subLoad();
 
               Navigator.pop(context);
@@ -540,19 +512,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 
-  Future cancelSelectedSub() async {
+  Future<http.Response> cancelSelectedSub() async {
     // ping firebase to get the list of subscription
-    print(records[_selectedIndex].subscriptionId);
     http.Response response;
-    response = await http.post(
-      'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
-      body: json.encode(
-        {'cancelledSubId': records[_selectedIndex].subscriptionId},
-      ),
-    );
-    if (response.body != null && response.body != 'error') {
-      print("done");
+
+    for (int i = 0; i < records.length; i++) {
+      if (records[i].isSelected) {
+        print('waiting subscription:${records[i].subscriptionId} canceled');
+        response = await http.post(
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
+          body: json.encode(
+            {'cancelledSubId': records[i].subscriptionId},
+          ),
+        );
+        print('waiting for done');
+        print('status:${response.statusCode}');
+        if (response.body != null && response.body != 'error') {
+          print('subscription:${records[i].subscriptionId} canceled');
+          records[i].isSelected = false;
+        }
+      }
     }
+
+    print('Here 12');
+
+    return response;
   }
 
   Widget cancelButton() {
@@ -804,120 +788,137 @@ Future<List<SubscriptionItem>> subLoad() async {
     });
     amountDue /= 100;
     print("amount due is = " + amountDue.toString());
-    print(element['id']);
+    print(subscriptionId);
 
     //Add to list of projects user is subscribed to
     subscriptionList.add(SubscriptionItem(
         projectTitle, subscriptionId, nextBillingDate, false, amountDue));
-    // subscriptionList.add(SubscriptionItem("projectName", "subscriptionId",
-    //     DateTime.fromMillisecondsSinceEpoch(0)));
   });
   return subscriptionList;
 }
 
-class _SubscriptionTile extends StatelessWidget {
+class _SubscriptionTile extends StatefulWidget {
   final SubscriptionItem _item;
 
   final VoidCallback onSelect;
   _SubscriptionTile(this._item, this.onSelect);
 
   @override
+  __SubscriptionTileState createState() => __SubscriptionTileState();
+}
+
+class __SubscriptionTileState extends State<_SubscriptionTile> {
+  @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 86,
-          child: Column(
-            children: [
-              _item.isSelected
-                  ? Image.asset(
-                      "assets/images/cancel-sub-icon.png",
-                      height: 29,
-                      width: 27,
-                    )
-                  : Container(
-                      width: 0,
-                      height: 0,
+    return GestureDetector(
+        onTap: () {
+          print('tap 1');
+          print(widget._item.isSelected);
+          print(widget._item.projectName);
+          setState(() {
+            if (widget._item.isSelected == true)
+              widget._item.isSelected = false;
+            else
+              widget._item.isSelected = true;
+          });
+        },
+        child: Row(
+          children: [
+            Expanded(
+              flex: 86,
+              child: Column(
+                children: [
+                  widget._item.isSelected
+                      ? Image.asset(
+                          "assets/images/cancel-sub-icon.png",
+                          height: 29,
+                          width: 27,
+                        )
+                      : Container(
+                          width: 0,
+                          height: 0,
+                        ),
+                  Container(
+                    height: 40,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 308,
+              child: Column(
+                children: [
+                  SizedBox(height: 15),
+                  Container(
+                    width: 308,
+                    height: 30,
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      widget._item.projectName,
+                      style: TextStyle(
+                        fontFamily: 'Raleway-Light',
+                        color:
+                            widget._item.isSelected ? Colors.red : Colors.black,
+                        fontSize: 21,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
-              Container(
-                height: 40,
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 308,
-          child: Column(
-            children: [
-              SizedBox(height: 15),
-              Container(
-                width: 308,
-                height: 30,
-                alignment: Alignment.topLeft,
-                child: Text(
-                  _item.projectName,
-                  style: TextStyle(
-                    fontFamily: 'Raleway-Light',
-                    color: _item.isSelected ? Colors.red : Colors.black,
-                    fontSize: 21,
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.normal,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 1,
-              ),
-              Container(
-                width: 308,
-                height: 30,
-                alignment: Alignment.topLeft,
-                child: Text(
-                  // '18.50	renewing ' + nextBillingCycleStart.toString(),
-                  "\$" +
-                      _item.amountDue.toString() +
-                      "    renewing " +
-                      _item.nextBillingDate.month.toString() +
-                      "/" +
-                      _item.nextBillingDate.day.toString() +
-                      "/" +
-                      _item.nextBillingDate.year.toString(),
-                  style: TextStyle(
-                    fontFamily: 'Raleway-LightItalic',
-                    color: _item.isSelected ? Colors.red : Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.italic,
+                  SizedBox(
+                    height: 1,
                   ),
-                ),
+                  Container(
+                    width: 308,
+                    height: 30,
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      // '18.50	renewing ' + nextBillingCycleStart.toString(),
+                      "\$" +
+                          widget._item.amountDue.toString() +
+                          "    renewing " +
+                          widget._item.nextBillingDate.month.toString() +
+                          "/" +
+                          widget._item.nextBillingDate.day.toString() +
+                          "/" +
+                          widget._item.nextBillingDate.year.toString(),
+                      style: TextStyle(
+                        fontFamily: 'Raleway-LightItalic',
+                        color:
+                            widget._item.isSelected ? Colors.red : Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 1,
+                  ),
+                  Container(
+                    width: 308,
+                    height: 16,
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Active',
+                      style: AppFonts.activeSubscriptionLabel,
+                    ),
+                  ),
+                  Divider(
+                    height: 32,
+                    thickness: 2,
+                    color: AppColors.divider,
+                    indent: 63,
+                    endIndent: 20,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 1,
-              ),
-              Container(
-                width: 308,
-                height: 16,
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Active',
-                  style: AppFonts.activeSubscriptionLabel,
-                ),
-              ),
-              Divider(
-                height: 32,
-                thickness: 2,
-                color: AppColors.divider,
-                indent: 63,
-                endIndent: 20,
-              ),
-            ],
-          ),
-        ),
-        Spacer(
-          flex: 20,
-        )
-      ],
-    );
+            ),
+            Spacer(
+              flex: 20,
+            )
+          ],
+        ));
   }
 }
 

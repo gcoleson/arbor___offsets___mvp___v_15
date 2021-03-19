@@ -153,7 +153,81 @@ Container buildTotalMonthsContainer(int totalMonths) {
 /*===============================================================================================
   Stream Builder for Months in a row
   ================================================================================================*/
-Widget buildMonthsInARowContainer(int consecutiveMonths) {
+Container buildMonthsInARowContainer(int consecutiveMonths) {
+  return Container(
+    height: 57,
+    margin: EdgeInsets.only(right: 1),
+    child: Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        Positioned(
+          left: 0,
+          top: 8,
+          right: 0,
+          child: Container(
+            height: 48,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 93, 187, 71),
+              border: Border.all(
+                width: 1,
+                color: Color.fromARGB(255, 151, 151, 151),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(128, 0, 0, 0),
+                  offset: Offset(0, 2),
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+            child: Container(),
+          ),
+        ),
+        Positioned(
+          left: 24,
+          top: 8,
+          right: 8,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  //===========================================
+                  // Total Months of Impact
+                  //===========================================
+                  consecutiveMonths.toString(),
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 250, 195, 21),
+                    fontFamily: "Raleway",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 36,
+                  ),
+                ),
+              ),
+              Spacer(),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  margin: EdgeInsets.only(top: 7),
+                  child: AutoSizeText(
+                    "months in a row of impact",
+                    maxLines: 1,
+                    textAlign: TextAlign.right,
+                    style: AppFonts.monthlyImpactTextSmall,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+/* Widget buildMonthsInARowContainer(int consecutiveMonths) {
   return Container(
     height: 50,
     margin: EdgeInsets.only(left: 1, top: 20),
@@ -225,7 +299,7 @@ Widget buildMonthsInARowContainer(int consecutiveMonths) {
       ],
     ),
   );
-}
+} */
 
 /*===============================================================================================
   User stats: Months of Impact

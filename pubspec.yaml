@@ -22,6 +22,7 @@ dependencies:
   percent_indicator: "^2.1.5"
   dots_indicator: ^1.2.0
   webview_flutter: ^0.3.22+1
+
   
   # Database
   firebase_core: ^0.5.2+1

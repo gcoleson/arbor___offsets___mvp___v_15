@@ -258,7 +258,7 @@ class ProjectInfoWidget extends StatelessWidget {
               ),
             )),
         Expanded(
-          child: Text(
+          child: AutoSizeText(
             "${projectData.percent}" "% Funded",
             maxLines: 1,
             textAlign: TextAlign.right,
