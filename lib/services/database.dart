@@ -40,7 +40,7 @@ class UserData {
   int selectedprojectnumber = 1; //starts at 1, zero is no project selected
   bool dataLoadedFromDB = false;
   String selectedProjectId = '';
-  String selectedProjectTitle = "Conservation: Rimba Raya Reserve";
+  String selectedProjectTitle = "";
 }
 
 class UserMessages {
@@ -102,6 +102,7 @@ class DatabaseService {
         'lastname': data.lastName,
         'selectedprojectnumber': 1, //project 1 is the default
         'selectedProjectId': data.selectedProjectId,
+        'selectedProjectTitle': data.selectedProjectTitle,
         'createtimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
     } else {
@@ -111,6 +112,7 @@ class DatabaseService {
         'lastname': data.lastName,
         'selectedprojectnumber': data.selectedprojectnumber,
         'selectedProjectId': data.selectedProjectId,
+        'selectedProjectTitle': data.selectedProjectTitle,
         'lastwitetimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
     }

@@ -315,9 +315,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     );
                   } else if (snapshot.data.length <= 0) {
                     hasSubscriptions = false;
-
-                    print('Here 4');
-
                     return Column(
                       children: [
                         Column(
@@ -338,7 +335,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           width: 344,
                           height: 35,
                           child: Text(
-                            "To activate one, start a purchase on your Dashboard and select “chase Monthly” on your Shopping Cart screen.",
+                            "To activate one, start a purchase on your Dashboard and select “Repeat Monthly” on your Shopping Cart screen.",
                             textAlign: TextAlign.center,
                             style: AppFonts.smallIncidentals,
                           ),
@@ -350,48 +347,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     hasSubscriptions = true;
                     records.clear();
                     records.addAll(snapshot.data);
-                    records.forEach((element) {
-                      print('element');
-                      print(element.projectName);
-                    });
-                    print('Here');
-                    // set default selection
                     records[_selectedIndex].isSelected = false;
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        print('Here 1');
-                        _SubscriptionTile tile =
-                            _SubscriptionTile(records[index], () {});
-                        print('record:${records[index].projectName}');
-                        return tile;
-                        /* InkWell(
-                          child: tile,
-                          onTap: () {
-                            _selectedIndex = index;
-                            print('tap');
-                            print('index:$index');
-                            print(
-                                'selected index:${records[index].isSelected}');
-                            /* setState(() {
-                              //records.forEach((element) {
-                              //  element.isSelected = false;
-                              //});
-                              records[index].isSelected = true;
-                              print(
-                                  'selected index:${records[index].isSelected}');
-                            }) 
-                            ;*/
+                    return Column(
+                      children: [
+                        ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            _SubscriptionTile tile =
+                                _SubscriptionTile(records[index], () {});
+                            return tile;
                           },
-                        ); */
-                      },
+                        ),
+                        cancelButton(),
+                      ],
                     );
                   }
                 },
               ),
-              cancelButton(),
             ],
           ),
           isExpanded: isExpandedTest[1],
@@ -475,7 +449,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             onPressed: () async {
               onCheckoutLoading(context);
               await cancelSelectedSub();
-              print('cancelSelectedSub return');
               subscriptionListGet = subLoad();
 
               Navigator.pop(context);
@@ -518,24 +491,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
     for (int i = 0; i < records.length; i++) {
       if (records[i].isSelected) {
-        print('waiting subscription:${records[i].subscriptionId} canceled');
         response = await http.post(
           'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
           body: json.encode(
             {'cancelledSubId': records[i].subscriptionId},
           ),
         );
-        print('waiting for done');
-        print('status:${response.statusCode}');
         if (response.body != null && response.body != 'error') {
-          print('subscription:${records[i].subscriptionId} canceled');
           records[i].isSelected = false;
         }
       }
     }
-
-    print('Here 12');
-
     return response;
   }
 
@@ -787,8 +753,6 @@ Future<List<SubscriptionItem>> subLoad() async {
       amountDue += element["price"]["unit_amount"];
     });
     amountDue /= 100;
-    print("amount due is = " + amountDue.toString());
-    print(subscriptionId);
 
     //Add to list of projects user is subscribed to
     subscriptionList.add(SubscriptionItem(
@@ -812,9 +776,6 @@ class __SubscriptionTileState extends State<_SubscriptionTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          print('tap 1');
-          print(widget._item.isSelected);
-          print(widget._item.projectName);
           setState(() {
             if (widget._item.isSelected == true)
               widget._item.isSelected = false;
@@ -853,8 +814,9 @@ class __SubscriptionTileState extends State<_SubscriptionTile> {
                     width: 308,
                     height: 30,
                     alignment: Alignment.topLeft,
-                    child: Text(
+                    child: AutoSizeText(
                       widget._item.projectName,
+                      maxLines: 1,
                       style: TextStyle(
                         fontFamily: 'Raleway-Light',
                         color:

@@ -48,28 +48,12 @@ Widget loadUserData(BuildContext context) {
 
   if (userdata.dataLoadedFromDB) {
     return SizedBox.shrink();
-    // return Text(userdata.firstName + ' ' + userdata.lastName,
-    //     textAlign: TextAlign.left,
-    //     style: TextStyle(
-    //       color: Color.fromARGB(255, 2, 2, 2),
-    //       fontFamily: "Raleway",
-    //       fontWeight: FontWeight.w700,
-    //       fontSize: 21,
-    //     ));
   } else
     return new StreamBuilder(
       stream: databaseService.getUserData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SizedBox.shrink();
-          // return Text("Loading User Data",
-          //     textAlign: TextAlign.left,
-          //     style: TextStyle(
-          //       color: Color.fromARGB(255, 2, 2, 2),
-          //       fontFamily: "Raleway",
-          //       fontWeight: FontWeight.w700,
-          //       fontSize: 21,
-          //     ));
         }
         var userDocument = snapshot.data;
 
@@ -79,32 +63,19 @@ Widget loadUserData(BuildContext context) {
           userdata.createtimestamp = userDocument['createtimestamp'];
           userdata.selectedprojectnumber =
               userDocument['selectedprojectnumber'];
+
+          userdata.selectedProjectId =
+              testDBForField(userDocument, 'selectedProjectId');
+          userdata.selectedProjectTitle =
+              testDBForField(userDocument, 'selectedProjectTitle');
+
           userdata.dataLoadedFromDB = true;
           return SizedBox.shrink();
         } catch (error) {
           print('Get user data error');
           print(error.toString());
           return SizedBox.shrink();
-          // return Text(userdata.firstName + ' ' + userdata.lastName,
-          //     textAlign: TextAlign.left,
-          //     style: TextStyle(
-          //       color: Color.fromARGB(255, 2, 2, 2),
-          //       fontFamily: "Raleway",
-          //       fontWeight: FontWeight.w700,
-          //       fontSize: 21,
-          //     ));
         }
-
-        // return Text(
-        //   userdata.firstName + ' ' + userdata.lastName,
-        //   textAlign: TextAlign.left,
-        //   style: TextStyle(
-        //     color: Color.fromARGB(255, 2, 2, 2),
-        //     fontFamily: "Raleway",
-        //     fontWeight: FontWeight.w700,
-        //     fontSize: 21,
-        //   ),
-        // );
       },
     );
 }

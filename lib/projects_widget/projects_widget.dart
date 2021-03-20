@@ -115,15 +115,18 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
                 projectData.sponsorlogo = document['sponsor-logo'];
                 projectData.title = document['title'];
                 projectData.projectId = document.id;
-
                 projectData.projectnumber =
                     testDBForField(document, 'projectnumber') ?? 0;
 
                 if (projectData.projectnumber != 0 &&
                     userdata.selectedprojectnumber != 0 &&
-                    projectData.projectnumber == userdata.selectedprojectnumber)
+                    projectData.projectnumber ==
+                        userdata.selectedprojectnumber) {
                   projectData.selected = true;
-                else
+                  userdata.selectedProjectId = projectData.projectId;
+                  userdata.selectedProjectTitle = projectData.title;
+                  databaseService.updateUserData(userdata, false);
+                } else
                   projectData.selected = false;
 
                 //add to map for referencing selected or not
@@ -131,14 +134,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
               } else {
                 projectData = projectDataMap[index];
               }
-
               return ProjectSummaryWidget(index, projectData);
-              //flip it
-
-              // return Text(
-              //   "Tap a project name for full details. Tap an image to select a project",
-              //   style: AppFonts.projectLabelSubhead,
-              // );
             },
           );
         },
