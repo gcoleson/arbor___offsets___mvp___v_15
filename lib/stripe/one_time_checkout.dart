@@ -16,20 +16,6 @@ class _OneTimeCheckoutState extends State<OneTimeCheckout> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 65, 127, 69),
-      // appBar: AppBar(
-      //   title: Text(
-      //     "Checkout",
-      //     textAlign: TextAlign.center,
-      //     style: TextStyle(
-      //       color: Color.fromARGB(255, 255, 255, 255),
-      //       fontFamily: "Montserrat Semi-Bold",
-      //       fontWeight: FontWeight.w600,
-      //       fontSize: 36,
-      //     ),
-      //   ),
-      //   automaticallyImplyLeading: false,
-      //   backgroundColor: Color.fromARGB(255, 65, 127, 69),
-      // ),
       body: SafeArea(
         child: WebView(
           initialUrl: initialURL,
@@ -58,7 +44,7 @@ class _OneTimeCheckoutState extends State<OneTimeCheckout> {
 
   void redirectToStripe() {
     final redirectToCheckoutJs = '''
-      var stripe = Stripe('pk_live_51HRfuDL6r6kEK5q6gu926dyT02VZA8q2u3WLUU5HbQVB9CRcvMcphEJOh2qmYkstKSpqo8afWVoHpRqNyDVqe5sb00a7qmwcV8');
+      var stripe = Stripe('pk_test_51HRfuDL6r6kEK5q693txJKmIcCBzlQmWOmtazwxUUBEBOcegjWezD0C1PupkU3pjCtptns4wAnIFXe1ykZPxNQrw00F47qSNCm');
       stripe.redirectToCheckout({
         sessionId: '${widget.sessionId}'
       }).then(function (result) {

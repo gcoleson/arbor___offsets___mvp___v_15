@@ -572,7 +572,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 if (!isSubscription) {
                   // First Ping Firebase for session ID for stripe checkout
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testPayment',
                     body: json.encode(
                       {
                         'items': checkout_list,
@@ -649,7 +649,9 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
 
                     FocusScope.of(context).unfocus();
                     Navigator.of(context).pop();
-                    databaseService.addOrder(order_list, totalTrees);
+                    //databaseService.addOrder(order_list, totalTrees);
+                    databaseService.addOrderTest(
+                        order_list, totalTrees, totalCoins.toInt());
 
                     paymentSuccessBuildDialogue(context);
                   } else if (outcome == "failure") {
