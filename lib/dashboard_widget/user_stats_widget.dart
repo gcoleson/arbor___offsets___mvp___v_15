@@ -1,3 +1,4 @@
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -49,11 +50,15 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
           userStats.treesThisMonth = dummy2.toInt();
         }
 
+        userStats.totalCoins =
+            testDBForField(snapshot.data, "coinsCurrentAmount");
+
+        if (userStats.totalCoins == null) userStats.totalCoins = 0;
+
         print("stats");
         return Column(
           children: [
-            buildImpactContainer(
-                userStats.totalTrees, userStats.treesThisMonth),
+            buildImpactContainer(userStats),
             buildMonthsInARowContainer(userStats.consecutiveMonths),
             buildTotalMonthsContainer(userStats.totalMonths)
           ],
@@ -63,7 +68,7 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 
         return Column(
           children: [
-            buildImpactContainer(0, 0),
+            buildImpactContainer(userStats),
             buildMonthsInARowContainer(0),
             buildTotalMonthsContainer(0)
           ],
@@ -304,7 +309,8 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
 /*===============================================================================================
   User stats: Months of Impact
   ================================================================================================*/
-Container buildImpactContainer(int totalTrees, int treesThisMonth) {
+Container buildImpactContainer(UserStats stats) {
+//Container buildImpactContainer(int totalTrees, int treesThisMonth) {
   return Container(
     //height: 400,
     margin: EdgeInsets.only(left: 5, top: 5, right: 5),
@@ -331,7 +337,8 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                     // horizontal, this produces 2 rows.
                     crossAxisCount: 3,
                     // Generate 100 widgets that display their index in the List.
-                    children: List.generate(treesThisMonth.toInt(), (index) {
+                    children:
+                        List.generate(stats.treesThisMonth.toInt(), (index) {
                       return Center(
                         child: Image.asset(
                           "assets/images/icons8-oak-tree-100-2-copy-9.png",
@@ -359,7 +366,7 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                         //=================================
                         children: <TextSpan>[
                           new TextSpan(
-                            text: treesThisMonth.toString() + " ",
+                            text: stats.treesThisMonth.toString() + " ",
                             style: TextStyle(color: AppColors.highlightYellow),
                           ),
                           new TextSpan(
@@ -387,7 +394,7 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                           //=================================
                           children: <TextSpan>[
                             new TextSpan(
-                              text: totalTrees.toString(),
+                              text: stats.totalTrees.toString(),
                               style:
                                   TextStyle(color: AppColors.highlightYellow),
                             ),
@@ -402,6 +409,40 @@ Container buildImpactContainer(int totalTrees, int treesThisMonth) {
                     ),
                   ),
                 ],
+              ),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              width: 276,
+              height: 94,
+              child: Text(
+                'Total Arbor Coins Earned:',
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  fontSize: 34,
+                  color: AppColors.primaryDarkGreen,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Container(
+              height: 65,
+              width: 100,
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  stats.totalCoins.toString(),
+                  style: TextStyle(
+                    fontSize: 34,
+                    color: AppColors.highlightYellow,
+                    fontFamily: "Raleway",
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
             )
           ],
