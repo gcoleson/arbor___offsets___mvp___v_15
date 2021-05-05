@@ -547,24 +547,12 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 //   }
                 // });
 
-                print("reach4");
                 DocumentSnapshot ds = await databaseReference
                     .collection('users')
                     .doc(databaseService.uid)
                     .get();
-                print("reach5");
 
                 isCustomer = ds.data().containsKey("customerId");
-
-                print(isCustomer);
-
-                // if (ds.exists) {
-                //   customerId = ds.get('customerId');
-                //   print("customer Id doesn't exist");
-                // } else {
-                //   print("Error: customer ID is empty");
-                // }
-                // print("AAAAAAAAAAAAAAAAAAA" + isCustomer.toString());
 
                 http.Response response;
                 print(databaseService.uid);
@@ -572,12 +560,14 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 if (!isSubscription) {
                   // First Ping Firebase for session ID for stripe checkout
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/paymentsTestUpdate',
                     body: json.encode(
                       {
                         'items': checkout_list,
                         'projectName': 'project number: ' +
-                            userdata.selectedprojectnumber.toString()
+                            userdata.selectedprojectnumber.toString(),
+                        'totalCoins': totalCoins,
+                        'totalTrees': totalTrees
                       },
                     ),
                   );
