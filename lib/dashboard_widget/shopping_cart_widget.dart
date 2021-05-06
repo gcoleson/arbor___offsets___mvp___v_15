@@ -567,7 +567,9 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                         'projectName': 'project number: ' +
                             userdata.selectedprojectnumber.toString(),
                         'totalCoins': totalCoins,
-                        'totalTrees': totalTrees
+                        'totalTrees': totalTrees,
+                        'userId': databaseService.uid,
+                        'mode': "onetime"
                       },
                     ),
                   );
@@ -575,13 +577,17 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   print("this is correct");
                   customerId = ds.get("customerId");
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSub',
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSubTest',
                     body: json.encode(
                       {
                         'customerIdClient': customerId,
                         'items': checkout_list,
                         'projectId': userdata.selectedprojectnumber.toString(),
                         'projectTitle': userdata.selectedProjectTitle,
+                        'totalCoins': totalCoins,
+                        'totalTrees': totalTrees,
+                        'userId': databaseService.uid,
+                        'mode': "subscription"
                       },
                     ),
                     // body: json.encode(
@@ -591,13 +597,16 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 } else {
                   print("this is incorrect");
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSub',
+                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSubTest',
                     body: json.encode(
                       {
                         'userId': databaseService.uid,
                         'items': checkout_list,
                         'projectId': userdata.selectedprojectnumber.toString(),
                         'projectTitle': userdata.selectedProjectTitle,
+                        'totalCoins': totalCoins,
+                        'totalTrees': totalTrees,
+                        'mode': "subscription"
                       },
                     ),
                     // body: json.encode(
@@ -639,9 +648,11 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
 
                     FocusScope.of(context).unfocus();
                     Navigator.of(context).pop();
+
+                    // Old way of adding new orders to the database
                     //databaseService.addOrder(order_list, totalTrees);
-                    databaseService.addOrderTest(
-                        order_list, totalTrees, totalCoins.toInt());
+                    // databaseService.addOrderTest(
+                    //     order_list, totalTrees, totalCoins.toInt());
 
                     paymentSuccessBuildDialogue(context);
                   } else if (outcome == "failure") {

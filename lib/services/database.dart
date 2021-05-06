@@ -183,6 +183,8 @@ class DatabaseService {
     return userCollection
         .doc(this.uid)
         .set({
+          'coinsAllTime': 0,
+          'coinsCurrentAmount': 0,
           'consecutiveMonths': 0,
           'totalMonths': 0,
           'totalTrees': 0,
