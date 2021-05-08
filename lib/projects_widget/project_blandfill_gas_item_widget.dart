@@ -5,6 +5,7 @@
 *  Created by Ed.
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
+// @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';

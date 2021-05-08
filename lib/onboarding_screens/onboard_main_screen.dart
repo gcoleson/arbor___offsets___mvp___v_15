@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'onboarding_screen.dart';
@@ -98,7 +100,6 @@ class MyHomePageState extends State<MyHomePage> {
             controller: _controller,
             children: _onboardingScreens,
             onPageChanged: (value) {
-              print(_onboardingScreens.length - 1);
               if (value >= _onboardingScreens.length - 1) {
                 setState(() {
                   isVisible = false;

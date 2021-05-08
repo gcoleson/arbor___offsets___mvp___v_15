@@ -1,3 +1,5 @@
+// @dart=2.9
+
 /*
 *  project_detail_widget.dart
 *  Arbor - Offsets - MVP - v.1

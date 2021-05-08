@@ -8,7 +8,9 @@ class PushNotificaitonsManager {
   static final PushNotificaitonsManager _instance =
       PushNotificaitonsManager._();
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   bool _initialized = false;
 

@@ -1,0 +1,35 @@
+
+// 0.9.10
+///Users/gregcoleson/code/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/chewie-0.9.10/lib/src/chewie_player.dart
+
+/*static ChewieController of(BuildContext context) {
+    final chewieControllerProvider =
+        context.inheritFromWidgetOfExactType(_ChewieControllerProvider)
+            as _ChewieControllerProvider;
+
+    return chewieControllerProvider.controller;
+  }*/
+
+  static ChewieController of(BuildContext context) {
+    final chewieControllerProvider =
+        context.dependOnInheritedWidgetOfExactType<_ChewieControllerProvider>();
+
+    return chewieControllerProvider.controller;
+  }
+
+// /Users/gregcoleson/code/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/chewie_audio-1.0.0+1/lib/src/chewie_player.dart
+
+  /*static ChewieAudioController of(BuildContext context) {
+    final chewieAudioControllerProvider =
+        context.inheritFromWidgetOfExactType(_ChewieAudioControllerProvider)
+            as _ChewieAudioControllerProvider;
+
+    return chewieAudioControllerProvider.controller;
+  }*/
+
+  static ChewieAudioController of(BuildContext context) {
+    final chewieAudioControllerProvider = context
+        .dependOnInheritedWidgetOfExactType<_ChewieAudioControllerProvider>();
+
+    return chewieAudioControllerProvider.controller;
+  }

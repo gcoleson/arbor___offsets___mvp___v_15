@@ -6,7 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-//import 'dart:js';
+// @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';

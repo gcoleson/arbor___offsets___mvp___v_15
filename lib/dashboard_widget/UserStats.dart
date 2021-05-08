@@ -6,9 +6,9 @@ class UserStats {
   int totalCoins = 0;
 
   UserStats(
-      {this.consecutiveMonths,
-      this.totalMonths,
-      this.totalTrees,
-      this.treesThisMonth,
-      this.totalCoins});
+      {this.consecutiveMonths = 0,
+      this.totalMonths = 0,
+      this.totalTrees = 0,
+      this.treesThisMonth = 0,
+      this.totalCoins = 0});
 }

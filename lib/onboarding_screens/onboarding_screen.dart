@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
@@ -318,120 +320,115 @@ Widget myPage5Widget(BuildContext context) {
 
   analytics.logEvent(name: 'Signin');
 
-  return new Scaffold(
-    resizeToAvoidBottomPadding: false,
-    body: Container(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image(
-            image: AssetImage("assets/images/WelcomeBackScreen.png"),
-            fit: BoxFit.cover,
-          ),
-          Column(
-            children: [
-              Spacer(flex: 75),
-              Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  Container(
-                      height: 159,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(127, 216, 216, 216))),
-                  Column(
-                    children: [
-                      Container(
-                        child: Text(
-                          "Arbor",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 65, 127, 69),
-                            fontFamily: "Montserrat-SemiBold",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 72,
-                          ),
+  return Scaffold(
+      //resizeToAvoidBottomPadding: false,
+      body: Container(
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        Image(
+          image: AssetImage("assets/images/WelcomeBackScreen.png"),
+          fit: BoxFit.cover,
+        ),
+        Column(
+          children: [
+            Spacer(flex: 75),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Container(
+                    height: 159,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(127, 216, 216, 216))),
+                Column(
+                  children: [
+                    Container(
+                      child: Text(
+                        "Arbor",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 65, 127, 69),
+                          fontFamily: "Montserrat-SemiBold",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 72,
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "Welcome Back",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 65, 127, 69),
-                            fontFamily: "Montserrat-Medium",
-                            fontSize: 36,
-                          ),
+                    ),
+                    Container(
+                      child: Text(
+                        "Welcome Back",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 65, 127, 69),
+                          fontFamily: "Montserrat-Medium",
+                          fontSize: 36,
                         ),
                       ),
-                    ],
-                  )
-                ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(height: 47),
+            Container(
+                height: 44,
+                child: _customTextField("assets/images/UserIcon.png", "Email",
+                    _emailController, TextInputType.emailAddress, false)),
+            Container(
+                margin: EdgeInsets.only(top: 14, bottom: 22),
+                height: 44,
+                child: _customTextField("assets/images/PasswordIcon.png",
+                    "Password", _passwordController, TextInputType.text, true)),
+            _customButton("Sign In", signIn),
+            FlatButton(
+                onPressed: () {
+                  passwordResetDialog(context, _passwirdResetController);
+                },
+                child: Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 250, 195, 21),
+                      fontSize: 18,
+                      fontFamily: "Raleway-Medium"),
+                )),
+            Spacer(flex: 334),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                height: 21,
+                child: Text(
+                  "Need an account? ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: "Raleway-Medium",
+                      fontSize: 18),
+                ),
               ),
-              SizedBox(height: 47),
-              Container(
-                  height: 44,
-                  child: _customTextField("assets/images/UserIcon.png", "Email",
-                      _emailController, TextInputType.emailAddress, false)),
-              Container(
-                  margin: EdgeInsets.only(top: 14, bottom: 22),
-                  height: 44,
-                  child: _customTextField(
-                      "assets/images/PasswordIcon.png",
-                      "Password",
-                      _passwordController,
-                      TextInputType.text,
-                      true)),
-              _customButton("Sign In", signIn),
               FlatButton(
-                  onPressed: () {
-                    passwordResetDialog(context, _passwirdResetController);
-                  },
+                  onPressed: () =>
+                      Navigator.pop(context) //switchPage(controller, 3)
+
+                  // { Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => TabGroupOneTabBarWidget()),
+                  //   );
+                  // }
+                  ,
                   child: Text(
-                    "Forgot Password?",
+                    "Join",
                     style: TextStyle(
                         color: Color.fromARGB(255, 250, 195, 21),
                         fontSize: 18,
                         fontFamily: "Raleway-Medium"),
                   )),
-              Spacer(flex: 334),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(
-                  height: 21,
-                  child: Text(
-                    "Need an account? ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Raleway-Medium",
-                        fontSize: 18),
-                  ),
-                ),
-                FlatButton(
-                    onPressed: () =>
-                        Navigator.pop(context) //switchPage(controller, 3)
-
-                    // { Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => TabGroupOneTabBarWidget()),
-                    //   );
-                    // }
-                    ,
-                    child: Text(
-                      "Join",
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 250, 195, 21),
-                          fontSize: 18,
-                          fontFamily: "Raleway-Medium"),
-                    )),
-              ]),
-              Spacer(flex: 47)
-            ],
-          )
-        ],
-      ),
+            ]),
+            Spacer(flex: 47)
+          ],
+        )
+      ],
     ),
-  );
+  ));
 }
 
 Row _customButton(String buttonText, Function onButtonPress) {

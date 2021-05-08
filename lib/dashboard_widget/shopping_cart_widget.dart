@@ -1,4 +1,8 @@
+// @dart=2.9
+
 import 'package:arbor___offsets___mvp___v_15/main.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
 import 'package:http/http.dart' as http;
@@ -8,143 +12,11 @@ import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:share/share.dart';
 
 Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
 var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
 var iOsSystemBackgroundsLightSystemBack2 = Color.fromARGB(255, 255, 255, 255);
-
-Future buildShowDialog(BuildContext context) {
-  return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Positioned(
-                right: -40.0,
-                top: -40.0,
-                child: InkResponse(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: CircleAvatar(
-                    child: Icon(Icons.close),
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-              ),
-              form(),
-            ],
-          ),
-        );
-      });
-}
-
-//Form form() {
-Container form() {
-  return Container(
-    width: 381,
-    height: 700,
-    decoration: BoxDecoration(
-        color: blueHighlight, borderRadius: BorderRadius.circular(10)),
-    child: Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-          child: Text("Congratulations!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: Color(0xfffafcfd),
-                fontSize: 36,
-                fontWeight: FontWeight.w600,
-                fontStyle: FontStyle.normal,
-              )),
-        ),
-        Spacer(flex: 25),
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-          child: Text(
-            "By eliminating your climate impact, you’re helping reversing climate change!",
-            textAlign: TextAlign.center,
-            style: AppFonts.congratsSubhead,
-          ),
-        ),
-        //TODO: Finish the share feature
-        // Text("You just eliminated the climate impact of:",
-        //     textAlign: TextAlign.center,
-        //     style: TextStyle(
-        //       fontFamily: 'Montserrat',
-        //       color: iOsSystemBackgroundsLightSystemBack2,
-        //       fontSize: 28,
-        //       fontWeight: FontWeight.w500,
-        //       fontStyle: FontStyle.normal,
-        //     )),
-        Spacer(
-          flex: 110,
-        ),
-        // Text("Tell your friends how you’re going climate positive:",
-        //     textAlign: TextAlign.center,
-        //     style: TextStyle(
-        //       fontFamily: 'Raleway',
-        //       color: Color(0xff010101),
-        //       fontSize: 18,
-        //       fontWeight: FontWeight.w300,
-        //       fontStyle: FontStyle.normal,
-        //     )),
-        // Container(
-        //   width: 344,
-        //   height: 50,
-        //   decoration: BoxDecoration(
-        //       color: primaryAccentGreen,
-        //       borderRadius: BorderRadius.circular(8)),
-        //   child: Text(
-        //     "Share",
-        //     textAlign: TextAlign.center,
-        //     style: TextStyle(
-        //       fontFamily: 'SFProText',
-        //       color: iOsSystemBackgroundsLightSystemBack2,
-        //       fontSize: 17,
-        //       fontWeight: FontWeight.w600,
-        //       fontStyle: FontStyle.normal,
-        //       letterSpacing: -0.408,
-        //     ),
-        //   ),
-        // )
-      ],
-    ),
-  );
-
-  /*return Form(
-    //key: _formKey,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: TextFormField(),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: TextFormField(),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            child: Text("Submitß"),
-            onPressed: () {
-              /*(if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                        }*/
-            },
-          ),
-        )
-      ],
-    ),
-  );*/
-}
-//}
 
 Widget buildLineItems(List<CartItem> purchaseItemList)
 //loop through all items and make into a grid 2x
@@ -356,10 +228,8 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
     print('Project Number:${userdata.selectedprojectnumber}');
     return Container(
       alignment: Alignment.topCenter,
-      //margin: EdgeInsetsGeometry.infinity,
       padding: EdgeInsets.all(0),
       constraints: BoxConstraints.expand(),
-
       child: Column(
         children: [
           Container(
@@ -385,8 +255,11 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 return LinearProgressIndicator();
               }
               try {
-                String imageLink = snapshot.data.docs[0].data()['image-main'];
-                projectName = snapshot.data.docs[0].data()['title'];
+                snapshot.data.docs[0].get('image-main');
+                //String imageLink = snapshot.data.docs[0].data()['image-main'];
+                String imageLink = snapshot.data.docs[0].get('image-main');
+                //projectName = snapshot.data.docs[0].data()['title'];
+                projectName = snapshot.data.docs[0].get('title');
                 projectName = projectName.split(":")[1];
                 return Column(
                   children: [
@@ -446,7 +319,6 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
             ),
           ),
           buildLineItems(widget.purchaseItemList),
-          //SizedBox(height: 17.5),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -500,22 +372,22 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 print(widget.purchaseItemList[0].documentID);
                 print(widget.purchaseItemList[0].imageText);
 
-                String checkout_json;
-                var checkout_list = [];
-                var order_list = [];
+                //String checkoutJson;
+                var checkoutList = [];
+                var orderList = [];
 
                 for (var i = 0; i < widget.purchaseItemList.length; i++) {
                   //check to see that headers don't match, if so make another area in the cart
                   //always do the first one
                   if (widget.purchaseItemList[i].boxSelected == true) {
-                    checkout_list.add(
+                    checkoutList.add(
                       {
                         'docID': widget.purchaseItemList[i].documentID,
                         'quantity': 1
                       },
                     );
 
-                    order_list.add({
+                    orderList.add({
                       'item': widget.purchaseItemList[i].imageText,
                       'quantity': 1,
                       'trees': widget.purchaseItemList[i].treeCount
@@ -554,7 +426,8 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     .get();
                 print("reach5");
 
-                isCustomer = ds.data().containsKey("customerId");
+                //isCustomer = ds.data().containsKey("customerId");
+                isCustomer = ds.data()
 
                 print(isCustomer);
 
@@ -575,7 +448,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
                     body: json.encode(
                       {
-                        'items': checkout_list,
+                        'items': checkoutList,
                         'projectName': 'project number: ' +
                             userdata.selectedprojectnumber.toString()
                       },
@@ -589,7 +462,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     body: json.encode(
                       {
                         'customerIdClient': customerId,
-                        'items': checkout_list,
+                        'items': checkoutList,
                         'projectId': userdata.selectedprojectnumber.toString(),
                         'projectTitle': userdata.selectedProjectTitle,
                       },
@@ -605,7 +478,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     body: json.encode(
                       {
                         'userId': databaseService.uid,
-                        'items': checkout_list,
+                        'items': checkoutList,
                         'projectId': userdata.selectedprojectnumber.toString(),
                         'projectTitle': userdata.selectedProjectTitle,
                       },
@@ -651,9 +524,10 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     Navigator.of(context).pop();
                     //databaseService.addOrder(order_list, totalTrees);
                     databaseService.addOrderTest(
-                        order_list, totalTrees, totalCoins.toInt());
+                        orderList, totalTrees, totalCoins.toInt());
 
-                    paymentSuccessBuildDialogue(context);
+                    paymentSuccessBuildDialogue(
+                        context, totalCoins, totalTrees);
                   } else if (outcome == "failure") {
                     print("Payment was a failure");
                     analytics.logEvent(name: 'purchase_failure');
@@ -674,19 +548,12 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
           ),
         ],
       ),
-
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 28, 151, 211),
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
       ),
-      // child: Stack(
-      //   fit: StackFit.loose,
-      //   children: [
-      //     Image.asset("assets/images/WelcomeBackScreen.png"),
-      //   ],
-      // ),
     );
   }
 
@@ -870,7 +737,8 @@ Row _customButton(String buttonText, Function onButtonPress) {
   );
 }
 
-Future paymentSuccessBuildDialogue(BuildContext context) {
+Future paymentSuccessBuildDialogue(
+    BuildContext context, double totalCoins, double totalTrees) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -886,8 +754,7 @@ Future paymentSuccessBuildDialogue(BuildContext context) {
           overflow: Overflow.visible,
           fit: StackFit.expand,
           children: [
-            //Text("data")
-            successDialogue(),
+            successDialogue(context, totalCoins.toInt(), totalTrees.toInt()),
             Positioned(
               right: 10,
               top: 10,
@@ -916,13 +783,202 @@ Future paymentSuccessBuildDialogue(BuildContext context) {
   );
 }
 
-Container successDialogue() {
+Container successDialogue(
+    BuildContext context, int totalCoins, int totalTrees) {
+  String projectName;
+
+  print('Project Number:${userdata.selectedprojectnumber}');
+  return Container(
+    //alignment: Alignment.topCenter,
+    padding: EdgeInsets.all(0),
+    //constraints: BoxConstraints.expand(),
+    child: Column(
+      children: [
+        StreamBuilder<QuerySnapshot>(
+          stream: databaseReference
+              .collection("projects")
+              .where('projectnumber', isEqualTo: userdata.selectedprojectnumber)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return LinearProgressIndicator();
+            }
+            try {
+              String imageLink = snapshot.data.docs[0].data()['image-main'];
+              projectName = snapshot.data.docs[0].data()['title'];
+              projectName = projectName.split(":")[1];
+              return Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(imageLink),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
+                    child: Text(
+                      "Congratulations!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 36,
+                          color: AppColors.primaryDarkGreen,
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          "You Funded:",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                            fontFamily: "Raleway",
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          projectName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 21,
+                            color: Colors.black,
+                            fontFamily: "Raleway",
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              );
+            } catch (e) {
+              print("Error was: " + e.toString());
+              return Text("trouble getting image");
+            }
+          },
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(9, 20, 9, 20),
+          child: Text(
+            "Funding your project reverses your climate impact. You’re helping reverse climate change!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              width: 265,
+              height: 52,
+              child: AutoSizeText(
+                'Arbor Trees Earned:',
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 27,
+                  color: AppColors.primaryDarkGreen,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Container(
+              width: 75,
+              height: 52,
+              alignment: Alignment.centerRight,
+              child: AutoSizeText(
+                totalTrees.toString(),
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 27,
+                  color: AppColors.highlightYellow,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(bottom: 20),
+              width: 265,
+              height: 52,
+              child: AutoSizeText(
+                'Arbor Coins Earned:',
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 27,
+                  color: AppColors.primaryDarkGreen,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              alignment: Alignment.centerRight,
+              width: 75,
+              height: 52,
+              child: AutoSizeText(
+                totalCoins.toString(),
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 27,
+                  color: AppColors.highlightYellow,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            )
+          ],
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 5),
+          child: Text(
+            "Tell your freinds how you're going climate positive:",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        _customButton("Share", () async {
+          await Share.share('Fight Climate Change https://getarborapp.com/',
+              subject: 'Arbor');
+        }),
+      ],
+    ),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(
+        Radius.circular(10.0),
+      ),
+    ),
+  );
+}
+
+Container successDialogueBak(double totalCoins, double totalTrees) {
   return Container(
     alignment: Alignment.topCenter,
-    //margin: EdgeInsetsGeometry.infinity,
     padding: EdgeInsets.all(0),
     constraints: BoxConstraints.expand(),
-
     child: Column(
       children: [
         ClipRRect(
@@ -961,35 +1017,26 @@ Container successDialogue() {
         Spacer(
           flex: 110,
         ),
-        // Text(
-        //   "Tell your freinds how you're going climate positive:",
-        //   textAlign: TextAlign.center,
-        //   style: TextStyle(
-        //     fontSize: 18,
-        //     color: Colors.black,
-        //     fontFamily: "Raleway",
-        //     fontWeight: FontWeight.w400,
-        //   ),
-        // ),
-        // Spacer(),
-        // _customButton("Share", () {}),
-        // Spacer(),
+        Text(
+          "Tell your freinds how you're going climate positive:",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+            fontFamily: "Raleway",
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        Spacer(),
+        _customButton("Share", () {}),
+        Spacer(),
       ],
     ),
-
     decoration: BoxDecoration(
       color: Color.fromARGB(255, 28, 151, 211),
       borderRadius: BorderRadius.all(
         Radius.circular(10.0),
       ),
     ),
-    // child: Stack(
-    //   fit: StackFit.loose,
-    //   children: [
-    //     Image.asset("assets/images/WelcomeBackScreen.png"),
-    //   ],
-    // ),
   );
 }
-
-//void setState(Null Function() param0) {}

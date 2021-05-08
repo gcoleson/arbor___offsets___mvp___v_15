@@ -6,6 +6,8 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
+// @dart=2.9
+
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
@@ -34,7 +36,7 @@ Widget loadUserData(BuildContext context) {
   // final FirebaseAuth auth = FirebaseAuth.instance;
   // final User user = auth.currentUser;
 
-  //TODO: Name should be used instead, email address is used temporarily
+  // TODO: Name should be used instead, email address is used temporarily
   // if (user != null) {
   //   return Text(user.email,
   //       textAlign: TextAlign.left,
@@ -72,7 +74,7 @@ Widget loadUserData(BuildContext context) {
           userdata.dataLoadedFromDB = true;
           return SizedBox.shrink();
         } catch (error) {
-          print('Get user data error');
+          print('Get user data error 1');
           print(error.toString());
           return SizedBox.shrink();
         }
@@ -462,6 +464,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     return GestureDetector(
         onTap: () {
           checkoutCartBuildDialogue(context, purchaseItemListItems);
+          //paymentSuccessBuildDialogue(context, 500, 500);
         },
         child: Container(
           width: 300,

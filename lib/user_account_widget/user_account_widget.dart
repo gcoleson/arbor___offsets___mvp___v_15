@@ -5,6 +5,7 @@
 *  Created by Ed.
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
+// @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
@@ -14,7 +15,9 @@ import 'package:arbor___offsets___mvp___v_15/values/radii.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:internationalization/internationalization.dart';
+//import 'package:internationalization/internationalization.dart';
+import 'package:intl/intl.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/arbor_explanation.dart';
 import 'package:http/http.dart' as http;
@@ -38,11 +41,11 @@ final Uri emailLaunchUri = Uri(
     path: 'info@412technology.com',
     query: 'subject=Arbor app feedback'.replaceAll(" ", "%20"));
 
-convertDate(int date) {
+/*convertDate(int date) {
   var format = new DateFormat("yMd");
   var dateString = format.format(DateTime.fromMillisecondsSinceEpoch(date));
   return dateString;
-}
+}*/
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Future<List<SubscriptionItem>> subscriptionListGet = subLoad();
@@ -54,6 +57,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var date = DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp);
+    var formattedDate = DateFormat.yMMMd().format(date); // Apr 8, 2020
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +71,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Container(
             margin: EdgeInsets.only(left: 10, top: 5, bottom: 10),
             child: Text(
-              "Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp, isUtc: true))}",
+              "Member since $formattedDate",
+              //"Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp, isUtc: true))}",
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(255, 2, 2, 2),
