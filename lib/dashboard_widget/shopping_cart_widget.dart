@@ -426,8 +426,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     .get();
                 print("reach5");
 
-                //isCustomer = ds.data().containsKey("customerId");
-                isCustomer = ds.data()
+                isCustomer = ds.data().containsKey("customerId");
 
                 print(isCustomer);
 
@@ -445,7 +444,8 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 if (!isSubscription) {
                   // First Ping Firebase for session ID for stripe checkout
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment',
+                    Uri.parse(
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment'),
                     body: json.encode(
                       {
                         'items': checkoutList,
@@ -458,7 +458,8 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   print("this is correct");
                   customerId = ds.get("customerId");
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSub',
+                    Uri.parse(
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSub'),
                     body: json.encode(
                       {
                         'customerIdClient': customerId,
@@ -474,7 +475,8 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 } else {
                   print("this is incorrect");
                   response = await http.post(
-                    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSub',
+                    Uri.parse(
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSub'),
                     body: json.encode(
                       {
                         'userId': databaseService.uid,

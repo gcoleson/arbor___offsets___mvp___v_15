@@ -58,9 +58,10 @@ class UserMessageTypes {
 DatabaseService databaseService = DatabaseService();
 
 dynamic testDBForField(DocumentSnapshot doc, String field) {
-  Map<String, dynamic> test = doc.data();
+  //Map<String, dynamic> test = doc.data();
+  var test = doc.data();
 
-  for (var entry in test.entries) {
+  for (var entry in test!.entries) {
     if (entry.key == field) {
       return entry.value;
     }

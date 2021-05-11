@@ -417,7 +417,7 @@ Container buildImpactContainer(UserStats stats) {
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              width: 276,
+              width: 260,
               height: 94,
               child: AutoSizeText(
                 'Total Arbor Coins Earned:',

@@ -70,7 +70,7 @@ void main() async {
 
   pushNotifs.init();
 
-  print('Message Token:' + FirebaseMessaging().getToken().toString());
+  //print('Message Token:' + FirebaseMessaging().getToken().toString());
 
   print('App Version:' + appVersion + ' Date:' + appDate);
 

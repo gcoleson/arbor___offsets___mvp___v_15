@@ -498,8 +498,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
     for (int i = 0; i < records.length; i++) {
       if (records[i].isSelected) {
+        Uri _encoded = Uri.parse(
+            'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription');
+
         response = await http.post(
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
+          _encoded,
           body: json.encode(
             {'cancelledSubId': records[i].subscriptionId},
           ),
@@ -735,8 +738,12 @@ Future<List<SubscriptionItem>> subLoad() async {
 
   // ping firebase to get the list of subscription
   http.Response response;
+
+  Uri _encoded = Uri.parse(
+      'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getSubscriptionList');
+
   response = await http.post(
-    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getSubscriptionList',
+    _encoded,
     body: json.encode(
       {'customerIdClient': customerId},
     ),
