@@ -963,7 +963,7 @@ Container successDialogue(
         ),
         _customButton("Share", () async {
           await Share.share(
-              'I’m fighting climate change—sign up here to join me! Change https://getarborapp.com/',
+              'I’m fighting climate change—sign up here to join me! https://getarborapp.com/',
               subject: 'Arbor');
         }),
       ],
