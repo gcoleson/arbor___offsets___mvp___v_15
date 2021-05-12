@@ -107,6 +107,9 @@ class DatabaseService {
         'selectedProjectId': data.selectedProjectId,
         'selectedProjectTitle': data.selectedProjectTitle,
         'createtimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
+        'coinsAllTime': 0,
+        'coinsCurrentAmount': 0,
+        'consecutiveMonths': 0
       }, SetOptions(merge: true));
     } else {
       print('Update user db');
@@ -119,6 +122,26 @@ class DatabaseService {
         'lastwitetimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
     }
+  }
+
+  Future<void> updateUserStats() {
+    return userCollection
+        .doc(this.uid)
+        .set({
+          'coinsAllTime': 0,
+          'coinsCurrentAmount': 0,
+          'consecutiveMonths': 0,
+          'totalMonths': 0,
+          'totalTrees': 0,
+          'treesThisMonth': 0,
+          'prevMonthOfPurchase': new DateTime.utc(1997, 9, 24)
+        }, SetOptions(merge: true))
+        .then((value) => print("User stats successfully updated"))
+        .catchError((e) => print('Failed to update user data: $e'));
+  }
+
+  CollectionReference getUserSystemMessageDB() {
+    return userCollection.doc(this.uid).collection('messages');
   }
 
   Future<void> updateUserMessagesSystemType(String messageBoday) async {
@@ -180,23 +203,5 @@ class DatabaseService {
         })
         .then((value) => print("Order successfulyy added"))
         .catchError((e) => print("Failed to add order: $e"));
-  }
-
-  Future<void> updateUserStats() {
-    return userCollection
-        .doc(this.uid)
-        .set({
-          'consecutiveMonths': 0,
-          'totalMonths': 0,
-          'totalTrees': 0,
-          'treesThisMonth': 0,
-          'prevMonthOfPurchase': new DateTime.utc(1997, 9, 24)
-        }, SetOptions(merge: true))
-        .then((value) => print("User stats successfully updated"))
-        .catchError((e) => print('Failed to update user data: $e'));
-  }
-
-  CollectionReference getUserSystemMessageDB() {
-    return userCollection.doc(this.uid).collection('messages');
   }
 }
