@@ -22,14 +22,14 @@ dependencies:
   auto_size_text: ^2.1.0
   percent_indicator: "^2.1.5"
   dots_indicator: ^1.2.0
-  webview_flutter: ^0.3.22+1
+  webview_flutter: ^2.0.4
 
   # wave:
   # git: 
     # url: git://github.com/searchy2/wave.git
-  #chewie: ^1.0.0
+  chewie: ^1.0.0
   #video_player: ^2.0.0
-  flutter_html: ^1.0.2
+  flutter_html: ^2.0.0
   
 
   # Database
@@ -75,7 +75,7 @@ dependencies:
 
   # internationalization: ^3.0.1+1
 
-  provider: ^4.3.2+2
+  provider: ^5.0.0
 
   package_info: ^0.4.0+16
   
@@ -89,7 +89,7 @@ dependencies:
   share: ^2.0.1
 
 dependency_overrides:
-  flutter_svg: ^0.19.3
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:
