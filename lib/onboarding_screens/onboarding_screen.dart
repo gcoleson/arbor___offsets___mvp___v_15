@@ -247,7 +247,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
           height: 44,
           child: _customTextField("assets/images/PasswordIcon.png", "Password",
               _passwordController, TextInputType.text, true)),
-      _customButton("Join", register),
+      customButton("Join", register),
       Spacer(flex: 334),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
@@ -379,7 +379,7 @@ Widget myPage5Widget(BuildContext context) {
                 height: 44,
                 child: _customTextField("assets/images/PasswordIcon.png",
                     "Password", _passwordController, TextInputType.text, true)),
-            _customButton("Sign In", signIn),
+            customButton("Sign In", signIn),
             FlatButton(
                 onPressed: () {
                   passwordResetDialog(context, _passwirdResetController);
@@ -431,7 +431,7 @@ Widget myPage5Widget(BuildContext context) {
   ));
 }
 
-Row _customButton(String buttonText, Function onButtonPress) {
+Row customButton(String buttonText, Function onButtonPress) {
   return Row(
     children: [
       Spacer(flex: 21),
@@ -524,10 +524,10 @@ Future passwordResetDialog(
               _customTextField(
                   "", "email", controller, TextInputType.emailAddress, false),
               Spacer(),
-              _customButton(
+              customButton(
                   "Password Reset", () => resetPassword(controller.text)),
               Spacer(),
-              _customButton("Cancel", () => Navigator.pop(context)),
+              customButton("Cancel", () => Navigator.pop(context)),
               Spacer(),
             ],
           ),
