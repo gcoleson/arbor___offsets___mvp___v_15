@@ -29,10 +29,10 @@ Widget myPage1Widget(BuildContext context) {
               "All modern lifestyles have a negative climate impact",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: Color.fromARGB(255, 237, 236, 228),
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
-                fontSize: 33,
+                fontSize: 36,
               ),
             )),
       ),
@@ -44,10 +44,10 @@ Widget myPage1Widget(BuildContext context) {
               "Arbor makes it easy to eliminate yours",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: Color.fromARGB(255, 237, 236, 228),
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
-                fontSize: 33,
+                fontSize: 36,
               ),
             ),
           )),
@@ -68,10 +68,10 @@ Widget myPage2Widget(BuildContext context) {
               "",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: Color.fromARGB(255, 237, 236, 228),
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
-                fontSize: 33,
+                fontSize: 36,
               ),
             )),
       ), //Arbor helps you eliminate yours
@@ -83,10 +83,10 @@ Widget myPage2Widget(BuildContext context) {
               "Just pick a project you love ...",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: Color.fromARGB(255, 237, 236, 228),
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
-                fontSize: 33,
+                fontSize: 36,
               ),
             ),
           ))
@@ -113,10 +113,10 @@ Widget myPage3Widget(BuildContext context) {
               "... and eliminate your impact with the tap of a button!",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: Color.fromARGB(255, 237, 236, 228),
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
-                fontSize: 33,
+                fontSize: 36,
               ),
             ),
           ))
@@ -251,12 +251,12 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
       Spacer(flex: 334),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
-          height: 21,
+          height: 23,
           child: Text(
             "Already have an account? ",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.white,
+                color: Color.fromARGB(255, 237, 236, 228),
                 fontFamily: "Raleway-Medium",
                 fontSize: 18),
           ),
@@ -399,7 +399,7 @@ Widget myPage5Widget(BuildContext context) {
                   "Need an account? ",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 237, 236, 228),
                       fontFamily: "Raleway-Medium",
                       fontSize: 18),
                 ),
