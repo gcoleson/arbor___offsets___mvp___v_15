@@ -1036,7 +1036,7 @@ Container successDialogueBak(double totalCoins, double totalTrees) {
       ],
     ),
     decoration: BoxDecoration(
-      color: Color.fromARGB(255, 28, 151, 211),
+      color: AppColors.backgroundBlue,
       borderRadius: BorderRadius.all(
         Radius.circular(10.0),
       ),

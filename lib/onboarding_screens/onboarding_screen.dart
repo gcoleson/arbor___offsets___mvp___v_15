@@ -3,6 +3,7 @@
 import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'onboard_main_screen.dart';
@@ -29,7 +30,7 @@ Widget myPage1Widget(BuildContext context) {
               "All modern lifestyles have a negative climate impact",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 237, 236, 228),
+                color: AppColors.backgroundGrey,
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
                 fontSize: 36,
@@ -44,7 +45,7 @@ Widget myPage1Widget(BuildContext context) {
               "Arbor makes it easy to eliminate yours",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 237, 236, 228),
+                color: AppColors.backgroundGrey,
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
                 fontSize: 36,
@@ -83,7 +84,7 @@ Widget myPage2Widget(BuildContext context) {
               "Just pick a project you love ...",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 237, 236, 228),
+                color: AppColors.backgroundGrey,
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
                 fontSize: 36,
@@ -113,7 +114,7 @@ Widget myPage3Widget(BuildContext context) {
               "... and eliminate your impact with the tap of a button!",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color.fromARGB(255, 237, 236, 228),
+                color: AppColors.backgroundGrey,
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.bold,
                 fontSize: 36,
@@ -227,7 +228,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
                   "Erase your\n climate impact",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color.fromARGB(255, 65, 127, 69),
+                    color: AppColors.primaryDarkGreen,
                     fontFamily: "Montserrat-Medium",
                     fontSize: 36,
                   ),
@@ -256,7 +257,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
             "Already have an account? ",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Color.fromARGB(255, 237, 236, 228),
+                color: AppColors.primaryDarkGreen,
                 fontFamily: "Raleway-Medium",
                 fontSize: 18),
           ),
@@ -275,7 +276,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
             child: Text(
               "Sign In",
               style: TextStyle(
-                  color: Color.fromARGB(255, 250, 195, 21),
+                  color: AppColors.highlightYellow,
                   fontSize: 18,
                   fontFamily: "Raleway-Medium"),
             )),
@@ -347,7 +348,7 @@ Widget myPage5Widget(BuildContext context) {
                         "Arbor",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 65, 127, 69),
+                          color: AppColors.primaryDarkGreen,
                           fontFamily: "Montserrat-SemiBold",
                           fontWeight: FontWeight.bold,
                           fontSize: 72,
@@ -359,7 +360,7 @@ Widget myPage5Widget(BuildContext context) {
                         "Welcome Back",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 65, 127, 69),
+                          color: AppColors.primaryDarkGreen,
                           fontFamily: "Montserrat-Medium",
                           fontSize: 36,
                         ),
@@ -387,7 +388,7 @@ Widget myPage5Widget(BuildContext context) {
                 child: Text(
                   "Forgot Password?",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 250, 195, 21),
+                      color: AppColors.highlightYellow,
                       fontSize: 18,
                       fontFamily: "Raleway-Medium"),
                 )),
@@ -399,7 +400,7 @@ Widget myPage5Widget(BuildContext context) {
                   "Need an account? ",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Color.fromARGB(255, 237, 236, 228),
+                      color: AppColors.backgroundGrey,
                       fontFamily: "Raleway-Medium",
                       fontSize: 18),
                 ),
@@ -418,7 +419,7 @@ Widget myPage5Widget(BuildContext context) {
                   child: Text(
                     "Join",
                     style: TextStyle(
-                        color: Color.fromARGB(255, 250, 195, 21),
+                        color: AppColors.highlightYellow,
                         fontSize: 18,
                         fontFamily: "Raleway-Medium"),
                   )),

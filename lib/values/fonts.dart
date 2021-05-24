@@ -96,7 +96,7 @@ abstract class AppFonts {
   static const TextStyle screenSubhead = TextStyle(
     fontFamily: 'Montserrat-Medium',
     color: AppColors.primaryDarkGreen,
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
   );

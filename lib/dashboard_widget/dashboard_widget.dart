@@ -147,10 +147,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   Color getProductBorderSelectColor(int index) {
     if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
-      return Color.fromARGB(255, 0, 0, 0);
+      return AppColors.Black;
     } else {
       //turn border off
-      return Color.fromARGB(255, 250, 195, 21);
+      return AppColors.highlightYellow;
     }
   }
 
@@ -350,7 +350,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               width: 95,
               height: 107,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 216, 216, 216),
+                color: AppColors.transparentScreen,
                 border: Border.all(
                   width: 3,
                   color: getProductBorderSelectColor(index),
@@ -378,7 +378,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   maxLines: 3,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color.fromARGB(255, 65, 127, 69),
+                    color: AppColors.primaryDarkGreen,
                     fontFamily: "Raleway",
                     fontWeight: FontWeight.w800,
                     fontStyle: FontStyle.italic,
@@ -417,7 +417,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           "Arbor",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: AppColors.backgroundGrey,
             fontFamily: "Montserrat Semi-Bold",
             fontWeight: FontWeight.w600,
             fontSize: 36,
@@ -434,7 +434,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             ),
           ),
         ],
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: ListView(
         children: [
@@ -486,7 +486,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       "Checkout",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
+                        color: AppColors.white,
                         fontFamily: "SF Pro Text",
                         fontWeight: FontWeight.w400,
                         fontSize: 17,
@@ -722,7 +722,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           "Live Climate Positive: ",
           textAlign: TextAlign.left,
           style: TextStyle(
-            color: Color.fromARGB(255, 65, 127, 69),
+            color: AppColors.primaryDarkGreen,
             fontFamily: "Montserrat",
             fontWeight: FontWeight.w500,
             fontSize: 28,

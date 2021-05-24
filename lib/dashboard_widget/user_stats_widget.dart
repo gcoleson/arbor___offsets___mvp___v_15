@@ -95,14 +95,14 @@ Container buildTotalMonthsContainer(int totalMonths) {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 93, 187, 71),
+              color: AppColors.secondaryLightGreen,
               border: Border.all(
                 width: 1,
-                color: Color.fromARGB(255, 151, 151, 151),
+                color: AppColors.borderGrey,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(128, 0, 0, 0),
+                  color: AppColors.boxShadow,
                   offset: Offset(0, 2),
                   blurRadius: 4,
                 ),
@@ -127,7 +127,7 @@ Container buildTotalMonthsContainer(int totalMonths) {
                   totalMonths.toString(),
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    color: Color.fromARGB(255, 250, 195, 21),
+                    color: AppColors.highlightYellow,
                     fontFamily: "Raleway",
                     fontWeight: FontWeight.w700,
                     fontSize: 36,
@@ -175,7 +175,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
               color: Color.fromARGB(255, 93, 187, 71),
               border: Border.all(
                 width: 1,
-                color: Color.fromARGB(255, 151, 151, 151),
+                color: AppColors.borderGrey,
               ),
               boxShadow: [
                 BoxShadow(
@@ -204,10 +204,10 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                   consecutiveMonths.toString(),
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    color: Color.fromARGB(255, 250, 195, 21),
+                    color: AppColors.highlightYellow,
                     fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 34,
                   ),
                 ),
               ),
@@ -357,9 +357,9 @@ Container buildImpactContainer(UserStats stats) {
                       text: TextSpan(
                         style: TextStyle(
                           fontSize: 34,
-                          color: Color.fromARGB(255, 250, 195, 21),
+                          color: AppColors.highlightYellow,
                           fontFamily: "Raleway",
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.bold,
                         ),
                         //================================
                         // treesThisMonth
@@ -385,7 +385,7 @@ Container buildImpactContainer(UserStats stats) {
                         text: TextSpan(
                           style: TextStyle(
                             fontSize: 34,
-                            color: Color.fromARGB(255, 250, 195, 21),
+                            color: AppColors.highlightYellow,
                             fontFamily: "Raleway",
                             fontWeight: FontWeight.w700,
                           ),
@@ -427,7 +427,7 @@ Container buildImpactContainer(UserStats stats) {
                   fontSize: 34,
                   color: AppColors.primaryDarkGreen,
                   fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
