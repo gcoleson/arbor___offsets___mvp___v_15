@@ -377,13 +377,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               AutoSizeText(iconText,
                   maxLines: 3,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.primaryDarkGreen,
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w800,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 14,
-                  )),
+                  style: AppFonts.offsetButtonLabels),
             ],
           ),
         ],
@@ -413,15 +407,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Arbor",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: AppColors.backgroundGrey,
-            fontFamily: "Montserrat Semi-Bold",
-            fontWeight: FontWeight.w600,
-            fontSize: 36,
-          ),
+          style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
         actions: [
@@ -485,14 +475,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                     child: AutoSizeText(
                       "Checkout",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontFamily: "SF Pro Text",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 17,
-                        letterSpacing: -0.408,
-                        height: 1.29412,
-                      ),
+                      style: AppFonts.iOSSystemTextCenterAlignWhite,
                     ),
                   );
                 },
@@ -721,12 +704,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         child: Text(
           "Live Climate Positive: ",
           textAlign: TextAlign.left,
-          style: TextStyle(
-            color: AppColors.primaryDarkGreen,
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w500,
-            fontSize: 28,
-          ),
+          style: AppFonts.screenSubhead,
         ),
       ),
     );

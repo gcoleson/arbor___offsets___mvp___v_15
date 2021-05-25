@@ -126,12 +126,7 @@ Container buildTotalMonthsContainer(int totalMonths) {
                   //===========================================
                   totalMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: AppColors.highlightYellow,
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.treeImpactTextGold,
                 ),
               ),
               Spacer(),
@@ -203,12 +198,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                   //===========================================
                   consecutiveMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: AppColors.highlightYellow,
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.bold,
-                    fontSize: 34,
-                  ),
+                  style: AppFonts.treeImpactTextGold,
                 ),
               ),
               Spacer(),
@@ -220,7 +210,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                     "months in a row of impact",
                     maxLines: 1,
                     textAlign: TextAlign.right,
-                    style: AppFonts.monthlyImpactTextSmall,
+                    style: AppFonts.monthlyImpactText,
                   ),
                 ),
               ),

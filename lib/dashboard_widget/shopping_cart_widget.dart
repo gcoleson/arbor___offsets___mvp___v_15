@@ -998,12 +998,7 @@ Container successDialogueBak(double totalCoins, double totalTrees) {
           child: Text(
             "Congratulations!",
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 36,
-              color: Colors.white,
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppFonts.navBarHeader,
           ),
         ),
         Spacer(
@@ -1021,14 +1016,9 @@ Container successDialogueBak(double totalCoins, double totalTrees) {
           flex: 110,
         ),
         Text(
-          "Tell your freinds how you're going climate positive:",
+          "Tell your friends how you're going climate positive:",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w400,
-          ),
+          style: AppFonts.keyPointsBulletList,
         ),
         Spacer(),
         _customButton("Share", () {}),

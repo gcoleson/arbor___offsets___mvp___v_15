@@ -695,6 +695,7 @@ class UserAccountWidget extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Profile",
           textAlign: TextAlign.center,

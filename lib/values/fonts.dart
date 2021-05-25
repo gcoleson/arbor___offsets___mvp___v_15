@@ -165,6 +165,14 @@ abstract class AppFonts {
     fontStyle: FontStyle.normal,
     letterSpacing: -0.408,
   );
+  static const TextStyle iOSSystemTextCenterAlignWhite = TextStyle(
+    fontFamily: 'SFProText',
+    color: AppColors.white,
+    fontSize: 17,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal,
+    letterSpacing: -0.408,
+  );
   static const TextStyle iOSSystemTextCenterAlignGrey = TextStyle(
     fontFamily: 'SFProText',
     color: AppColors.mediumGreyScreen,
