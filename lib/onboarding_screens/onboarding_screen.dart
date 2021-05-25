@@ -29,12 +29,7 @@ Widget myPage1Widget(BuildContext context) {
             child: Text(
               "All modern lifestyles have a negative climate impact",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.backgroundGrey,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 36,
-              ),
+              style: AppFonts.introScreenHeadlineText,
             )),
       ),
       Align(
@@ -44,12 +39,7 @@ Widget myPage1Widget(BuildContext context) {
             child: Text(
               "Arbor makes it easy to eliminate yours",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.backgroundGrey,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 36,
-              ),
+              style: AppFonts.introScreenHeadlineText,
             ),
           )),
     ]),
@@ -68,12 +58,7 @@ Widget myPage2Widget(BuildContext context) {
             child: Text(
               "",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 237, 236, 228),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 36,
-              ),
+              style: AppFonts.navBarHeader,
             )),
       ), //Arbor helps you eliminate yours
       Align(
@@ -83,12 +68,7 @@ Widget myPage2Widget(BuildContext context) {
             child: Text(
               "Just pick a project you love ...",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.backgroundGrey,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 36,
-              ),
+              style: AppFonts.introScreenHeadlineText,
             ),
           ))
     ]),
@@ -111,15 +91,9 @@ Widget myPage3Widget(BuildContext context) {
           child: Container(
             margin: EdgeInsets.only(bottom: 100, left: 10, right: 10),
             child: Text(
-              "... and eliminate your impact with the tap of a button!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.backgroundGrey,
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 36,
-              ),
-            ),
+                "... and eliminate your impact with the tap of a button!",
+                textAlign: TextAlign.center,
+                style: AppFonts.introScreenHeadlineText),
           ))
     ]),
   );
@@ -207,31 +181,21 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
         children: [
           Container(
               height: 187,
-              decoration:
-                  BoxDecoration(color: Color.fromARGB(127, 216, 216, 216))),
+              decoration: BoxDecoration(color: AppColors.transparentScreen)),
           Column(
             children: [
               Container(
                 child: Text(
                   "Arbor",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 65, 127, 69),
-                    fontFamily: "Montserrat-SemiBold",
-                    fontWeight: FontWeight.bold,
-                    fontSize: 72,
-                  ),
+                  style: AppFonts.arborSignupTitle,
                 ),
               ),
               Container(
                 child: Text(
                   "Erase your\n climate impact",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.primaryDarkGreen,
-                    fontFamily: "Montserrat-Medium",
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.arborSubTitle,
                 ),
               ),
             ],
@@ -256,10 +220,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
           child: Text(
             "Already have an account? ",
             textAlign: TextAlign.center,
-            style: TextStyle(
-                color: AppColors.primaryDarkGreen,
-                fontFamily: "Raleway-Medium",
-                fontSize: 18),
+            style: AppFonts.bodyTextWhite,
           ),
         ),
         FlatButton(
@@ -275,10 +236,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
             // }
             child: Text(
               "Sign In",
-              style: TextStyle(
-                  color: AppColors.highlightYellow,
-                  fontSize: 18,
-                  fontFamily: "Raleway-Medium"),
+              style: AppFonts.bodyTextGold,
             )),
       ]),
       Spacer(flex: 55)
@@ -339,31 +297,22 @@ Widget myPage5Widget(BuildContext context) {
               children: [
                 Container(
                     height: 159,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(127, 216, 216, 216))),
+                    decoration:
+                        BoxDecoration(color: AppColors.transparentScreen)),
                 Column(
                   children: [
                     Container(
                       child: Text(
                         "Arbor",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColors.primaryDarkGreen,
-                          fontFamily: "Montserrat-SemiBold",
-                          fontWeight: FontWeight.bold,
-                          fontSize: 72,
-                        ),
+                        style: AppFonts.arborSignupTitle,
                       ),
                     ),
                     Container(
                       child: Text(
                         "Welcome Back",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColors.primaryDarkGreen,
-                          fontFamily: "Montserrat-Medium",
-                          fontSize: 36,
-                        ),
+                        style: AppFonts.arborSubTitle,
                       ),
                     ),
                   ],
@@ -387,10 +336,7 @@ Widget myPage5Widget(BuildContext context) {
                 },
                 child: Text(
                   "Forgot Password?",
-                  style: TextStyle(
-                      color: AppColors.highlightYellow,
-                      fontSize: 18,
-                      fontFamily: "Raleway-Medium"),
+                  style: AppFonts.bodyTextGold,
                 )),
             Spacer(flex: 334),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -399,10 +345,7 @@ Widget myPage5Widget(BuildContext context) {
                 child: Text(
                   "Need an account? ",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: AppColors.backgroundGrey,
-                      fontFamily: "Raleway-Medium",
-                      fontSize: 18),
+                  style: AppFonts.bodyTextWhite,
                 ),
               ),
               FlatButton(
@@ -418,10 +361,7 @@ Widget myPage5Widget(BuildContext context) {
                   ,
                   child: Text(
                     "Join",
-                    style: TextStyle(
-                        color: AppColors.highlightYellow,
-                        fontSize: 18,
-                        fontFamily: "Raleway-Medium"),
+                    style: AppFonts.bodyTextGold,
                   )),
             ]),
             Spacer(flex: 47)
@@ -442,12 +382,12 @@ Row _customButton(String buttonText, Function onButtonPress) {
           height: 50,
           width: 379,
           child: RaisedButton(
-            color: Color.fromARGB(255, 65, 127, 69),
+            color: AppColors.primaryDarkGreen,
             onPressed: onButtonPress,
             child: Text(
               buttonText,
               style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontFamily: "SFProText-Semibold",
                   fontSize: 17),
             ),
@@ -474,7 +414,7 @@ Row _customTextField(String imageFilePath, String customLabelText,
             controller: controller,
             decoration: new InputDecoration(
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.white,
               labelText: customLabelText,
               border: new OutlineInputBorder(
                 borderSide: new BorderSide(),
