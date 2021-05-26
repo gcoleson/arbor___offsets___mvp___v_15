@@ -79,6 +79,13 @@ abstract class AppFonts {
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
   );
+  static const TextStyle congratulationsScreenImpactLabel = TextStyle(
+    fontFamily: 'Raleway-Bold',
+    color: AppColors.primaryDarkGreen,
+    fontSize: 28,
+    fontWeight: FontWeight.w700,
+    fontStyle: FontStyle.normal,
+  );
   static const TextStyle introScreenHeadlineText = TextStyle(
     fontFamily: 'Montserrat-ExtraBold',
     color: AppColors.backgroundGrey,
@@ -202,6 +209,20 @@ abstract class AppFonts {
     fontSize: 16,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.normal,
+  );
+  static const TextStyle bodyTextBold = TextStyle(
+    fontFamily: 'Raleway-Light',
+    color: AppColors.Black,
+    fontSize: 16,
+    fontWeight: FontWeight.w800,
+    fontStyle: FontStyle.normal,
+  );
+  static const TextStyle bodyTextItalic = TextStyle(
+    fontFamily: 'Raleway-Light',
+    color: AppColors.Black,
+    fontSize: 16,
+    fontWeight: FontWeight.w300,
+    fontStyle: FontStyle.italic,
   );
   static const TextStyle offsetButtonLabels = TextStyle(
     fontFamily: 'Raleway-ExtraBoldItalic',
@@ -346,5 +367,12 @@ abstract class AppFonts {
     fontSize: 18,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
+  );
+  static const TextStyle checkoutBodyText = TextStyle(
+    fontFamily: 'Raleway',
+    color: Colors.black,
+    fontSize: 14,
+    fontWeight: FontWeight.w800,
+    fontStyle: FontStyle.normal,
   );
 }

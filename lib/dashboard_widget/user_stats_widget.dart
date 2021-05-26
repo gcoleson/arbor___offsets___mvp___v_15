@@ -167,14 +167,14 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 93, 187, 71),
+              color: AppColors.secondaryLightGreen,
               border: Border.all(
                 width: 1,
                 color: AppColors.borderGrey,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(128, 0, 0, 0),
+                  color: AppColors.boxShadow,
                   offset: Offset(0, 2),
                   blurRadius: 4,
                 ),
@@ -345,12 +345,7 @@ Container buildImpactContainer(UserStats stats) {
                     child: RichText(
                       textAlign: TextAlign.end,
                       text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 34,
-                          color: AppColors.highlightYellow,
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppFonts.treeImpactTextGold,
                         //================================
                         // treesThisMonth
                         //=================================
@@ -373,12 +368,7 @@ Container buildImpactContainer(UserStats stats) {
                       child: RichText(
                         textAlign: TextAlign.end,
                         text: TextSpan(
-                          style: TextStyle(
-                            fontSize: 34,
-                            color: AppColors.highlightYellow,
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppFonts.treeImpactTextGold,
                           //================================
                           // treesThisMonth
                           //=================================
@@ -413,12 +403,7 @@ Container buildImpactContainer(UserStats stats) {
                 'Total Arbor Coins Earned:',
                 maxLines: 2,
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: 34,
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                ),
+                style: AppFonts.treeImpactText,
               ),
             ),
             Spacer(),
@@ -430,12 +415,7 @@ Container buildImpactContainer(UserStats stats) {
               child: AutoSizeText(
                 stats.totalCoins.toString(),
                 maxLines: 1,
-                style: TextStyle(
-                  fontSize: 34,
-                  color: AppColors.highlightYellow,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.treeImpactTextGold,
               ),
             )
           ],

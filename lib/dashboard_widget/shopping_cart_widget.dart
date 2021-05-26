@@ -78,10 +78,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
           width: 200,
           child: Text(
             "Total:",
-            style: TextStyle(
-                fontSize: 16,
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w800),
+            style: AppFonts.bodyTextBold,
           ),
         ),
         Container(
@@ -89,11 +86,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
           child: Text(
             "\$" + totalCost.toStringAsFixed(2).padRight(4, '0'),
             textAlign: TextAlign.right,
-            style: TextStyle(
-              fontFamily: "Raleway",
-              fontSize: 16,
-              fontWeight: FontWeight.w800,
-            ),
+            style: AppFonts.bodyTextBold,
           ),
         ),
       ],
@@ -108,11 +101,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
           width: 200,
           child: Text(
             "You'll Earn",
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: "Raleway",
-              fontStyle: FontStyle.italic,
-            ),
+            style: AppFonts.bodyTextItalic,
           ),
         ),
       ],
@@ -129,10 +118,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
           width: 200,
           child: Text(
             "Arbor Trees",
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: "Raleway",
-            ),
+            style: AppFonts.bodyText,
           ),
         ),
         Container(
@@ -140,10 +126,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
           child: Text(
             totalTrees.toString().padRight(4, '0'),
             textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: "Raleway",
-            ),
+            style: AppFonts.bodyText,
           ),
         ),
         Spacer(
@@ -163,10 +146,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
           width: 200,
           child: Text(
             "Arbor Coins",
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: "Raleway",
-            ),
+            style: AppFonts.bodyText,
           ),
         ),
         Container(
@@ -174,10 +154,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
           child: Text(
             totalCoins.toInt().toString(),
             textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: "Raleway",
-            ),
+            style: AppFonts.bodyText,
           ),
         ),
         Spacer(
@@ -237,11 +214,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
             child: Text(
               "Shopping Cart:",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 36,
-                  color: Colors.white,
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w800),
+              style: AppFonts.navBarHeader,
             ),
           ),
           StreamBuilder<QuerySnapshot>(
@@ -275,12 +248,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                           child: Text(
                             "Your Project:",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.black,
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w800,
-                            ),
+                            style: AppFonts.projectNameLarge,
                           ),
                         ),
                         Expanded(
@@ -288,11 +256,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                           child: Text(
                             projectName,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 21,
-                              color: Colors.black,
-                              fontFamily: "Raleway",
-                            ),
+                            style: AppFonts.projectLabelHeadline,
                           ),
                         ),
                       ],
@@ -310,12 +274,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
             child: Text(
               "Erase these actions by funding your project",
               textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w800,
-              ),
+              style: AppFonts.bodyTextBold,
             ),
           ),
           buildLineItems(widget.purchaseItemList),
@@ -551,7 +510,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
         ],
       ),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 28, 151, 211),
+        color: AppColors.backgroundBlue,
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
@@ -666,33 +625,18 @@ Container failureDialogue(BuildContext context) {
         Text(
           "Something go wrong?",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 36,
-            color: Colors.white,
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppFonts.navBarHeader,
         ),
         Text(
           "You're seconds away from erasing your climate impact.",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppFonts.congratsSubhead,
         ),
         Spacer(),
         Text(
           "Tap below to go back to your shopping cart and check out again",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w400,
-          ),
+          style: AppFonts.congratsSubhead,
         ),
         Spacer(),
         _customButton(
@@ -704,7 +648,7 @@ Container failureDialogue(BuildContext context) {
     ),
 
     decoration: BoxDecoration(
-      color: Color.fromARGB(255, 28, 151, 211),
+      color: AppColors.backgroundBlue,
       borderRadius: BorderRadius.all(
         Radius.circular(10.0),
       ),
@@ -722,14 +666,11 @@ Row _customButton(String buttonText, Function onButtonPress) {
           height: 50,
           width: 379,
           child: RaisedButton(
-            color: Color.fromARGB(255, 65, 127, 69),
+            color: AppColors.primaryDarkGreen,
             onPressed: onButtonPress,
             child: Text(
               buttonText,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: "SFProText-Semibold",
-                  fontSize: 17),
+              style: AppFonts.body2Bold2Dark1LabelColor2CenterAligned,
             ),
           ),
         ),
@@ -820,11 +761,7 @@ Container successDialogue(
                     child: Text(
                       "Congratulations!",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 36,
-                          color: AppColors.primaryDarkGreen,
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.w500),
+                      style: AppFonts.arborSubTitle,
                     ),
                   ),
                   Row(
@@ -835,12 +772,7 @@ Container successDialogue(
                         child: Text(
                           "You Funded:",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.black,
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w800,
-                          ),
+                          style: AppFonts.projectNameLarge,
                         ),
                       ),
                       Expanded(
@@ -848,11 +780,7 @@ Container successDialogue(
                         child: Text(
                           projectName,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 21,
-                            color: Colors.black,
-                            fontFamily: "Raleway",
-                          ),
+                          style: AppFonts.projectLabelHeadline,
                         ),
                       ),
                     ],
@@ -870,12 +798,7 @@ Container successDialogue(
           child: Text(
             "Funding your project reverses your climate impact. You’re helping reverse climate change!",
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w800,
-            ),
+            style: AppFonts.checkoutBodyText,
           ),
         ),
         Row(
@@ -887,12 +810,7 @@ Container successDialogue(
               child: AutoSizeText(
                 'Arbor Trees Earned:',
                 maxLines: 1,
-                style: TextStyle(
-                  fontSize: 27,
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.congratulationsScreenImpactLabel,
               ),
             ),
             Container(
@@ -902,12 +820,7 @@ Container successDialogue(
               child: AutoSizeText(
                 totalTrees.toString(),
                 maxLines: 1,
-                style: TextStyle(
-                  fontSize: 27,
-                  color: AppColors.highlightYellow,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.treeImpactTextGold,
               ),
             )
           ],
@@ -922,12 +835,7 @@ Container successDialogue(
               child: AutoSizeText(
                 'Arbor Coins Earned:',
                 maxLines: 1,
-                style: TextStyle(
-                  fontSize: 27,
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.congratulationsScreenImpactLabel,
               ),
             ),
             Container(
@@ -938,12 +846,7 @@ Container successDialogue(
               child: AutoSizeText(
                 totalCoins.toString(),
                 maxLines: 1,
-                style: TextStyle(
-                  fontSize: 27,
-                  color: AppColors.highlightYellow,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.treeImpactTextGold,
               ),
             )
           ],
@@ -953,12 +856,7 @@ Container successDialogue(
           child: Text(
             "Tell your freinds how you're going climate positive:",
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-            ),
+            style: AppFonts.checkoutBodyText,
           ),
         ),
         _customButton("Share", () async {
