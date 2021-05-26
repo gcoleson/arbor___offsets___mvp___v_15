@@ -375,4 +375,18 @@ abstract class AppFonts {
     fontWeight: FontWeight.w800,
     fontStyle: FontStyle.normal,
   );
+  static const TextStyle percentFunded = TextStyle(
+    fontFamily: 'Montserrat-Bold',
+    color: AppColors.fundingOrange,
+    fontSize: 18,
+    fontWeight: FontWeight.w900,
+    fontStyle: FontStyle.normal,
+  );
+  static const TextStyle version = TextStyle(
+    fontFamily: 'SFProText',
+    color: AppColors.Black,
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal,
+  );
 }

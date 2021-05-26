@@ -74,13 +74,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               "Member since $formattedDate",
               //"Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp, isUtc: true))}",
               textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w300,
-                fontStyle: FontStyle.italic,
-                fontSize: 21,
-              ),
+              style: AppFonts.projectLabelSubhead,
             ),
           ),
           showProfilePanel(context),
@@ -101,12 +95,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Text(
                 "New Email ",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: "SF Pro Text",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
+                style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
               ),
               Align(
                 child: Container(
@@ -138,12 +127,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Text(
                 "New Password ",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: "SF Pro Text",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
+                style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
               ),
               Container(
                 width: 200,
@@ -171,14 +155,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Row(
             children: [
               AutoSizeText(
-                "Reenter New Password",
+                "Re-enter New Password",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: "SF Pro Text",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
+                style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
               ),
               Container(
                 width: 165,
@@ -224,14 +203,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: AutoSizeText(
                       "Sign Out",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontFamily: "SF Pro Text",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 17,
-                        letterSpacing: -0.408,
-                        height: 1.29412,
-                      ),
+                      style:
+                          AppFonts.body1Default1Light1LabelColor2CenterAligned,
                     ),
                   ),
                 ),
@@ -240,12 +213,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           Text(
             'Version:' + packageInfo.version + '.' + packageInfo.buildNumber,
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontFamily: "SF Pro Text",
-              fontWeight: FontWeight.w400,
-              fontSize: 8,
-            ),
+            style: AppFonts.version,
             textAlign: TextAlign.center,
           )
         ],
