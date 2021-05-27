@@ -379,7 +379,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 for (var i = 0; i < widget.purchaseItemList.length; i++) {
                   //check to see that headers don't match, if so make another area in the cart
                   //always do the first one
-                  if (widget.purchaseItemList[i].boxSelected == true) {
+                  if (widget.purchaseItemList[i].boxSelected) {
                     checkoutList.add(
                       {
                         'docID': widget.purchaseItemList[i].documentID,
@@ -433,7 +433,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   // First Ping Firebase for session ID for stripe checkout
                   response = await http.post(
                     Uri.parse(
-                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment_1_1'),
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testPayment'),
                     body: json.encode(
                       {
                         'items': checkoutList,
@@ -528,6 +528,36 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     //databaseService.addOrder(order_list, totalTrees);
                     // databaseService.addOrderTest(
                     //     order_list, totalTrees, totalCoins.toInt());
+
+                    // Adding cards to the database
+                    String dateId = DateTime.now().year.toString() +
+                        DateTime.now().month.toString().padLeft(2, "0");
+
+                    DocumentSnapshot userCardSnapshot = await databaseReference
+                        .collection('users')
+                        .doc(databaseService.uid)
+                        .collection('cards')
+                        .doc(dateId)
+                        .get();
+
+                    bool isUserCardsActivated = userCardSnapshot.exists;
+                    print("is it first purchase? " +
+                        isUserCardsActivated.toString());
+
+                    for (CartItem item in widget.purchaseItemList) {
+                      if (item.boxSelected) {
+                        String purchaseType = item.header;
+                        print("found:" + purchaseType);
+                        if (!isUserCardsActivated) {
+                          databaseService.addCard(
+                              dateId, purchaseType, isUserCardsActivated);
+                          isUserCardsActivated = true;
+                        } else {
+                          databaseService.addCard(
+                              dateId, purchaseType, isUserCardsActivated);
+                        }
+                      }
+                    }
 
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);
