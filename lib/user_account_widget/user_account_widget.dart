@@ -87,7 +87,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   Widget changeEmailOrPassword(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 216, 216, 216),
+      color: AppColors.white,
       child: Column(
         children: [
           Row(
@@ -670,7 +670,7 @@ class UserAccountWidget extends StatelessWidget {
           style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
