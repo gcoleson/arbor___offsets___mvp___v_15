@@ -294,7 +294,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       if (value == "error") {
         firstTimeOpen("opened", context);
       } else {
-        print(value);
+        //print(value);
       }
     });
     // user statistics

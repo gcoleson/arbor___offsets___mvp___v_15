@@ -1,3 +1,6 @@
+// @dart=2.9
+
+import 'dart:convert';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
@@ -7,6 +10,7 @@ import 'package:share/share.dart';
 import 'UserStats.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+import 'package:http/http.dart' as http;
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -50,7 +54,6 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 
         if (userStats.totalCoins == null) userStats.totalCoins = 0;
 
-        print("stats");
         return Column(
           children: [
             buildImpactContainer(userStats),
@@ -226,6 +229,41 @@ Container cardDialogue(String imagePath, String description, String funFact) {
   );
 }
 
+List<dynamic> cardList = [];
+
+getCardsHttp(String uid) {
+  //don't get cards if we already have them
+  if (cardList.length != 0) return;
+
+  //response = await http.post(Uri.parse(
+  Future<http.Response> response = http.post(Uri.parse(
+          //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+      body: json.encode(
+        {
+          'userId': uid,
+        },
+      ));
+
+  response.then((value) {
+    getCardsHttpResponse(value);
+  });
+}
+
+getCardsHttpResponse(http.Response response) {
+  print(jsonDecode(response.body));
+
+  print("cardList 0");
+
+  if (response.body != 'error') {
+    print("cardList 1");
+    cardList = jsonDecode(response.body)['cardList'];
+    print(
+        "list ${cardList.length}:${cardList[0]["cardIndex"]} ${cardList[0]["imageLink"]} ${cardList[0]["date"]} ${cardList[0]["extraInfo"]}");
+    print("cardList 2");
+  }
+}
+
 Container buildCardsContainer() {
   return Container(
     width: 416,
@@ -307,7 +345,6 @@ Container buildCardsContainer() {
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 139,
               childAspectRatio: 1.13684,
-              //mainAxisSpacing: 2,
             ),
             itemBuilder: (context, index) =>
                 cardItemContainer(context, index, "path"),
@@ -476,7 +513,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
   User stats: Months of Impact
   ================================================================================================*/
 Container buildImpactContainer(UserStats stats) {
-//Container buildImpactContainer(int totalTrees, int treesThisMonth) {
+  getCardsHttp('test');
   return Container(
     margin: EdgeInsets.only(left: 5, top: 5, right: 5),
     child: Column(
