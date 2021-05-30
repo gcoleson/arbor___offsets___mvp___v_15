@@ -1,3 +1,5 @@
+// @dart=2.9
+
 /*
 *  project_detail_widget.dart
 *  Arbor - Offsets - MVP - v.1
@@ -94,7 +96,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
               "assets/images/icons8-left-50.png",
             ),
           ),
-          backgroundColor: Color.fromARGB(255, 65, 127, 69),
+          backgroundColor: AppColors.primaryDarkGreen,
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -167,13 +169,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                         width: 200,
                         child: Text("In partnership with: ",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: Color.fromARGB(255, 67, 82, 88),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                            ))),
+                            style: AppFonts.sectionLabels)),
                     Container(
                       child: Image.network(widget.projectData.sponsorlogo,
                           loadingBuilder: loadingBuilder2,
@@ -193,13 +189,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                       "${widget.projectData.percent}% Funded",
                       textAlign: TextAlign.left,
                       maxLines: 1,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w300,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 15,
-                      ),
+                      style: AppFonts.projectLabelHeadline,
                     ),
                   ),
                 ),

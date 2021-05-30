@@ -1,29 +1,29 @@
-import 'dart:math';
+//import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 
 FirebaseFirestore databaseReference = FirebaseFirestore.instance;
 
 class ProjectData {
   static ProjectData get instance => ProjectData();
 
-  int projectnumber; //starts at 1, zero is no project selected
-  String brief;
-  String description;
-  String imagemain;
-  String image1;
-  String image2;
-  String image3;
-  String image4;
-  String location;
-  GeoPoint maplocal;
-  int percent;
-  String sponsor;
-  String sponsorlogo;
-  String title;
-  bool selected;
-  String projectId;
+  int projectnumber = 0; //starts at 1, zero is no project selected
+  String brief = '';
+  String description = '';
+  String imagemain = '';
+  String image1 = '';
+  String image2 = '';
+  String image3 = '';
+  String image4 = '';
+  String location = '';
+  late GeoPoint maplocal;
+  int percent = 0;
+  String sponsor = '';
+  String sponsorlogo = '';
+  String title = '';
+  bool selected = false;
+  String projectId = '';
 }
 
 UserData userdata = UserData.instance;
@@ -44,9 +44,9 @@ class UserData {
 }
 
 class UserMessages {
-  int messageType;
-  String messageHeader;
-  String messageBody;
+  int messageType = 0;
+  String messageHeader = '';
+  String messageBody = '';
 }
 
 class UserMessageTypes {
@@ -58,9 +58,10 @@ class UserMessageTypes {
 DatabaseService databaseService = DatabaseService();
 
 dynamic testDBForField(DocumentSnapshot doc, String field) {
-  Map<String, dynamic> test = doc.data();
+  //Map<String, dynamic> test = doc.data();
+  var test = doc.data();
 
-  for (var entry in test.entries) {
+  for (var entry in test!.entries) {
     if (entry.key == field) {
       return entry.value;
     }
@@ -69,30 +70,32 @@ dynamic testDBForField(DocumentSnapshot doc, String field) {
 }
 
 class DatabaseService {
-  String uid;
-  DatabaseService({this.uid});
+  String uid = '';
+
+  //DatabaseService({this.uid});
 
   // collection reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
 
-  Stream<DocumentSnapshot> getUserData() {
-    if (this.uid == null) return null;
+  Stream<DocumentSnapshot>? getUserData() {
+    //if (this.uid == null) return null;
 
     try {
       return userCollection.doc(this.uid).snapshots();
     } catch (error) {
-      print('Get user data error');
+      print('Get user data error 2');
       print(error.toString());
       return null;
     }
   }
 
   Future<void> updateUserData(UserData data, bool create) async {
-    UserData test = data ?? null;
+    /*UserData test = data ?? null;
     if (test == null) {
       return null;
-    }
+    }*/
+
     print('Update UID:${this.uid} db entry');
 
     if (create) {
@@ -104,6 +107,9 @@ class DatabaseService {
         'selectedProjectId': data.selectedProjectId,
         'selectedProjectTitle': data.selectedProjectTitle,
         'createtimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
+        'coinsAllTime': 0,
+        'coinsCurrentAmount': 0,
+        'consecutiveMonths': 0
       }, SetOptions(merge: true));
     } else {
       print('Update user db');
@@ -116,6 +122,26 @@ class DatabaseService {
         'lastwitetimestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       }, SetOptions(merge: true));
     }
+  }
+
+  Future<void> updateUserStats() {
+    return userCollection
+        .doc(this.uid)
+        .set({
+          'coinsAllTime': 0,
+          'coinsCurrentAmount': 0,
+          'consecutiveMonths': 0,
+          'totalMonths': 0,
+          'totalTrees': 0,
+          'treesThisMonth': 0,
+          'prevMonthOfPurchase': new DateTime.utc(1997, 9, 24)
+        }, SetOptions(merge: true))
+        .then((value) => print("User stats successfully updated"))
+        .catchError((e) => print('Failed to update user data: $e'));
+  }
+
+  CollectionReference getUserSystemMessageDB() {
+    return userCollection.doc(this.uid).collection('messages');
   }
 
   Future<void> updateUserMessagesSystemType(String messageBoday) async {
@@ -131,7 +157,7 @@ class DatabaseService {
         'timestamp': DateTime.now().toUtc().millisecondsSinceEpoch,
       });
     } catch (error) {
-      print('Get user data error');
+      print('Get user data error 3');
       print(error.toString());
       return null;
     }
@@ -177,25 +203,5 @@ class DatabaseService {
         })
         .then((value) => print("Order successfulyy added"))
         .catchError((e) => print("Failed to add order: $e"));
-  }
-
-  Future<void> updateUserStats() {
-    return userCollection
-        .doc(this.uid)
-        .set({
-          'coinsAllTime': 0,
-          'coinsCurrentAmount': 0,
-          'consecutiveMonths': 0,
-          'totalMonths': 0,
-          'totalTrees': 0,
-          'treesThisMonth': 0,
-          'prevMonthOfPurchase': new DateTime.utc(1997, 9, 24)
-        }, SetOptions(merge: true))
-        .then((value) => print("User stats successfully updated"))
-        .catchError((e) => print('Failed to update user data: $e'));
-  }
-
-  CollectionReference getUserSystemMessageDB() {
-    return userCollection.doc(this.uid).collection('messages');
   }
 }

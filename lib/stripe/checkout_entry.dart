@@ -16,9 +16,12 @@ class checkout_entry extends StatelessWidget {
               String sessionId = 'error';
               //final sessionId = await Server().createCheckout();
 
+              Uri _encoded = Uri.parse(
+                  'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/');
+
               // First Ping Firebase for session ID for stripe checkout
               final http.Response response = await http.post(
-                'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment/',
+                _encoded,
                 body: json.encode(
                   {'price': 1337, 'product': 'A flight'},
                 ),

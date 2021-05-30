@@ -95,14 +95,14 @@ Container buildTotalMonthsContainer(int totalMonths) {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 93, 187, 71),
+              color: AppColors.secondaryLightGreen,
               border: Border.all(
                 width: 1,
-                color: Color.fromARGB(255, 151, 151, 151),
+                color: AppColors.borderGrey,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(128, 0, 0, 0),
+                  color: AppColors.boxShadow,
                   offset: Offset(0, 2),
                   blurRadius: 4,
                 ),
@@ -126,12 +126,7 @@ Container buildTotalMonthsContainer(int totalMonths) {
                   //===========================================
                   totalMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 250, 195, 21),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.treeImpactTextGold,
                 ),
               ),
               Spacer(),
@@ -172,14 +167,14 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 93, 187, 71),
+              color: AppColors.secondaryLightGreen,
               border: Border.all(
                 width: 1,
-                color: Color.fromARGB(255, 151, 151, 151),
+                color: AppColors.borderGrey,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(128, 0, 0, 0),
+                  color: AppColors.boxShadow,
                   offset: Offset(0, 2),
                   blurRadius: 4,
                 ),
@@ -203,12 +198,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                   //===========================================
                   consecutiveMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 250, 195, 21),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.treeImpactTextGold,
                 ),
               ),
               Spacer(),
@@ -220,7 +210,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                     "months in a row of impact",
                     maxLines: 1,
                     textAlign: TextAlign.right,
-                    style: AppFonts.monthlyImpactTextSmall,
+                    style: AppFonts.monthlyImpactText,
                   ),
                 ),
               ),
@@ -355,12 +345,7 @@ Container buildImpactContainer(UserStats stats) {
                     child: RichText(
                       textAlign: TextAlign.end,
                       text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 34,
-                          color: Color.fromARGB(255, 250, 195, 21),
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: AppFonts.treeImpactTextGold,
                         //================================
                         // treesThisMonth
                         //=================================
@@ -383,12 +368,7 @@ Container buildImpactContainer(UserStats stats) {
                       child: RichText(
                         textAlign: TextAlign.end,
                         text: TextSpan(
-                          style: TextStyle(
-                            fontSize: 34,
-                            color: Color.fromARGB(255, 250, 195, 21),
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppFonts.treeImpactTextGold,
                           //================================
                           // treesThisMonth
                           //=================================
@@ -416,33 +396,26 @@ Container buildImpactContainer(UserStats stats) {
         Row(
           children: [
             Container(
-              width: 276,
+              alignment: Alignment.centerLeft,
+              width: 260,
               height: 94,
-              child: Text(
+              child: AutoSizeText(
                 'Total Arbor Coins Earned:',
+                maxLines: 2,
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: 34,
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.treeImpactText,
               ),
             ),
+            Spacer(),
             Container(
-              height: 65,
-              width: 100,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  stats.totalCoins.toString(),
-                  style: TextStyle(
-                    fontSize: 34,
-                    color: AppColors.highlightYellow,
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+              width: 95,
+              height: 73,
+              margin: EdgeInsets.only(right: 5),
+              alignment: Alignment.bottomRight,
+              child: AutoSizeText(
+                stats.totalCoins.toString(),
+                maxLines: 1,
+                style: AppFonts.treeImpactTextGold,
               ),
             )
           ],

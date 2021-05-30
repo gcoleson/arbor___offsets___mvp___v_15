@@ -10,10 +10,14 @@ class CartItem {
   bool boxSelected;
 
   CartItem({
-    this.header,
-    this.description,
-    this.imageText,
-    this.imageIcon,
-    this.boxSelected,
+    this.header = '',
+    this.description = '',
+    this.imageText = '',
+    this.imageIcon = '',
+    this.documentID = '',
+    this.price = 0,
+    this.coinCount = 0,
+    this.treeCount = 0,
+    this.boxSelected = false,
   });
 }

@@ -1,6 +1,9 @@
+// @dart=2.9
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'onboarding_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 
 /// An indicator showing the currently selected page of a PageController
 class DotsIndicator extends AnimatedWidget {
@@ -8,7 +11,7 @@ class DotsIndicator extends AnimatedWidget {
     this.controller,
     this.itemCount,
     this.onPageSelected,
-    this.color: Colors.white,
+    this.color: AppColors.white,
   }) : super(listenable: controller);
 
   /// The PageController that this DotsIndicator is representing.
@@ -98,7 +101,6 @@ class MyHomePageState extends State<MyHomePage> {
             controller: _controller,
             children: _onboardingScreens,
             onPageChanged: (value) {
-              print(_onboardingScreens.length - 1);
               if (value >= _onboardingScreens.length - 1) {
                 setState(() {
                   isVisible = false;
@@ -117,7 +119,7 @@ class MyHomePageState extends State<MyHomePage> {
             child: Visibility(
               visible: isVisible,
               child: new Container(
-                color: Colors.grey[800].withOpacity(0.5),
+                color: AppColors.transparentScreen,
                 padding: const EdgeInsets.all(20.0),
                 child: new Center(
                   child: new DotsIndicator(

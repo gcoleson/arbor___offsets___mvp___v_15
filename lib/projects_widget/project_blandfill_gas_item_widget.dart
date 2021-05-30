@@ -5,6 +5,7 @@
 *  Created by Ed.
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
+// @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';
@@ -14,7 +15,7 @@ import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 var loadingBuilder2 =
     (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
@@ -49,10 +50,10 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
   Color getProductBorderSelectColor() {
     if (projectData.selected) {
       //turn border on
-      return Color.fromARGB(255, 250, 195, 21);
+      return AppColors.highlightYellow;
     } else {
       //turn border off
-      return Color.fromARGB(255, 0, 0, 0);
+      return AppColors.Black;
     }
   }
 
@@ -152,12 +153,7 @@ class _ProjectSummaryWidgetState extends State<ProjectSummaryWidget> {
                           projectData.selected ? "Supporting" : '',
                           textAlign: TextAlign.right,
                           maxLines: 1,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 250, 195, 21),
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                          ),
+                          style: AppFonts.supportingLabel,
                         ),
                       ),
                     ],
@@ -210,12 +206,7 @@ class ProjectTitleWidget extends StatelessWidget {
         child: AutoSizeText(
           projectData.title,
           maxLines: 1,
-          style: TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0),
-            fontFamily: "Raleway",
-            fontWeight: FontWeight.w300,
-            fontSize: 21,
-          ),
+          style: AppFonts.projectLabelHeadline,
         ),
       ),
     );
@@ -247,13 +238,7 @@ class ProjectInfoWidget extends StatelessWidget {
                   projectData.brief,
                   maxLines: 2,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: AppColors.Black,
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 18,
-                  ),
+                  style: AppFonts.projectLabelSubhead,
                 ),
               ),
             )),
@@ -262,12 +247,7 @@ class ProjectInfoWidget extends StatelessWidget {
             "${projectData.percent}" "% Funded",
             maxLines: 1,
             textAlign: TextAlign.right,
-            style: TextStyle(
-              color: Color.fromARGB(255, 242, 106, 44),
-              fontFamily: "Montserrat-Bold",
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-            ),
+            style: AppFonts.percentFunded,
           ),
         ),
       ]),

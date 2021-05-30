@@ -5,6 +5,7 @@
 *  Created by Ed.
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
+// @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
@@ -69,7 +70,7 @@ void main() async {
 
   pushNotifs.init();
 
-  print('Message Token:' + FirebaseMessaging().getToken().toString());
+  //print('Message Token:' + FirebaseMessaging().getToken().toString());
 
   print('App Version:' + appVersion + ' Date:' + appDate);
 
@@ -88,7 +89,7 @@ class App extends StatelessWidget {
     print("Analytics Enabled");
     analytics.setCurrentScreen(screenName: 'StartScreen');
 
-    if (databaseService?.uid == null) {
+    if (databaseService?.uid == '') {
       print("uid null");
       analytics.logTutorialBegin();
       return MaterialApp(

@@ -1,6 +1,9 @@
+// @dart=2.9
+
 import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'onboard_main_screen.dart';
@@ -26,12 +29,7 @@ Widget myPage1Widget(BuildContext context) {
             child: Text(
               "All modern lifestyles have a negative climate impact",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
+              style: AppFonts.introScreenHeadlineText,
             )),
       ),
       Align(
@@ -41,12 +39,7 @@ Widget myPage1Widget(BuildContext context) {
             child: Text(
               "Arbor makes it easy to eliminate yours",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
+              style: AppFonts.introScreenHeadlineText,
             ),
           )),
     ]),
@@ -65,12 +58,7 @@ Widget myPage2Widget(BuildContext context) {
             child: Text(
               "",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
+              style: AppFonts.navBarHeader,
             )),
       ), //Arbor helps you eliminate yours
       Align(
@@ -80,12 +68,7 @@ Widget myPage2Widget(BuildContext context) {
             child: Text(
               "Just pick a project you love ...",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
+              style: AppFonts.introScreenHeadlineText,
             ),
           ))
     ]),
@@ -108,15 +91,9 @@ Widget myPage3Widget(BuildContext context) {
           child: Container(
             margin: EdgeInsets.only(bottom: 100, left: 10, right: 10),
             child: Text(
-              "... and eliminate your impact with the tap of a button!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
-            ),
+                "... and eliminate your impact with the tap of a button!",
+                textAlign: TextAlign.center,
+                style: AppFonts.introScreenHeadlineText),
           ))
     ]),
   );
@@ -204,31 +181,21 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
         children: [
           Container(
               height: 187,
-              decoration:
-                  BoxDecoration(color: Color.fromARGB(127, 216, 216, 216))),
+              decoration: BoxDecoration(color: AppColors.transparentScreen)),
           Column(
             children: [
               Container(
                 child: Text(
                   "Arbor",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 65, 127, 69),
-                    fontFamily: "Montserrat-SemiBold",
-                    fontWeight: FontWeight.bold,
-                    fontSize: 72,
-                  ),
+                  style: AppFonts.arborSignupTitle,
                 ),
               ),
               Container(
                 child: Text(
                   "Erase your\n climate impact",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 65, 127, 69),
-                    fontFamily: "Montserrat-Medium",
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.arborSubTitle,
                 ),
               ),
             ],
@@ -249,14 +216,11 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
       Spacer(flex: 334),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
-          height: 21,
+          height: 23,
           child: Text(
             "Already have an account? ",
             textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Raleway-Medium",
-                fontSize: 18),
+            style: AppFonts.bodyTextWhite,
           ),
         ),
         FlatButton(
@@ -272,10 +236,7 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
             // }
             child: Text(
               "Sign In",
-              style: TextStyle(
-                  color: Color.fromARGB(255, 250, 195, 21),
-                  fontSize: 18,
-                  fontFamily: "Raleway-Medium"),
+              style: AppFonts.bodyTextGold,
             )),
       ]),
       Spacer(flex: 55)
@@ -318,120 +279,97 @@ Widget myPage5Widget(BuildContext context) {
 
   analytics.logEvent(name: 'Signin');
 
-  return new Scaffold(
-    resizeToAvoidBottomPadding: false,
-    body: Container(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image(
-            image: AssetImage("assets/images/WelcomeBackScreen.png"),
-            fit: BoxFit.cover,
-          ),
-          Column(
-            children: [
-              Spacer(flex: 75),
-              Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  Container(
-                      height: 159,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(127, 216, 216, 216))),
-                  Column(
-                    children: [
-                      Container(
-                        child: Text(
-                          "Arbor",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 65, 127, 69),
-                            fontFamily: "Montserrat-SemiBold",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 72,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "Welcome Back",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 65, 127, 69),
-                            fontFamily: "Montserrat-Medium",
-                            fontSize: 36,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(height: 47),
-              Container(
-                  height: 44,
-                  child: _customTextField("assets/images/UserIcon.png", "Email",
-                      _emailController, TextInputType.emailAddress, false)),
-              Container(
-                  margin: EdgeInsets.only(top: 14, bottom: 22),
-                  height: 44,
-                  child: _customTextField(
-                      "assets/images/PasswordIcon.png",
-                      "Password",
-                      _passwordController,
-                      TextInputType.text,
-                      true)),
-              _customButton("Sign In", signIn),
-              FlatButton(
-                  onPressed: () {
-                    passwordResetDialog(context, _passwirdResetController);
-                  },
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 250, 195, 21),
-                        fontSize: 18,
-                        fontFamily: "Raleway-Medium"),
-                  )),
-              Spacer(flex: 334),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+  return Scaffold(
+      //resizeToAvoidBottomPadding: false,
+      body: Container(
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        Image(
+          image: AssetImage("assets/images/WelcomeBackScreen.png"),
+          fit: BoxFit.cover,
+        ),
+        Column(
+          children: [
+            Spacer(flex: 75),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
                 Container(
-                  height: 21,
-                  child: Text(
-                    "Need an account? ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Raleway-Medium",
-                        fontSize: 18),
-                  ),
+                    height: 159,
+                    decoration:
+                        BoxDecoration(color: AppColors.transparentScreen)),
+                Column(
+                  children: [
+                    Container(
+                      child: Text(
+                        "Arbor",
+                        textAlign: TextAlign.center,
+                        style: AppFonts.arborSignupTitle,
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "Welcome Back",
+                        textAlign: TextAlign.center,
+                        style: AppFonts.arborSubTitle,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(height: 47),
+            Container(
+                height: 44,
+                child: _customTextField("assets/images/UserIcon.png", "Email",
+                    _emailController, TextInputType.emailAddress, false)),
+            Container(
+                margin: EdgeInsets.only(top: 14, bottom: 22),
+                height: 44,
+                child: _customTextField("assets/images/PasswordIcon.png",
+                    "Password", _passwordController, TextInputType.text, true)),
+            _customButton("Sign In", signIn),
+            FlatButton(
+                onPressed: () {
+                  passwordResetDialog(context, _passwirdResetController);
+                },
+                child: Text(
+                  "Forgot Password?",
+                  style: AppFonts.bodyTextGold,
+                )),
+            Spacer(flex: 334),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                height: 21,
+                child: Text(
+                  "Need an account? ",
+                  textAlign: TextAlign.center,
+                  style: AppFonts.bodyTextWhite,
                 ),
-                FlatButton(
-                    onPressed: () =>
-                        Navigator.pop(context) //switchPage(controller, 3)
+              ),
+              FlatButton(
+                  onPressed: () =>
+                      Navigator.pop(context) //switchPage(controller, 3)
 
-                    // { Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => TabGroupOneTabBarWidget()),
-                    //   );
-                    // }
-                    ,
-                    child: Text(
-                      "Join",
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 250, 195, 21),
-                          fontSize: 18,
-                          fontFamily: "Raleway-Medium"),
-                    )),
-              ]),
-              Spacer(flex: 47)
-            ],
-          )
-        ],
-      ),
+                  // { Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => TabGroupOneTabBarWidget()),
+                  //   );
+                  // }
+                  ,
+                  child: Text(
+                    "Join",
+                    style: AppFonts.bodyTextGold,
+                  )),
+            ]),
+            Spacer(flex: 47)
+          ],
+        )
+      ],
     ),
-  );
+  ));
 }
 
 Row _customButton(String buttonText, Function onButtonPress) {
@@ -444,12 +382,12 @@ Row _customButton(String buttonText, Function onButtonPress) {
           height: 50,
           width: 379,
           child: RaisedButton(
-            color: Color.fromARGB(255, 65, 127, 69),
+            color: AppColors.primaryDarkGreen,
             onPressed: onButtonPress,
             child: Text(
               buttonText,
               style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontFamily: "SFProText-Semibold",
                   fontSize: 17),
             ),
@@ -476,7 +414,7 @@ Row _customTextField(String imageFilePath, String customLabelText,
             controller: controller,
             decoration: new InputDecoration(
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.white,
               labelText: customLabelText,
               border: new OutlineInputBorder(
                 borderSide: new BorderSide(),

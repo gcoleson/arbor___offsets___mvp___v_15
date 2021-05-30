@@ -6,7 +6,7 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-//import 'dart:js';
+// @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
@@ -165,11 +165,11 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
           style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: AppColors.white,
         ),
         child: Column(
           children: [

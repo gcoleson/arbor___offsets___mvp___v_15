@@ -5,6 +5,7 @@
 *  Created by Ed.
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
+// @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
@@ -14,7 +15,9 @@ import 'package:arbor___offsets___mvp___v_15/values/radii.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:internationalization/internationalization.dart';
+//import 'package:internationalization/internationalization.dart';
+import 'package:intl/intl.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/arbor_explanation.dart';
 import 'package:http/http.dart' as http;
@@ -38,11 +41,11 @@ final Uri emailLaunchUri = Uri(
     path: 'info@412technology.com',
     query: 'subject=Arbor app feedback'.replaceAll(" ", "%20"));
 
-convertDate(int date) {
+/*convertDate(int date) {
   var format = new DateFormat("yMd");
   var dateString = format.format(DateTime.fromMillisecondsSinceEpoch(date));
   return dateString;
-}
+}*/
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Future<List<SubscriptionItem>> subscriptionListGet = subLoad();
@@ -54,6 +57,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var date = DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp);
+    var formattedDate = DateFormat.yMMMd().format(date); // Apr 8, 2020
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,15 +71,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Container(
             margin: EdgeInsets.only(left: 10, top: 5, bottom: 10),
             child: Text(
-              "Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp, isUtc: true))}",
+              "Member since $formattedDate",
+              //"Member since ${DateFormat('yMd').format(DateTime.fromMillisecondsSinceEpoch(userdata.createtimestamp, isUtc: true))}",
               textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 2, 2, 2),
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w300,
-                fontStyle: FontStyle.italic,
-                fontSize: 21,
-              ),
+              style: AppFonts.projectLabelSubhead,
             ),
           ),
           showProfilePanel(context),
@@ -86,7 +87,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   Widget changeEmailOrPassword(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 216, 216, 216),
+      color: AppColors.white,
       child: Column(
         children: [
           Row(
@@ -94,12 +95,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Text(
                 "New Email ",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: "SF Pro Text",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
+                style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
               ),
               Align(
                 child: Container(
@@ -113,12 +109,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       contentPadding: EdgeInsets.all(0),
                       border: InputBorder.none,
                     ),
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 98, 0, 238),
-                      fontFamily: "HK Grotesk",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
-                    ),
+                    style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
                     maxLines: 1,
                     autocorrect: false,
                   ),
@@ -131,12 +122,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Text(
                 "New Password ",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: "SF Pro Text",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
+                style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
               ),
               Container(
                 width: 200,
@@ -149,12 +135,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     contentPadding: EdgeInsets.all(0),
                     border: InputBorder.none,
                   ),
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 98, 0, 238),
-                    fontFamily: "HK Grotesk",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
-                  ),
+                  style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
                   maxLines: 1,
                   autocorrect: false,
                 ),
@@ -164,14 +145,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Row(
             children: [
               AutoSizeText(
-                "Reenter New Password",
+                "Re-enter New Password",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: "SF Pro Text",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
+                style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
               ),
               Container(
                 width: 165,
@@ -184,12 +160,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     contentPadding: EdgeInsets.all(0),
                     border: InputBorder.none,
                   ),
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 98, 0, 238),
-                    fontFamily: "HK Grotesk",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
-                  ),
+                  style: AppFonts.body1Default1Light1LabelColor1LeftAligned,
                   maxLines: 1,
                   autocorrect: false,
                 ),
@@ -217,14 +188,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: AutoSizeText(
                       "Sign Out",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontFamily: "SF Pro Text",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 17,
-                        letterSpacing: -0.408,
-                        height: 1.29412,
-                      ),
+                      style:
+                          AppFonts.body1Default1Light1LabelColor2CenterAligned,
                     ),
                   ),
                 ),
@@ -233,12 +198,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           Text(
             'Version:' + packageInfo.version + '.' + packageInfo.buildNumber,
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontFamily: "SF Pro Text",
-              fontWeight: FontWeight.w400,
-              fontSize: 8,
-            ),
+            style: AppFonts.version,
             textAlign: TextAlign.center,
           )
         ],
@@ -491,8 +451,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
     for (int i = 0; i < records.length; i++) {
       if (records[i].isSelected) {
+        Uri _encoded = Uri.parse(
+            'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription');
+
         response = await http.post(
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/cancelSubscription',
+          _encoded,
           body: json.encode(
             {'cancelledSubId': records[i].subscriptionId},
           ),
@@ -685,13 +648,14 @@ class UserAccountWidget extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Profile",
           textAlign: TextAlign.center,
           style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -728,8 +692,12 @@ Future<List<SubscriptionItem>> subLoad() async {
 
   // ping firebase to get the list of subscription
   http.Response response;
+
+  Uri _encoded = Uri.parse(
+      'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getSubscriptionList');
+
   response = await http.post(
-    'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getSubscriptionList',
+    _encoded,
     body: json.encode(
       {'customerIdClient': customerId},
     ),
