@@ -378,24 +378,12 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 //   }
                 // });
 
-                print("reach4");
                 DocumentSnapshot ds = await databaseReference
                     .collection('users')
                     .doc(databaseService.uid)
                     .get();
-                print("reach5");
 
                 isCustomer = ds.data().containsKey("customerId");
-
-                print(isCustomer);
-
-                // if (ds.exists) {
-                //   customerId = ds.get('customerId');
-                //   print("customer Id doesn't exist");
-                // } else {
-                //   print("Error: customer ID is empty");
-                // }
-                // print("AAAAAAAAAAAAAAAAAAA" + isCustomer.toString());
 
                 http.Response response;
                 print(databaseService.uid);
@@ -404,12 +392,16 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   // First Ping Firebase for session ID for stripe checkout
                   response = await http.post(
                     Uri.parse(
-                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment'),
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment_1_1'),
                     body: json.encode(
                       {
                         'items': checkoutList,
                         'projectName': 'project number: ' +
-                            userdata.selectedprojectnumber.toString()
+                            userdata.selectedprojectnumber.toString(),
+                        'totalCoins': totalCoins,
+                        'totalTrees': totalTrees,
+                        'userId': databaseService.uid,
+                        'mode': "onetime"
                       },
                     ),
                   );
@@ -418,13 +410,17 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   customerId = ds.get("customerId");
                   response = await http.post(
                     Uri.parse(
-                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSub'),
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/existingCustomerSub_1_1'),
                     body: json.encode(
                       {
                         'customerIdClient': customerId,
                         'items': checkoutList,
                         'projectId': userdata.selectedprojectnumber.toString(),
                         'projectTitle': userdata.selectedProjectTitle,
+                        'totalCoins': totalCoins,
+                        'totalTrees': totalTrees,
+                        'userId': databaseService.uid,
+                        'mode': "subscription"
                       },
                     ),
                     // body: json.encode(
@@ -435,13 +431,16 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   print("this is incorrect");
                   response = await http.post(
                     Uri.parse(
-                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSub'),
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/newCustomerSub_1_1'),
                     body: json.encode(
                       {
                         'userId': databaseService.uid,
                         'items': checkoutList,
                         'projectId': userdata.selectedprojectnumber.toString(),
                         'projectTitle': userdata.selectedProjectTitle,
+                        'totalCoins': totalCoins,
+                        'totalTrees': totalTrees,
+                        'mode': "subscription"
                       },
                     ),
                     // body: json.encode(
@@ -483,6 +482,8 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
 
                     FocusScope.of(context).unfocus();
                     Navigator.of(context).pop();
+
+                    // Old way of adding new orders to the database
                     //databaseService.addOrder(order_list, totalTrees);
                     databaseService.addOrderTest(
                         orderList, totalTrees, totalCoins.toInt());
