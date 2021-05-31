@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'dart:convert';
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
@@ -11,6 +12,7 @@ import 'UserStats.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -80,7 +82,7 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
   Container for squares that contain product
   ================================================================================================*/
 Container cardItemContainer(
-    BuildContext context, int index, String iconCloudPath) {
+    BuildContext context, int index, CardListDataClass info, bool dummyCard) {
   return Container(
     width: 95,
     height: 139,
@@ -108,11 +110,20 @@ Container cardItemContainer(
           child: Align(
               alignment: Alignment.center,
               child: IconButton(
-                icon: Image.asset("assets/images/icons8Lock100Copy3.png"),
-                //icon: Image.network(iconCloudPath, fit: BoxFit.fill),
+                iconSize: dummyCard ? 24 : 139,
+                icon: dummyCard
+                    ? Image.asset("assets/images/icons8Lock100Copy3.png")
+                    : Image.network(info.imageLink),
                 onPressed: () {
-                  cardDetailDialogue(context, "assets/images/yellowstone.png",
-                      "Description Text", "Fun Fact Text");
+                  if (!dummyCard)
+                    cardDetailDialogue(
+                        context,
+                        dummyCard
+                            ? Image.asset(
+                                "assets/images/icons8Lock100Copy3.png")
+                            : Image.network(info.imageLink),
+                        "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
+                        info.extraInfo);
                 },
               )),
         ),
@@ -120,15 +131,16 @@ Container cardItemContainer(
     ),
   );
 }
+//var formattedDate = DateFormat.yMMMd().format(info.date);
 
-Future cardDetailDialogue(BuildContext context, String imagePath,
-    String description, String funFact) {
+Future cardDetailDialogue(
+    BuildContext context, Image image, String description, String funFact) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         contentPadding: EdgeInsets.all(0.0),
-        insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+        insetPadding: EdgeInsets.fromLTRB(16, 8, 16, 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(10.0),
@@ -137,7 +149,7 @@ Future cardDetailDialogue(BuildContext context, String imagePath,
         content: Stack(
           fit: StackFit.expand,
           children: [
-            cardDialogue(imagePath, description, funFact),
+            cardDialogue(image, description, funFact),
             Positioned(
               right: 10,
               top: 10,
@@ -166,20 +178,22 @@ Future cardDetailDialogue(BuildContext context, String imagePath,
   );
 }
 
-Container cardDialogue(String imagePath, String description, String funFact) {
+Container cardDialogue(Image image, String description, String funFact) {
   return Container(
     padding: EdgeInsets.all(0),
     child: Column(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          //child: Image.network(imagePath),
-          child: Image.asset(imagePath),
+          child: image,
         ),
         Container(
+          height: 66,
+          width: 358,
           padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
-          child: Text(
+          child: AutoSizeText(
             description,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 26,
@@ -189,9 +203,12 @@ Container cardDialogue(String imagePath, String description, String funFact) {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
-          child: Text(
+          height: 57,
+          width: 358,
+          padding: EdgeInsets.fromLTRB(8, 8, 8, 12),
+          child: AutoSizeText(
             funFact,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 18,
@@ -233,9 +250,35 @@ List<dynamic> cardList = [];
 
 getCardsHttp(String uid) {
   //don't get cards if we already have them
-  if (cardList.length != 0) return;
 
-  //response = await http.post(Uri.parse(
+  print("getCardHttp:${cardList.length}:${cardListData.length}");
+
+  if (cardList.length != 0) {
+    if (cardListData.length == 0) {
+      for (var i = 0; i < cardList.length; i++) {
+        CardListDataClass info = CardListDataClass();
+
+        print(
+            "list:${cardList[i]["cardIndex"]} ${cardList[i]["imageLink"]} ${cardList[i]["date"]} ${cardList[i]["description"]} ${cardList[i]["extraInfo"]}");
+
+        print(cardList[i]['cardIndex'].toString());
+        info.cardIndex = int.parse(cardList[i]['cardIndex'].toString());
+        //save max card index
+        if (info.cardIndex > maxCardIndex) maxCardIndex = info.cardIndex;
+
+        info.imageLink = cardList[i]['imageLink'].toString();
+        info.extraInfo = cardList[i]['extraInfo'].toString();
+        info.description = cardList[i]['description'].toString();
+        info.date = DateTime.parse(cardList[i]['date'].toString());
+
+        cardListData.add(info);
+      }
+      //cardListData.sort((a, b) => a.cardIndex.compareTo(b.cardIndex));
+      print("max card index:$maxCardIndex");
+    }
+    return;
+  }
+
   Future<http.Response> response = http.post(Uri.parse(
           //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
           'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
@@ -250,18 +293,56 @@ getCardsHttp(String uid) {
   });
 }
 
+void Function() localcallSetState;
+
+void sendCallSetState(void Function() callSetState) {
+  localcallSetState = callSetState;
+}
+
+class CardListDataClass {
+  int cardIndex = 0;
+  String imageLink = "assets/images/icons8Lock100Copy3.png";
+  DateTime date = DateTime(2012);
+  String extraInfo = "";
+  String description = "";
+}
+
+List<CardListDataClass> cardListData = [];
+int maxCardIndex = 0;
+
 getCardsHttpResponse(http.Response response) {
   print(jsonDecode(response.body));
 
-  print("cardList 0");
+  print("cardList loaded");
 
   if (response.body != 'error') {
-    print("cardList 1");
     cardList = jsonDecode(response.body)['cardList'];
-    print(
-        "list ${cardList.length}:${cardList[0]["cardIndex"]} ${cardList[0]["imageLink"]} ${cardList[0]["date"]} ${cardList[0]["extraInfo"]}");
-    print("cardList 2");
+    print("list len:${cardList.length}");
+
+    for (var i = 0; i < cardList.length; i++) {
+      CardListDataClass info = CardListDataClass();
+
+      print(
+          "list:${cardList[i]["cardIndex"]} ${cardList[i]["imageLink"]} ${cardList[i]["date"]} ${cardList[i]["description"]} ${cardList[i]["extraInfo"]}");
+
+      print(cardList[i]['cardIndex'].toString());
+      info.cardIndex = int.parse(cardList[i]['cardIndex'].toString());
+      //save max card index
+      if (info.cardIndex > maxCardIndex) maxCardIndex = info.cardIndex;
+
+      info.imageLink = cardList[i]['imageLink'].toString();
+      info.extraInfo = cardList[i]['extraInfo'].toString();
+      info.description = cardList[i]['description'].toString();
+      info.date = DateTime.parse(cardList[i]['date'].toString());
+
+      cardListData.add(info);
+    }
+    //sort by index
+    //cardListData.sort((a, b) => a.cardIndex.compareTo(b.cardIndex));
+    print("max card index:$maxCardIndex");
   }
+
+  localcallSetState();
 }
 
 Container buildCardsContainer() {
@@ -272,7 +353,7 @@ Container buildCardsContainer() {
       children: [
         Row(
           children: [
-            Container(
+            /* Container(
               alignment: Alignment.centerLeft,
               child: AutoSizeText(
                 "<",
@@ -285,8 +366,8 @@ Container buildCardsContainer() {
                   fontSize: 28,
                 ),
               ),
-            ),
-            Spacer(),
+            ), 
+            Spacer(),*/
             Container(
               alignment: Alignment.center,
               //margin: EdgeInsets.only(left: 20, right: 20),
@@ -302,7 +383,7 @@ Container buildCardsContainer() {
                 ),
               ),
             ),
-            Spacer(),
+            /* Spacer(),
             Container(
               alignment: Alignment.centerRight,
               child: AutoSizeText(
@@ -316,7 +397,7 @@ Container buildCardsContainer() {
                   fontSize: 28,
                 ),
               ),
-            ),
+            ), */
           ],
         ),
         Container(
@@ -341,13 +422,38 @@ Container buildCardsContainer() {
           margin: EdgeInsets.only(left: 14, top: 9),
           child: GridView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 10 /*itemCount*/,
+            itemCount: cardListData.length != 0 ? maxCardIndex : 1,
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 139,
               childAspectRatio: 1.13684,
             ),
-            itemBuilder: (context, index) =>
-                cardItemContainer(context, index, "path"),
+            itemBuilder: (context, index) {
+              print("index:$index");
+              if (cardListData.length == 0) {
+                //if we don't have any data put up a dummy card
+                CardListDataClass dummy;
+                return cardItemContainer(context, index, dummy, true);
+              } else {
+                //we have processed http return and have a list of cards
+                //need to look for a card that matches index or
+                //if there is no index match return dummy card
+
+                CardListDataClass dummy;
+                bool dummyCard = true;
+
+                cardListData.forEach((element) {
+                  if (element.cardIndex == (index + 1)) {
+                    print("element=${element.cardIndex}");
+                    dummy = element;
+                    dummyCard = false;
+                    return cardItemContainer(context, index, element, false);
+                  }
+                });
+
+                //returning dummy
+                return cardItemContainer(context, index, dummy, dummyCard);
+              }
+            },
           ),
         ),
       ],

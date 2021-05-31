@@ -78,7 +78,6 @@ Widget loadUserData(BuildContext context) {
 
 class DashboardWidget extends StatefulWidget {
   final VoidCallback onUserIconPressed;
-  bool val = true;
   DashboardWidget(this.onUserIconPressed);
 
   @override
@@ -280,12 +279,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  void callSetState() {
+    setState(() {});
+  }
+
   /*===============================================================================================
   Building Widget
   ================================================================================================*/
   @override
   void initState() {
     super.initState();
+    sendCallSetState(callSetState);
   }
 
   @override
