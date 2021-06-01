@@ -279,9 +279,10 @@ getCardsHttp(String uid) {
     return;
   }
 
-  Future<http.Response> response = http.post(Uri.parse(
-          //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+  Future<http.Response> response = http.post(
+      Uri.parse(
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
+      //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
       body: json.encode(
         {
           'userId': uid,
@@ -619,7 +620,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
   User stats: Months of Impact
   ================================================================================================*/
 Container buildImpactContainer(UserStats stats) {
-  getCardsHttp('test');
+  getCardsHttp(databaseService.uid);
   return Container(
     margin: EdgeInsets.only(left: 5, top: 5, right: 5),
     child: Column(
