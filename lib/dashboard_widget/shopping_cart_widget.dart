@@ -525,8 +525,8 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     FocusScope.of(context).unfocus();
                     Navigator.of(context).pop();
                     //databaseService.addOrder(order_list, totalTrees);
-                    databaseService.addOrderTest(
-                        orderList, totalTrees, totalCoins.toInt());
+                    // databaseService.addOrderTest(
+                    //     orderList, totalTrees, totalCoins.toInt());
 
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);

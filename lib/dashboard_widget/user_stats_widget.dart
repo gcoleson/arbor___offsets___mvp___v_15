@@ -6,6 +6,7 @@ import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widg
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'UserStats.dart';
@@ -13,6 +14,8 @@ import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as cloudFirestore;
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -620,6 +623,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
   User stats: Months of Impact
   ================================================================================================*/
 Container buildImpactContainer(UserStats stats) {
+  activateFirstCard();
   getCardsHttp(databaseService.uid);
   return Container(
     margin: EdgeInsets.only(left: 5, top: 5, right: 5),
@@ -763,4 +767,52 @@ Container buildImpactContainer(UserStats stats) {
       ],
     ),
   );
+}
+
+Future activateFirstCard() async {
+  String lastDateString = await readLastFreebieCardDate();
+
+  if (lastDateString == "empty") {
+    return;
+  }
+  DateTime lastDateWrite = DateTime.parse(lastDateString);
+  DateTime currentDate = DateTime.now();
+  String dateId = currentDate.year.toString() +
+      currentDate.month.toString().padLeft(2, "0");
+  int monthDifference = monthDiff(lastDateWrite, currentDate);
+  if (monthDifference > 0) {
+    cloudFirestore.DocumentSnapshot userCardSnapshot = await databaseReference
+        .collection('users')
+        .doc(databaseService.uid)
+        .collection('cards')
+        .doc(dateId)
+        .get();
+    bool isUserCardsActivated = userCardSnapshot.exists;
+    if (!isUserCardsActivated) {
+      databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
+      isUserCardsActivated = true;
+    } else {
+      databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
+    }
+    writeLastFreebieCardDate();
+  }
+}
+
+int monthDiff(DateTime dateFrom, DateTime dateTo) {
+  return dateTo.month - dateFrom.month + (12 * (dateTo.year - dateFrom.year));
+}
+
+Future readLastFreebieCardDate() async {
+  final prefs = await SharedPreferences.getInstance();
+  final key = "lastFreebieCardMonth";
+  final value = prefs.getString(key) ?? "empty";
+  print("read: $value");
+  return value;
+}
+
+void writeLastFreebieCardDate() async {
+  final prefs = await SharedPreferences.getInstance();
+  final key = "lastFreebieCardMonth";
+  String date = DateTime.now().toIso8601String();
+  prefs.setString(key, date);
 }

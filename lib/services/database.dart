@@ -191,17 +191,28 @@ class DatabaseService {
         .catchError((e) => print("Failed to add order: $e"));
   }
 
-  Future<void> addOrderTest(var orderList, double trees, int coins) {
-    return userCollection
-        .doc(this.uid)
-        .collection('orders')
-        .add({
-          'date': DateTime.now(),
-          'trees': trees,
-          'items': orderList,
-          'coincount': coins
-        })
-        .then((value) => print("Order successfulyy added"))
-        .catchError((e) => print("Failed to add order: $e"));
+  Future<void> addCard(
+      String dateId, String purchaseType, bool isCurrentMonthActivated) {
+    if (isCurrentMonthActivated) {
+      return userCollection
+          .doc(this.uid)
+          .collection('cards')
+          .doc(dateId)
+          .update({
+            purchaseType: {'date': DateTime.now()}
+          })
+          .then((value) => print("Card successfully added"))
+          .catchError((e) => print("Failed to add card: $e"));
+    } else {
+      return userCollection
+          .doc(this.uid)
+          .collection('cards')
+          .doc(dateId)
+          .set({
+            purchaseType: {'date': DateTime.now()}
+          })
+          .then((value) => print("Card successfully added"))
+          .catchError((e) => print("Failed to add card: $e"));
+    }
   }
 }
