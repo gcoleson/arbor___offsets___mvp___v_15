@@ -449,6 +449,7 @@ Container buildCardsContainer() {
                 bool dummyCard = true;
 
                 cardListData.forEach((element) {
+                  // find matching index
                   if (element.cardIndex == (index + 1)) {
                     //print("element=${element.cardIndex}");
                     dummy = element;
@@ -457,7 +458,10 @@ Container buildCardsContainer() {
                   }
                 });
 
-                //returning dummy
+                // if card is set to empty then display locked dummy card
+                if (dummyCard == false && dummy.description == "empty") {
+                  dummyCard = true;
+                }
                 return cardItemContainer(context, index, dummy, dummyCard);
               }
             },
