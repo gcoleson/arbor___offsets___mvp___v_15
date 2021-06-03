@@ -100,7 +100,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
         ),
         body: SingleChildScrollView(
           child: Container(
-            height: 2000,
+            // height: 2250,
             margin: EdgeInsets.only(left: 1, top: 8, right: 5),
             decoration: BoxDecoration(
               color: AppColors.white,
