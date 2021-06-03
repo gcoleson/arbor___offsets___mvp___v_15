@@ -1,17 +1,19 @@
+// @dart=2.9
+
+import 'dart:convert';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'CartItem.dart';
-import 'shopping_cart_widget.dart';
+import 'package:share/share.dart';
 import 'UserStats.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -55,7 +57,6 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 
         if (userStats.totalCoins == null) userStats.totalCoins = 0;
 
-        print("stats");
         return Column(
           children: [
             buildImpactContainer(userStats),
@@ -75,6 +76,406 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
         );
       }
     },
+  );
+}
+
+/*===============================================================================================
+  Container for squares that contain product
+  ================================================================================================*/
+Container cardItemContainer(
+    BuildContext context, int index, CardListDataClass info, bool dummyCard) {
+  return Container(
+    width: 95,
+    height: 139,
+    child: Stack(
+      children: [
+        Positioned(
+          left: 0,
+          top: 0,
+          child: Container(
+            width: 95,
+            height: 139,
+            decoration: BoxDecoration(
+              color: AppColors.secondaryLightGreen,
+              border: Border.all(
+                width: 1,
+                color: AppColors.borderGrey,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.boxShadow,
+                  offset: Offset(0, 2),
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+            child: Container(),
+          ),
+        ),
+        Container(
+          width: 95,
+          height: 139,
+          child: Align(
+              alignment: Alignment.center,
+              child: IconButton(
+                iconSize: dummyCard ? 24 : 139,
+                icon: dummyCard
+                    ? Image.asset("assets/images/icons8Lock100Copy3.png")
+                    : Image.network(
+                        info.imageLink,
+                        loadingBuilder: loadingBuilder2,
+                      ),
+                onPressed: () {
+                  if (!dummyCard)
+                    cardDetailDialogue(
+                        context,
+                        dummyCard
+                            ? Image.asset(
+                                "assets/images/icons8Lock100Copy3.png")
+                            : Image.network(
+                                info.imageLink,
+                                loadingBuilder: loadingBuilder2,
+                              ),
+                        "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
+                        info.extraInfo);
+                },
+              )),
+        ),
+      ],
+    ),
+  );
+}
+//var formattedDate = DateFormat.yMMMd().format(info.date);
+
+Future cardDetailDialogue(
+    BuildContext context, Image image, String description, String funFact) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        scrollable: true,
+        contentPadding: EdgeInsets.all(0.0),
+        insetPadding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0),
+          ),
+        ),
+        content: Stack(
+          children: [
+            SingleChildScrollView(
+                child: cardDialogue(image, description, funFact)),
+            Positioned(
+              right: 10,
+              top: 10,
+              child: Container(
+                color: Color.fromARGB(0, 0, 0, 0),
+                height: 40,
+                width: 40,
+                child: FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  color: Colors.transparent,
+                  child: Text(
+                    "X",
+                    style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontSize: 28,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+Container cardDialogue(Image image, String description, String funFact) {
+  return Container(
+    padding: EdgeInsets.all(0),
+    child: Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: image,
+        ),
+        Container(
+          height: 66,
+          width: 358,
+          padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
+          child: AutoSizeText(
+            description,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 26,
+                color: AppColors.primaryDarkGreen,
+                fontFamily: "Railway",
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+        Container(
+          height: 57,
+          width: 358,
+          padding: EdgeInsets.fromLTRB(8, 8, 8, 12),
+          child: AutoSizeText(
+            funFact,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 18,
+                color: Color(0xfff26a2c),
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w700),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 5),
+          child: Text(
+            "Tell your freinds how you're going climate positive:",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        customButton("Share", () async {
+          await Share.share(
+              'I’m fighting climate change—sign up here to join me! https://getarborapp.com/',
+              subject: 'Arbor');
+        }),
+      ],
+    ),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(
+        Radius.circular(10.0),
+      ),
+    ),
+  );
+}
+
+List<dynamic> cardList = [];
+
+getCardsHttp(String uid) {
+  //don't get cards if we already have them
+
+  print("getCardHttp:${cardList.length}:${cardListData.length}");
+
+  if (cardList.length != 0) {
+    if (cardListData.length == 0) {
+      for (var i = 0; i < cardList.length; i++) {
+        CardListDataClass info = CardListDataClass();
+
+        print(
+            "list:${cardList[i]["cardIndex"]} ${cardList[i]["imageLink"]} ${cardList[i]["date"]} ${cardList[i]["description"]} ${cardList[i]["extraInfo"]}");
+
+        print(cardList[i]['cardIndex'].toString());
+        info.cardIndex = int.parse(cardList[i]['cardIndex'].toString());
+        //save max card index
+        if (info.cardIndex > maxCardIndex) maxCardIndex = info.cardIndex;
+
+        info.imageLink = cardList[i]['imageLink'].toString();
+        info.extraInfo = cardList[i]['extraInfo'].toString();
+        info.description = cardList[i]['description'].toString();
+        info.date = DateTime.parse(cardList[i]['date'].toString());
+
+        cardListData.add(info);
+      }
+      //cardListData.sort((a, b) => a.cardIndex.compareTo(b.cardIndex));
+      print("max card index:$maxCardIndex");
+    }
+    return;
+  }
+
+  Future<http.Response> response = http.post(Uri.parse(
+          //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+      body: json.encode(
+        {
+          'userId': uid,
+        },
+      ));
+
+  response.then((value) {
+    getCardsHttpResponse(value);
+  });
+}
+
+void Function() localcallSetState;
+
+void sendCallSetState(void Function() callSetState) {
+  localcallSetState = callSetState;
+}
+
+class CardListDataClass {
+  int cardIndex = 0;
+  String imageLink = "assets/images/icons8Lock100Copy3.png";
+  DateTime date = DateTime(2012);
+  String extraInfo = "";
+  String description = "";
+}
+
+List<CardListDataClass> cardListData = [];
+int maxCardIndex = 0;
+
+getCardsHttpResponse(http.Response response) {
+  print(jsonDecode(response.body));
+
+  print("cardList loaded");
+
+  if (response.body != 'error') {
+    cardList = jsonDecode(response.body)['cardList'];
+    print("list len:${cardList.length}");
+
+    for (var i = 0; i < cardList.length; i++) {
+      CardListDataClass info = CardListDataClass();
+
+      print(
+          "list:${cardList[i]["cardIndex"]} ${cardList[i]["imageLink"]} ${cardList[i]["date"]} ${cardList[i]["description"]} ${cardList[i]["extraInfo"]}");
+
+      print(cardList[i]['cardIndex'].toString());
+      info.cardIndex = int.parse(cardList[i]['cardIndex'].toString());
+      //save max card index
+      if (info.cardIndex > maxCardIndex) maxCardIndex = info.cardIndex;
+
+      info.imageLink = cardList[i]['imageLink'].toString();
+      info.extraInfo = cardList[i]['extraInfo'].toString();
+      info.description = cardList[i]['description'].toString();
+      info.date = DateTime.parse(cardList[i]['date'].toString());
+
+      cardListData.add(info);
+    }
+    //sort by index
+    //cardListData.sort((a, b) => a.cardIndex.compareTo(b.cardIndex));
+    print("max card index:$maxCardIndex");
+  }
+
+  localcallSetState();
+}
+
+Container buildCardsContainer() {
+  return Container(
+    width: 416,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            /* Container(
+              alignment: Alignment.centerLeft,
+              child: AutoSizeText(
+                "<",
+                maxLines: 1,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: AppColors.primaryDarkGreen,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 28,
+                ),
+              ),
+            ), 
+            Spacer(),*/
+            Container(
+              alignment: Alignment.center,
+              //margin: EdgeInsets.only(left: 20, right: 20),
+              child: AutoSizeText(
+                "This Month's Collection:",
+                maxLines: 1,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: AppColors.primaryDarkGreen,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 28,
+                ),
+              ),
+            ),
+            /* Spacer(),
+            Container(
+              alignment: Alignment.centerRight,
+              child: AutoSizeText(
+                ">",
+                maxLines: 1,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: AppColors.primaryDarkGreen,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 28,
+                ),
+              ),
+            ), */
+          ],
+        ),
+        Container(
+          width: 382,
+          margin: EdgeInsets.only(left: 4, top: 2),
+          child: AutoSizeText(
+            "National Parks",
+            maxLines: 2,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: AppColors.primaryDarkGreen,
+              fontFamily: "Raleway",
+              fontWeight: FontWeight.w700,
+              fontStyle: FontStyle.italic,
+              fontSize: 34,
+            ),
+          ),
+        ),
+        Container(
+          width: 400,
+          height: 139,
+          margin: EdgeInsets.only(left: 14, top: 9),
+          child: GridView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: cardListData.length != 0 ? maxCardIndex : 1,
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 139,
+              childAspectRatio: 1.13684,
+            ),
+            itemBuilder: (context, index) {
+              if (cardListData.length == 0) {
+                //if we don't have any data put up a dummy card
+                CardListDataClass dummy;
+                return cardItemContainer(context, index, dummy, true);
+              } else {
+                //we have processed http return and have a list of cards
+                //need to look for a card that matches index or
+                //if there is no index match return dummy card
+
+                CardListDataClass dummy;
+                bool dummyCard = true;
+
+                cardListData.forEach((element) {
+                  // find matching index
+                  if (element.cardIndex == (index + 1)) {
+                    //print("element=${element.cardIndex}");
+                    dummy = element;
+                    dummyCard = false;
+                    return cardItemContainer(context, index, element, false);
+                  }
+                });
+
+                // if card is set to empty then display locked dummy card
+                if (dummyCard == false && dummy.description == "empty") {
+                  dummyCard = true;
+                }
+                return cardItemContainer(context, index, dummy, dummyCard);
+              }
+            },
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -167,14 +568,14 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.secondaryLightGreen,
+              color: Color.fromARGB(255, 93, 187, 71),
               border: Border.all(
                 width: 1,
-                color: AppColors.borderGrey,
+                color: Color.fromARGB(255, 151, 151, 151),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.boxShadow,
+                  color: Color.fromARGB(128, 0, 0, 0),
                   offset: Offset(0, 2),
                   blurRadius: 4,
                 ),
@@ -198,75 +599,6 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                   //===========================================
                   consecutiveMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: AppFonts.treeImpactTextGold,
-                ),
-              ),
-              Spacer(),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  margin: EdgeInsets.only(top: 7),
-                  child: AutoSizeText(
-                    "months in a row of impact",
-                    maxLines: 1,
-                    textAlign: TextAlign.right,
-                    style: AppFonts.monthlyImpactText,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-/* Widget buildMonthsInARowContainer(int consecutiveMonths) {
-  return Container(
-    height: 50,
-    margin: EdgeInsets.only(left: 1, top: 20),
-    child: Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        Positioned(
-          left: 0,
-          top: -0,
-          right: 0,
-          child: Container(
-            height: 48,
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 93, 187, 71),
-              border: Border.all(
-                width: 1,
-                color: Color.fromARGB(255, 151, 151, 151),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromARGB(128, 0, 0, 0),
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
-                ),
-              ],
-            ),
-            child: Container(),
-          ),
-        ),
-        Positioned(
-          left: 22,
-          top: -1,
-          right: 11,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  //==============================
-                  //Consecutive Months
-                  //==============================
-                  consecutiveMonths.toString(),
-                  textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Color.fromARGB(255, 250, 195, 21),
                     fontFamily: "Raleway",
@@ -284,7 +616,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                     "months in a row of impact",
                     maxLines: 1,
                     textAlign: TextAlign.right,
-                    style: AppFonts.monthlyImpactText,
+                    style: AppFonts.monthlyImpactTextSmall,
                   ),
                 ),
               ),
@@ -294,15 +626,14 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
       ],
     ),
   );
-} */
+}
 
 /*===============================================================================================
   User stats: Months of Impact
   ================================================================================================*/
 Container buildImpactContainer(UserStats stats) {
-//Container buildImpactContainer(int totalTrees, int treesThisMonth) {
+  getCardsHttp(databaseService.uid);
   return Container(
-    //height: 400,
     margin: EdgeInsets.only(left: 5, top: 5, right: 5),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -393,6 +724,7 @@ Container buildImpactContainer(UserStats stats) {
             )
           ],
         ),
+        buildCardsContainer(),
         Row(
           children: [
             Container(

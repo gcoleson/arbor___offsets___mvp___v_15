@@ -66,7 +66,7 @@ Widget step(BuildContext context) {
         Container(
           height: 45,
         ),
-        _customButton("Got It", () => Navigator.pop(context))
+        customButton("Got It", () => Navigator.pop(context))
       ],
     ),
   );
@@ -108,7 +108,7 @@ Widget generateItem(String title, String description, String path) {
   );
 }
 
-Row _customButton(String buttonText, Function onButtonPress) {
+Row customButton(String buttonText, Function onButtonPress) {
   return Row(
     children: [
       Spacer(flex: 21),

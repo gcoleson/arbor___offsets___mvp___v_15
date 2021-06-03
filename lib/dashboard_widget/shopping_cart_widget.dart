@@ -321,7 +321,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
               ]),
           Container(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-            child: _customButton(
+            child: customButton(
               "Continue Checkout",
               () async {
                 analytics.logEvent(name: 'purchase');
@@ -640,7 +640,7 @@ Container failureDialogue(BuildContext context) {
           style: AppFonts.congratsSubhead,
         ),
         Spacer(),
-        _customButton(
+        customButton(
           "Try Again",
           () => Navigator.of(context).pop(),
         ),
@@ -657,7 +657,7 @@ Container failureDialogue(BuildContext context) {
   );
 }
 
-Row _customButton(String buttonText, Function onButtonPress) {
+Row customButton(String buttonText, Function onButtonPress) {
   return Row(
     children: [
       Spacer(flex: 21),
@@ -860,7 +860,7 @@ Container successDialogue(
             style: AppFonts.checkoutBodyText,
           ),
         ),
-        _customButton("Share", () async {
+        customButton("Share", () async {
           await Share.share(
               'I’m fighting climate change—sign up here to join me! https://getarborapp.com/',
               subject: 'Arbor');
@@ -869,63 +869,6 @@ Container successDialogue(
     ),
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
-      ),
-    ),
-  );
-}
-
-Container successDialogueBak(double totalCoins, double totalTrees) {
-  return Container(
-    alignment: Alignment.topCenter,
-    padding: EdgeInsets.all(0),
-    constraints: BoxConstraints.expand(),
-    child: Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image(
-            image: AssetImage("assets/images/sunrise.png"),
-          ),
-        ),
-        Spacer(
-          flex: 38,
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-          child: Text(
-            "Congratulations!",
-            textAlign: TextAlign.center,
-            style: AppFonts.navBarHeader,
-          ),
-        ),
-        Spacer(
-          flex: 25,
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-          child: Text(
-            "By eliminating your climate impact, you're helping reversing climate change!",
-            textAlign: TextAlign.center,
-            style: AppFonts.congratsSubhead,
-          ),
-        ),
-        Spacer(
-          flex: 110,
-        ),
-        Text(
-          "Tell your friends how you're going climate positive:",
-          textAlign: TextAlign.center,
-          style: AppFonts.keyPointsBulletList,
-        ),
-        Spacer(),
-        _customButton("Share", () {}),
-        Spacer(),
-      ],
-    ),
-    decoration: BoxDecoration(
-      color: AppColors.backgroundBlue,
       borderRadius: BorderRadius.all(
         Radius.circular(10.0),
       ),

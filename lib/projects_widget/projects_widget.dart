@@ -152,7 +152,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
       if (value == "error") {
         firstTimeOpen("opened", context);
       } else {
-        print(value);
+        //print(value);
       }
     });
 

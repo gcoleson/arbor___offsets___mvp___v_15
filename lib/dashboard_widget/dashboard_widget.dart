@@ -8,22 +8,16 @@
 
 // @dart=2.9
 
-import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../main.dart';
 import 'CartItem.dart';
 import 'shopping_cart_widget.dart';
 import 'UserStats.dart';
 import 'user_stats_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,7 +78,6 @@ Widget loadUserData(BuildContext context) {
 
 class DashboardWidget extends StatefulWidget {
   final VoidCallback onUserIconPressed;
-  bool val = true;
   DashboardWidget(this.onUserIconPressed);
 
   @override
@@ -228,111 +221,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
   var iOsSystemBackgroundsLightSystemBack2 = Color.fromARGB(255, 255, 255, 255);
 
-/*
-  /*===============================================================================================
-  Deprecated: old dialogue builder for the congrtulations dialogue box
-  ================================================================================================*/
-  Future buildShowDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Positioned(
-                  right: -40.0,
-                  top: -40.0,
-                  child: InkResponse(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: CircleAvatar(
-                      child: Icon(Icons.close),
-                      backgroundColor: Colors.red,
-                    ),
-                  ),
-                ),
-                formCongrats(),
-              ],
-            ),
-          );
-        });
-  }
-*/
-
-/*
-  /*===============================================================================================
-  Deprecated: original dialogue box for congratulation of payment
-  ================================================================================================*/
-  Container formCongrats() {
-    return Container(
-        width: 381,
-        height: 700,
-        decoration: new BoxDecoration(
-            color: blueHighlight, borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            new Text("Congratulations!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: Color(0xfffafcfd),
-                  fontSize: 36,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                )),
-            new Text(
-                "By eliminating your climate impact, you’re helping reversing climate change!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Raleway',
-                  color: Color(0xff010101),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.normal,
-                )),
-            new Text("You just eliminated the climate impact of:",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: iOsSystemBackgroundsLightSystemBack2,
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
-                )),
-            buildHighlightedCartItems(),
-            new Text("Tell your friends how you’re going climate positive:",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Raleway',
-                  color: Color(0xff010101),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.normal,
-                )),
-            new Container(
-              width: 344,
-              height: 50,
-              decoration: new BoxDecoration(
-                  color: primaryAccentGreen,
-                  borderRadius: BorderRadius.circular(8)),
-              child: new Text("Share",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'SFProText',
-                    color: iOsSystemBackgroundsLightSystemBack2,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                    letterSpacing: -0.408,
-                  )),
-            )
-          ],
-        ));
-  }
-*/
-
   /*===============================================================================================
   Container for squares that contain product
   ================================================================================================*/
@@ -385,12 +273,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  void callSetState() {
+    setState(() {});
+  }
+
   /*===============================================================================================
   Building Widget
   ================================================================================================*/
   @override
   void initState() {
     super.initState();
+    sendCallSetState(callSetState);
   }
 
   @override
@@ -399,7 +292,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       if (value == "error") {
         firstTimeOpen("opened", context);
       } else {
-        print(value);
+        //print(value);
       }
     });
     // user statistics
