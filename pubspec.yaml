@@ -90,6 +90,8 @@ dependencies:
   # for sharing on social media, etc
   share: ^2.0.1
 
+  shared_preferences: ^2.0.6
+
 dependency_overrides:
   flutter_svg: ^0.22.0
 
