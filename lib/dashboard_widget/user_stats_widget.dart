@@ -181,6 +181,7 @@ Future cardDetailDialogue(
                       fontFamily: "Montserrat",
                       fontSize: 28,
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -195,7 +196,7 @@ Future cardDetailDialogue(
 
 Container cardDialogue(Image image, String description, String funFact) {
   return Container(
-    padding: EdgeInsets.all(0),
+    padding: EdgeInsets.all(11),
     child: Column(
       children: [
         ClipRRect(
@@ -203,33 +204,21 @@ Container cardDialogue(Image image, String description, String funFact) {
           child: image,
         ),
         Container(
-          height: 66,
-          width: 358,
-          padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
-          child: AutoSizeText(
+          padding: EdgeInsets.fromLTRB(11, 16, 11, 0),
+          child: Text(
             description,
             maxLines: 2,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 26,
-                color: AppColors.primaryDarkGreen,
-                fontFamily: "Railway",
-                fontWeight: FontWeight.w500),
+            textAlign: TextAlign.left,
+            style: AppFonts.RewardCaredDescriptionText,
           ),
         ),
         Container(
-          height: 57,
-          width: 358,
-          padding: EdgeInsets.fromLTRB(8, 8, 8, 12),
-          child: AutoSizeText(
+          padding: EdgeInsets.fromLTRB(6, 11, 11, 120),
+          child: Text(
             funFact,
             maxLines: 2,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 18,
-                color: Color(0xfff26a2c),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w700),
+            textAlign: TextAlign.right,
+            style: AppFonts.percentFunded,
           ),
         ),
         Container(
@@ -237,12 +226,7 @@ Container cardDialogue(Image image, String description, String funFact) {
           child: Text(
             "Tell your freinds how you're going climate positive:",
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-            ),
+            style: AppFonts.checkoutBodyText,
           ),
         ),
         customButton("Share", () async {
@@ -294,10 +278,9 @@ getCardsHttp(String uid) {
     return;
   }
 
-  Future<http.Response> response = http.post(
-      Uri.parse(
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
-      //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+  Future<http.Response> response = http.post(Uri.parse(
+          //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
       body: json.encode(
         {
           'userId': uid,
