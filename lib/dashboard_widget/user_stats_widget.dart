@@ -261,6 +261,15 @@ Container cardDialogue(Image image, String description, String funFact) {
   );
 }
 
+void refreshDashboard() {
+  //clear out card data and get it again
+  cardList.clear();
+  cardListData.clear();
+
+  //refresh UI
+  localcallSetState();
+}
+
 List<dynamic> cardList = [];
 
 getCardsHttp(String uid) {

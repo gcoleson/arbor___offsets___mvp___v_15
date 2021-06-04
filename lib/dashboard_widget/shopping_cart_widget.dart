@@ -11,6 +11,8 @@ import 'CartItem.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/user_stats_widget.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share/share.dart';
 
@@ -457,6 +459,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 if (response.body != null && response.body != 'error') {
                   sessionId = jsonDecode(response.body)['id'];
                   print('Checkout Success!!!!');
+                  refreshDashboard();
                   analytics.logEvent(name: 'purchase', parameters: {
                     'items': widget.purchaseItemList.length,
                     'trees': totalTrees,
