@@ -486,9 +486,6 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     // Old way of adding new orders to the database
                     //databaseService.addOrder(order_list, totalTrees);
                     // databaseService.addOrderTest(
-<<<<<<< HEAD
-                    //     orderList, totalTrees, totalCoins.toInt());
-=======
                     //     order_list, totalTrees, totalCoins.toInt());
 
                     // Adding cards to the database
@@ -520,7 +517,6 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                         }
                       }
                     }
->>>>>>> develop
 
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);
