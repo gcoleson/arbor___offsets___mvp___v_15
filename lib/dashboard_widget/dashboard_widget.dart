@@ -9,6 +9,7 @@
 // @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -140,10 +141,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   Color getProductBorderSelectColor(int index) {
     if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
-      return Color.fromARGB(255, 0, 0, 0);
+      return AppColors.Black;
     } else {
       //turn border off
-      return Color.fromARGB(255, 250, 195, 21);
+      return AppColors.highlightYellow;
     }
   }
 
@@ -238,7 +239,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               width: 95,
               height: 107,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 216, 216, 216),
+                color: AppColors.transparentScreen,
                 border: Border.all(
                   width: 3,
                   color: getProductBorderSelectColor(index),
@@ -265,13 +266,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               AutoSizeText(iconText,
                   maxLines: 3,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 65, 127, 69),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w800,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 14,
-                  )),
+                  style: AppFonts.offsetButtonLabels),
             ],
           ),
         ],
@@ -306,15 +301,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Arbor",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat Semi-Bold",
-            fontWeight: FontWeight.w600,
-            fontSize: 36,
-          ),
+          style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
         actions: [
@@ -327,7 +318,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             ),
           ),
         ],
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: ListView(
         children: [
@@ -378,14 +369,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                     child: AutoSizeText(
                       "Checkout",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontFamily: "SF Pro Text",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 17,
-                        letterSpacing: -0.408,
-                        height: 1.29412,
-                      ),
+                      style: AppFonts.iOSSystemTextCenterAlignWhite,
                     ),
                   );
                 },
@@ -614,12 +598,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         child: Text(
           "Live Climate Positive: ",
           textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Color.fromARGB(255, 65, 127, 69),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w500,
-            fontSize: 28,
-          ),
+          style: AppFonts.screenSubhead,
         ),
       ),
     );

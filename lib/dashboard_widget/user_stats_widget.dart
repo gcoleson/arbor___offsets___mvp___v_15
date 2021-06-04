@@ -99,11 +99,18 @@ Container cardItemContainer(
             width: 95,
             height: 139,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 216, 216, 216),
+              color: AppColors.secondaryLightGreen,
               border: Border.all(
-                width: 3,
-                color: AppColors.Black,
+                width: 1,
+                color: AppColors.borderGrey,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.boxShadow,
+                  offset: Offset(0, 2),
+                  blurRadius: 4,
+                ),
+              ],
             ),
             child: Container(),
           ),
@@ -493,14 +500,14 @@ Container buildTotalMonthsContainer(int totalMonths) {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 93, 187, 71),
+              color: AppColors.secondaryLightGreen,
               border: Border.all(
                 width: 1,
-                color: Color.fromARGB(255, 151, 151, 151),
+                color: AppColors.borderGrey,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(128, 0, 0, 0),
+                  color: AppColors.boxShadow,
                   offset: Offset(0, 2),
                   blurRadius: 4,
                 ),
@@ -524,12 +531,7 @@ Container buildTotalMonthsContainer(int totalMonths) {
                   //===========================================
                   totalMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 250, 195, 21),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.treeImpactTextGold,
                 ),
               ),
               Spacer(),
@@ -679,12 +681,7 @@ Container buildImpactContainer(UserStats stats) {
                     child: RichText(
                       textAlign: TextAlign.end,
                       text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 34,
-                          color: Color.fromARGB(255, 250, 195, 21),
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: AppFonts.treeImpactTextGold,
                         //================================
                         // treesThisMonth
                         //=================================
@@ -707,12 +704,7 @@ Container buildImpactContainer(UserStats stats) {
                       child: RichText(
                         textAlign: TextAlign.end,
                         text: TextSpan(
-                          style: TextStyle(
-                            fontSize: 34,
-                            color: Color.fromARGB(255, 250, 195, 21),
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppFonts.treeImpactTextGold,
                           //================================
                           // treesThisMonth
                           //=================================
@@ -748,12 +740,7 @@ Container buildImpactContainer(UserStats stats) {
                 'Total Arbor Coins Earned:',
                 maxLines: 2,
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: 34,
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.treeImpactText,
               ),
             ),
             Spacer(),
@@ -765,12 +752,7 @@ Container buildImpactContainer(UserStats stats) {
               child: AutoSizeText(
                 stats.totalCoins.toString(),
                 maxLines: 1,
-                style: TextStyle(
-                  fontSize: 34,
-                  color: AppColors.highlightYellow,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppFonts.treeImpactTextGold,
               ),
             )
           ],

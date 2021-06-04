@@ -16,13 +16,14 @@ class _arborExplanationState extends State<arborExplanation> {
     analytics.logEvent(name: 'how_to');
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "How Arbor Works",
           textAlign: TextAlign.center,
           style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: step(context),
     );
@@ -122,10 +123,7 @@ Row customButton(String buttonText, Function onButtonPress) {
             onPressed: onButtonPress,
             child: Text(
               buttonText,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: "SFProText-Semibold",
-                  fontSize: 17),
+              style: AppFonts.body2Bold2Dark1LabelColor2CenterAligned,
             ),
           ),
         ),

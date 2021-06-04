@@ -165,11 +165,11 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
           style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: AppColors.white,
         ),
         child: Column(
           children: [
