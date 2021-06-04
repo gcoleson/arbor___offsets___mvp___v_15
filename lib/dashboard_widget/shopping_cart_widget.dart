@@ -459,7 +459,6 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 if (response.body != null && response.body != 'error') {
                   sessionId = jsonDecode(response.body)['id'];
                   print('Checkout Success!!!!');
-                  refreshDashboard();
                   analytics.logEvent(name: 'purchase', parameters: {
                     'items': widget.purchaseItemList.length,
                     'trees': totalTrees,
@@ -521,6 +520,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                       }
                     }
 
+                    refreshDashboard();
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);
                   } else if (outcome == "failure") {
