@@ -7,7 +7,6 @@ import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_g
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'UserStats.dart';
@@ -763,31 +762,41 @@ Container buildImpactContainer(UserStats stats) {
 }
 
 Future activateFirstCard() async {
+  // check the last successful access freebie date
   String lastDateString = await readLastFreebieCardDate();
 
-  if (lastDateString == "empty") {
-    return;
-  }
-  DateTime lastDateWrite = DateTime.parse(lastDateString);
+  // get current date to test for user card database existence
   DateTime currentDate = DateTime.now();
   String dateId = currentDate.year.toString() +
       currentDate.month.toString().padLeft(2, "0");
-  int monthDifference = monthDiff(lastDateWrite, currentDate);
-  if (monthDifference > 0) {
-    cloudFirestore.DocumentSnapshot userCardSnapshot = await databaseReference
-        .collection('users')
-        .doc(databaseService.uid)
-        .collection('cards')
-        .doc(dateId)
-        .get();
-    bool isUserCardsActivated = userCardSnapshot.exists;
-    if (!isUserCardsActivated) {
-      databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
-      isUserCardsActivated = true;
-    } else {
-      databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
-    }
+
+  // query database for list
+  cloudFirestore.DocumentSnapshot userCardSnapshot = await databaseReference
+      .collection('users')
+      .doc(databaseService.uid)
+      .collection('cards')
+      .doc(dateId)
+      .get();
+
+  // logic to determine if we write a new card database for the user or not
+  bool isUserCardsActivated = userCardSnapshot.exists;
+
+  print("does user cards exist?" + isUserCardsActivated.toString());
+
+  if (lastDateString == "empty") {
+    print("reached 1");
+    databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
     writeLastFreebieCardDate();
+  } else {
+    DateTime lastDateWrite = DateTime.parse(lastDateString);
+    int monthDifference = monthDiff(lastDateWrite, currentDate);
+    if (monthDifference > 0) {
+      databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
+      writeLastFreebieCardDate();
+    } else {
+      print(
+          "sign in is not vlaid for freebie, probably multiple sign ins this month");
+    }
   }
 }
 
