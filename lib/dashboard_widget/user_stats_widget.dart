@@ -14,6 +14,8 @@ import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as cloudFirestore;
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -303,9 +305,10 @@ getCardsHttp(String uid) {
     return;
   }
 
-  Future<http.Response> response = http.post(Uri.parse(
-          //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+  Future<http.Response> response = http.post(
+      Uri.parse(
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
+      //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
       body: json.encode(
         {
           'userId': uid,
@@ -641,6 +644,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
   User stats: Months of Impact
   ================================================================================================*/
 Container buildImpactContainer(UserStats stats) {
+  activateFirstCard();
   getCardsHttp(databaseService.uid);
   return Container(
     margin: EdgeInsets.only(left: 5, top: 5, right: 5),
@@ -764,4 +768,62 @@ Container buildImpactContainer(UserStats stats) {
       ],
     ),
   );
+}
+
+Future activateFirstCard() async {
+  // check the last successful access freebie date
+  String lastDateString = await readLastFreebieCardDate();
+
+  // get current date to test for user card database existence
+  DateTime currentDate = DateTime.now();
+  String dateId = currentDate.year.toString() +
+      currentDate.month.toString().padLeft(2, "0");
+
+  // query database for list
+  cloudFirestore.DocumentSnapshot userCardSnapshot = await databaseReference
+      .collection('users')
+      .doc(databaseService.uid)
+      .collection('cards')
+      .doc(dateId)
+      .get();
+
+  // logic to determine if we write a new card database for the user or not
+  bool isUserCardsActivated = userCardSnapshot.exists;
+
+  print("does user cards exist?" + isUserCardsActivated.toString());
+
+  if (lastDateString == "empty") {
+    print("reached 1");
+    databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
+    writeLastFreebieCardDate();
+  } else {
+    DateTime lastDateWrite = DateTime.parse(lastDateString);
+    int monthDifference = monthDiff(lastDateWrite, currentDate);
+    if (monthDifference > 0) {
+      databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
+      writeLastFreebieCardDate();
+    } else {
+      print(
+          "sign in is not vlaid for freebie, probably multiple sign ins this month");
+    }
+  }
+}
+
+int monthDiff(DateTime dateFrom, DateTime dateTo) {
+  return dateTo.month - dateFrom.month + (12 * (dateTo.year - dateFrom.year));
+}
+
+Future readLastFreebieCardDate() async {
+  final prefs = await SharedPreferences.getInstance();
+  final key = "lastFreebieCardMonth";
+  final value = prefs.getString(key) ?? "empty";
+  print("read: $value");
+  return value;
+}
+
+void writeLastFreebieCardDate() async {
+  final prefs = await SharedPreferences.getInstance();
+  final key = "lastFreebieCardMonth";
+  String date = DateTime.now().toIso8601String();
+  prefs.setString(key, date);
 }
