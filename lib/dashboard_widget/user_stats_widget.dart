@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -113,7 +114,10 @@ Container cardItemContainer(
                 iconSize: dummyCard ? 24 : 139,
                 icon: dummyCard
                     ? Image.asset("assets/images/icons8Lock100Copy3.png")
-                    : Image.network(info.imageLink),
+                    : Image.network(
+                        info.imageLink,
+                        loadingBuilder: loadingBuilder2,
+                      ),
                 onPressed: () {
                   if (!dummyCard)
                     cardDetailDialogue(
@@ -121,7 +125,10 @@ Container cardItemContainer(
                         dummyCard
                             ? Image.asset(
                                 "assets/images/icons8Lock100Copy3.png")
-                            : Image.network(info.imageLink),
+                            : Image.network(
+                                info.imageLink,
+                                loadingBuilder: loadingBuilder2,
+                              ),
                         "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
                         info.extraInfo);
                 },
@@ -139,17 +146,18 @@ Future cardDetailDialogue(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        scrollable: true,
         contentPadding: EdgeInsets.all(0.0),
-        insetPadding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+        insetPadding: EdgeInsets.fromLTRB(8, 4, 8, 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(10.0),
           ),
         ),
         content: Stack(
-          fit: StackFit.expand,
           children: [
-            cardDialogue(image, description, funFact),
+            SingleChildScrollView(
+                child: cardDialogue(image, description, funFact)),
             Positioned(
               right: 10,
               top: 10,
@@ -429,7 +437,6 @@ Container buildCardsContainer() {
               childAspectRatio: 1.13684,
             ),
             itemBuilder: (context, index) {
-              print("index:$index");
               if (cardListData.length == 0) {
                 //if we don't have any data put up a dummy card
                 CardListDataClass dummy;
@@ -443,15 +450,19 @@ Container buildCardsContainer() {
                 bool dummyCard = true;
 
                 cardListData.forEach((element) {
+                  // find matching index
                   if (element.cardIndex == (index + 1)) {
-                    print("element=${element.cardIndex}");
+                    //print("element=${element.cardIndex}");
                     dummy = element;
                     dummyCard = false;
                     return cardItemContainer(context, index, element, false);
                   }
                 });
 
-                //returning dummy
+                // if card is set to empty then display locked dummy card
+                if (dummyCard == false && dummy.description == "empty") {
+                  dummyCard = true;
+                }
                 return cardItemContainer(context, index, dummy, dummyCard);
               }
             },
