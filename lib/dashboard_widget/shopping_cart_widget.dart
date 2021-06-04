@@ -338,7 +338,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 for (var i = 0; i < widget.purchaseItemList.length; i++) {
                   //check to see that headers don't match, if so make another area in the cart
                   //always do the first one
-                  if (widget.purchaseItemList[i].boxSelected == true) {
+                  if (widget.purchaseItemList[i].boxSelected) {
                     checkoutList.add(
                       {
                         'docID': widget.purchaseItemList[i].documentID,
@@ -485,8 +485,38 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
 
                     // Old way of adding new orders to the database
                     //databaseService.addOrder(order_list, totalTrees);
-                    databaseService.addOrderTest(
-                        orderList, totalTrees, totalCoins.toInt());
+                    // databaseService.addOrderTest(
+                    //     order_list, totalTrees, totalCoins.toInt());
+
+                    // Adding cards to the database
+                    String dateId = DateTime.now().year.toString() +
+                        DateTime.now().month.toString().padLeft(2, "0");
+
+                    DocumentSnapshot userCardSnapshot = await databaseReference
+                        .collection('users')
+                        .doc(databaseService.uid)
+                        .collection('cards')
+                        .doc(dateId)
+                        .get();
+
+                    bool isUserCardsActivated = userCardSnapshot.exists;
+                    print("is it first purchase? " +
+                        isUserCardsActivated.toString());
+
+                    for (CartItem item in widget.purchaseItemList) {
+                      if (item.boxSelected) {
+                        String purchaseType = item.header;
+                        print("found:" + purchaseType);
+                        if (!isUserCardsActivated) {
+                          databaseService.addCard(
+                              dateId, purchaseType, isUserCardsActivated);
+                          isUserCardsActivated = true;
+                        } else {
+                          databaseService.addCard(
+                              dateId, purchaseType, isUserCardsActivated);
+                        }
+                      }
+                    }
 
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);
