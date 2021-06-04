@@ -96,7 +96,7 @@ Container cardItemContainer(
             width: 95,
             height: 139,
             decoration: BoxDecoration(
-              color: AppColors.secondaryLightGreen,
+              color: AppColors.transparentScreen,
               border: Border.all(
                 width: 1,
                 color: AppColors.borderGrey,
@@ -294,9 +294,10 @@ getCardsHttp(String uid) {
     return;
   }
 
-  Future<http.Response> response = http.post(Uri.parse(
-          //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+  Future<http.Response> response = http.post(
+      Uri.parse(
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
+      //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
       body: json.encode(
         {
           'userId': uid,
@@ -390,12 +391,7 @@ Container buildCardsContainer() {
                 "This Month's Collection:",
                 maxLines: 1,
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
+                style: AppFonts.screenSubhead,
               ),
             ),
             /* Spacer(),
@@ -421,14 +417,8 @@ Container buildCardsContainer() {
           child: AutoSizeText(
             "National Parks",
             maxLines: 2,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: AppColors.primaryDarkGreen,
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.italic,
-              fontSize: 34,
-            ),
+            textAlign: TextAlign.right,
+            style: AppFonts.treeImpactText,
           ),
         ),
         Container(
@@ -616,7 +606,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                     "months in a row of impact",
                     maxLines: 1,
                     textAlign: TextAlign.right,
-                    style: AppFonts.monthlyImpactTextSmall,
+                    style: AppFonts.monthlyImpactText,
                   ),
                 ),
               ),
@@ -683,11 +673,11 @@ Container buildImpactContainer(UserStats stats) {
                         children: <TextSpan>[
                           new TextSpan(
                             text: stats.treesThisMonth.toString() + " ",
-                            style: TextStyle(color: AppColors.highlightYellow),
+                            style: AppFonts.treeImpactTextGold,
                           ),
                           new TextSpan(
                             text: "Arbor trees earned this month",
-                            style: TextStyle(color: AppColors.primaryDarkGreen),
+                            style: AppFonts.treeImpactText,
                           )
                         ],
                       ),
@@ -706,13 +696,11 @@ Container buildImpactContainer(UserStats stats) {
                           children: <TextSpan>[
                             new TextSpan(
                               text: stats.totalTrees.toString(),
-                              style:
-                                  TextStyle(color: AppColors.highlightYellow),
+                              style: AppFonts.treeImpactTextGold,
                             ),
                             new TextSpan(
                               text: " all-time!",
-                              style:
-                                  TextStyle(color: AppColors.primaryDarkGreen),
+                              style: AppFonts.treeImpactText,
                             )
                           ],
                         ),
@@ -731,7 +719,7 @@ Container buildImpactContainer(UserStats stats) {
               alignment: Alignment.centerLeft,
               width: 260,
               height: 94,
-              child: AutoSizeText(
+              child: Text(
                 'Total Arbor Coins Earned:',
                 maxLines: 2,
                 textAlign: TextAlign.right,
