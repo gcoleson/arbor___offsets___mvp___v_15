@@ -38,7 +38,7 @@ Widget myPage1Widget(BuildContext context) {
           child: Container(
             margin: EdgeInsets.only(bottom: 60, left: 14, right: 14),
             child: Text(
-              "Arbor makes it easy to eliminate yours",
+              "Arbor makes it easy to eliminate yours.",
               textAlign: TextAlign.center,
               style: AppFonts.introScreenHeadlineText,
             ),
