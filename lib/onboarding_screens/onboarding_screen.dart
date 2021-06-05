@@ -21,13 +21,14 @@ Widget myPage1Widget(BuildContext context) {
   analytics.logEvent(name: 'Onboarding_1');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
-      Image.asset("assets/images/bridge-1850679.png", fit: BoxFit.cover),
+      Image.asset("assets/images/backgroundimageGroupCity@3x.png",
+          fit: BoxFit.fill),
       Align(
         alignment: Alignment.topCenter,
         child: Container(
-            margin: EdgeInsets.only(top: 30, left: 10, right: 10),
+            margin: EdgeInsets.only(top: 30, left: 14, right: 14),
             child: Text(
-              "All modern lifestyles have a negative climate impact",
+              "All modern lifestyles have a negative climate impact.",
               textAlign: TextAlign.center,
               style: AppFonts.introScreenHeadlineText,
             )),
@@ -35,7 +36,7 @@ Widget myPage1Widget(BuildContext context) {
       Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            margin: EdgeInsets.only(bottom: 100, left: 10, right: 10),
+            margin: EdgeInsets.only(bottom: 60, left: 14, right: 14),
             child: Text(
               "Arbor makes it easy to eliminate yours",
               textAlign: TextAlign.center,
@@ -50,7 +51,8 @@ Widget myPage2Widget(BuildContext context) {
   analytics.logEvent(name: 'Onboarding_2');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
-      Image.asset("assets/images/plant-5310423.png", fit: BoxFit.cover),
+      Image.asset("assets/images/backgroundImageGroupSprout@3x.png",
+          fit: BoxFit.fill),
       Align(
         alignment: Alignment.topCenter,
         child: Container(
@@ -64,7 +66,7 @@ Widget myPage2Widget(BuildContext context) {
       Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            margin: EdgeInsets.only(bottom: 100, left: 10, right: 10),
+            margin: EdgeInsets.only(bottom: 100, left: 13, right: 13),
             child: Text(
               "Just pick a project you love ...",
               textAlign: TextAlign.center,
@@ -79,7 +81,7 @@ Widget myPage3Widget(BuildContext context) {
   analytics.logEvent(name: 'Onboarding_3');
   return Container(
     child: Stack(fit: StackFit.expand, children: [
-      Image.asset("assets/images/mountains-919040.png", fit: BoxFit.cover),
+      Image.asset("assets/images/mountains-919040.png", fit: BoxFit.fill),
       Align(
           alignment: Alignment.topCenter,
           child: Container(
