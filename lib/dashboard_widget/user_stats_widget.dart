@@ -98,7 +98,7 @@ Container cardItemContainer(
             width: 95,
             height: 139,
             decoration: BoxDecoration(
-              color: AppColors.secondaryLightGreen,
+              color: AppColors.transparentScreen,
               border: Border.all(
                 width: 1,
                 color: AppColors.borderGrey,
@@ -183,6 +183,7 @@ Future cardDetailDialogue(
                       fontFamily: "Montserrat",
                       fontSize: 28,
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -197,7 +198,7 @@ Future cardDetailDialogue(
 
 Container cardDialogue(Image image, String description, String funFact) {
   return Container(
-    padding: EdgeInsets.all(0),
+    padding: EdgeInsets.all(11),
     child: Column(
       children: [
         ClipRRect(
@@ -205,46 +206,30 @@ Container cardDialogue(Image image, String description, String funFact) {
           child: image,
         ),
         Container(
-          height: 66,
-          width: 358,
-          padding: EdgeInsets.fromLTRB(8, 16, 16, 12),
-          child: AutoSizeText(
+          padding: EdgeInsets.fromLTRB(11, 16, 11, 0),
+          child: Text(
             description,
             maxLines: 2,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 26,
-                color: AppColors.primaryDarkGreen,
-                fontFamily: "Railway",
-                fontWeight: FontWeight.w500),
+            textAlign: TextAlign.left,
+            style: AppFonts.RewardCaredDescriptionText,
           ),
         ),
         Container(
-          height: 57,
-          width: 358,
-          padding: EdgeInsets.fromLTRB(8, 8, 8, 12),
-          child: AutoSizeText(
+          padding: EdgeInsets.fromLTRB(6, 11, 11, 120),
+          child: Text(
             funFact,
             maxLines: 2,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 18,
-                color: Color(0xfff26a2c),
-                fontFamily: "Montserrat",
-                fontWeight: FontWeight.w700),
+            textAlign: TextAlign.right,
+            style: AppFonts.percentFunded,
           ),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 5),
+          padding: EdgeInsets.fromLTRB(0, 11, 11, 0),
           child: Text(
             "Tell your freinds how you're going climate positive:",
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-            ),
+            style: AppFonts.checkoutBodyText,
           ),
         ),
         customButton("Share", () async {
@@ -261,6 +246,15 @@ Container cardDialogue(Image image, String description, String funFact) {
       ),
     ),
   );
+}
+
+void refreshDashboard() {
+  //clear out card data and get it again
+  cardList.clear();
+  cardListData.clear();
+
+  //refresh UI
+  localcallSetState();
 }
 
 List<dynamic> cardList = [];
@@ -327,6 +321,7 @@ class CardListDataClass {
 
 List<CardListDataClass> cardListData = [];
 int maxCardIndex = 0;
+String collectionName = "";
 
 getCardsHttpResponse(http.Response response) {
   print(jsonDecode(response.body));
@@ -334,7 +329,11 @@ getCardsHttpResponse(http.Response response) {
   print("cardList loaded");
 
   if (response.body != 'error') {
-    cardList = jsonDecode(response.body)['cardList'];
+    dynamic jsonRes = jsonDecode(response.body);
+    Map metadata = jsonRes["metadata"];
+    cardList = jsonRes['cardList'];
+    collectionName = metadata["collectionName"];
+
     print("list len:${cardList.length}");
 
     for (var i = 0; i < cardList.length; i++) {
@@ -393,12 +392,7 @@ Container buildCardsContainer() {
                 "This Month's Collection:",
                 maxLines: 1,
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
+                style: AppFonts.screenSubhead,
               ),
             ),
             /* Spacer(),
@@ -422,16 +416,10 @@ Container buildCardsContainer() {
           width: 382,
           margin: EdgeInsets.only(left: 4, top: 2),
           child: AutoSizeText(
-            "National Parks",
+            collectionName,
             maxLines: 2,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: AppColors.primaryDarkGreen,
-              fontFamily: "Raleway",
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.italic,
-              fontSize: 34,
-            ),
+            textAlign: TextAlign.right,
+            style: AppFonts.treeImpactText,
           ),
         ),
         Container(
@@ -619,7 +607,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                     "months in a row of impact",
                     maxLines: 1,
                     textAlign: TextAlign.right,
-                    style: AppFonts.monthlyImpactTextSmall,
+                    style: AppFonts.monthlyImpactText,
                   ),
                 ),
               ),
@@ -687,11 +675,11 @@ Container buildImpactContainer(UserStats stats) {
                         children: <TextSpan>[
                           new TextSpan(
                             text: stats.treesThisMonth.toString() + " ",
-                            style: TextStyle(color: AppColors.highlightYellow),
+                            style: AppFonts.treeImpactTextGold,
                           ),
                           new TextSpan(
                             text: "Arbor trees earned this month",
-                            style: TextStyle(color: AppColors.primaryDarkGreen),
+                            style: AppFonts.treeImpactText,
                           )
                         ],
                       ),
@@ -710,13 +698,11 @@ Container buildImpactContainer(UserStats stats) {
                           children: <TextSpan>[
                             new TextSpan(
                               text: stats.totalTrees.toString(),
-                              style:
-                                  TextStyle(color: AppColors.highlightYellow),
+                              style: AppFonts.treeImpactTextGold,
                             ),
                             new TextSpan(
                               text: " all-time!",
-                              style:
-                                  TextStyle(color: AppColors.primaryDarkGreen),
+                              style: AppFonts.treeImpactText,
                             )
                           ],
                         ),
@@ -735,7 +721,7 @@ Container buildImpactContainer(UserStats stats) {
               alignment: Alignment.centerLeft,
               width: 260,
               height: 94,
-              child: AutoSizeText(
+              child: Text(
                 'Total Arbor Coins Earned:',
                 maxLines: 2,
                 textAlign: TextAlign.right,

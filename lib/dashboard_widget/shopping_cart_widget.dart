@@ -11,6 +11,8 @@ import 'CartItem.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
+import 'package:arbor___offsets___mvp___v_15/dashboard_widget/user_stats_widget.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share/share.dart';
 
@@ -518,6 +520,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                       }
                     }
 
+                    refreshDashboard();
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);
                   } else if (outcome == "failure") {
@@ -688,6 +691,9 @@ Container failureDialogue(BuildContext context) {
 }
 
 Row customButton(String buttonText, Function onButtonPress) {
+  //ButtonStyle style = ElevatedButton.styleFrom()
+  //AppColors.primaryDarkGreen
+
   return Row(
     children: [
       Spacer(flex: 21),
@@ -696,8 +702,15 @@ Row customButton(String buttonText, Function onButtonPress) {
         child: Container(
           height: 50,
           width: 379,
-          child: RaisedButton(
-            color: AppColors.primaryDarkGreen,
+          child: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    AppColors.primaryDarkGreen),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                )),
             onPressed: onButtonPress,
             child: Text(
               buttonText,
