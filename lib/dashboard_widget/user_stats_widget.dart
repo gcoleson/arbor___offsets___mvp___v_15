@@ -590,12 +590,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                   //===========================================
                   consecutiveMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 250, 195, 21),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.treeImpactTextGold,
                 ),
               ),
               Spacer(),
@@ -747,6 +742,9 @@ Container buildImpactContainer(UserStats stats) {
   );
 }
 
+/*===============================================================================================
+  Freebie card: when the user opens the app for the first time reward first card
+  ================================================================================================*/
 Future activateFirstCard() async {
   // check the last successful access freebie date
   String lastDateString = await readLastFreebieCardDate();
@@ -769,8 +767,9 @@ Future activateFirstCard() async {
 
   print("does user cards exist?" + isUserCardsActivated.toString());
 
+  // If last date is empty write the card as normal
+  // else check to see if it's a new month
   if (lastDateString == "empty") {
-    print("reached 1");
     databaseService.addCard(dateId, "Monthly Open", isUserCardsActivated);
     writeLastFreebieCardDate();
   } else {
@@ -786,21 +785,29 @@ Future activateFirstCard() async {
   }
 }
 
+// helper function to calculate month difference
+// TODO: When we have a utils folder move this there
 int monthDiff(DateTime dateFrom, DateTime dateTo) {
   return dateTo.month - dateFrom.month + (12 * (dateTo.year - dateFrom.year));
 }
 
+// read last time we earned a freebie card
+// TODO: this logic should definitely move to the database
+// this is only temporary because it was an easy solution
 Future readLastFreebieCardDate() async {
   final prefs = await SharedPreferences.getInstance();
-  final key = "lastFreebieCardMonth";
+  final key = "lastFreebieCardMonth" + databaseService.uid;
   final value = prefs.getString(key) ?? "empty";
   print("read: $value");
   return value;
 }
 
+// write date to preferences if freebie card earned
+// TODO: this logic should definitely move to the database
+// this is only temporary because it was an easy solution
 void writeLastFreebieCardDate() async {
   final prefs = await SharedPreferences.getInstance();
-  final key = "lastFreebieCardMonth";
+  final key = "lastFreebieCardMonth" + databaseService.uid;
   String date = DateTime.now().toIso8601String();
   prefs.setString(key, date);
 }
