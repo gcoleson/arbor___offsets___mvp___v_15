@@ -101,7 +101,7 @@ Container cardItemContainer(
               color: AppColors.transparentScreen,
               border: Border.all(
                 width: 1,
-                color: AppColors.borderGrey,
+                color: AppColors.darkGrey,
               ),
               boxShadow: [
                 BoxShadow(
