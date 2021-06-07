@@ -89,7 +89,7 @@ abstract class AppFonts {
   static const TextStyle introScreenHeadlineText = TextStyle(
     fontFamily: 'Montserrat-ExtraBold',
     color: AppColors.backgroundGrey,
-    fontSize: 36,
+    fontSize: 42,
     fontWeight: FontWeight.w800,
     fontStyle: FontStyle.normal,
   );
@@ -388,5 +388,12 @@ abstract class AppFonts {
     fontSize: 10,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
+  );
+  static const TextStyle RewardCaredDescriptionText = TextStyle(
+    fontFamily: 'Raleway',
+    color: AppColors.primaryDarkGreen,
+    fontSize: 26,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.italic,
   );
 }

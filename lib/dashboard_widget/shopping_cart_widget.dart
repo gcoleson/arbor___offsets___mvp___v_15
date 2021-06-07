@@ -691,6 +691,9 @@ Container failureDialogue(BuildContext context) {
 }
 
 Row customButton(String buttonText, Function onButtonPress) {
+  //ButtonStyle style = ElevatedButton.styleFrom()
+  //AppColors.primaryDarkGreen
+
   return Row(
     children: [
       Spacer(flex: 21),
@@ -699,8 +702,15 @@ Row customButton(String buttonText, Function onButtonPress) {
         child: Container(
           height: 50,
           width: 379,
-          child: RaisedButton(
-            color: AppColors.primaryDarkGreen,
+          child: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    AppColors.primaryDarkGreen),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                )),
             onPressed: onButtonPress,
             child: Text(
               buttonText,
