@@ -120,6 +120,7 @@ Container cardItemContainer(
           child: Align(
               alignment: Alignment.center,
               child: IconButton(
+                padding: EdgeInsets.all(2),
                 iconSize: dummyCard ? 24 : 139,
                 icon: dummyCard
                     ? Image.asset("assets/images/icons8Lock100Copy3.png")
