@@ -290,9 +290,10 @@ getCardsHttp(String uid) {
     return;
   }
 
-  Future<http.Response> response = http.post(Uri.parse(
-          //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+  Future<http.Response> response = http.post(
+      Uri.parse(
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
+      //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
       body: json.encode(
         {
           'userId': uid,
