@@ -336,6 +336,7 @@ class CardListDataClass {
 
 List<CardListDataClass> cardListData = [];
 int maxCardIndex = 0;
+String collectionName = "";
 
 getCardsHttpResponse(http.Response response) {
   print(jsonDecode(response.body));
@@ -343,7 +344,11 @@ getCardsHttpResponse(http.Response response) {
   print("cardList loaded");
 
   if (response.body != 'error') {
-    cardList = jsonDecode(response.body)['cardList'];
+    dynamic jsonRes = jsonDecode(response.body);
+    Map metadata = jsonRes["metadata"];
+    cardList = jsonRes['cardList'];
+    collectionName = metadata["collectionName"];
+
     print("list len:${cardList.length}");
 
     for (var i = 0; i < cardList.length; i++) {
@@ -431,7 +436,7 @@ Container buildCardsContainer() {
           width: 382,
           margin: EdgeInsets.only(left: 4, top: 2),
           child: AutoSizeText(
-            "National Parks",
+            collectionName,
             maxLines: 2,
             textAlign: TextAlign.left,
             style: TextStyle(
