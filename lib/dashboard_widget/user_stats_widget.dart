@@ -590,12 +590,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
                   //===========================================
                   consecutiveMonths.toString(),
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 250, 195, 21),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
-                  ),
+                  style: AppFonts.treeImpactTextGold,
                 ),
               ),
               Spacer(),
@@ -797,8 +792,8 @@ int monthDiff(DateTime dateFrom, DateTime dateTo) {
 }
 
 // read last time we earned a freebie card
-// TODO: this is probably insecure we should consider
-// either encrypting this or moving this to the database?
+// TODO: this logic should definitely move to the database
+// this is only temporary because it was an easy solution
 Future readLastFreebieCardDate() async {
   final prefs = await SharedPreferences.getInstance();
   final key = "lastFreebieCardMonth" + databaseService.uid;
@@ -808,8 +803,8 @@ Future readLastFreebieCardDate() async {
 }
 
 // write date to preferences if freebie card earned
-// TODO: this is probably insecure we should consider
-// either encrypting this or moving this to the database?
+// TODO: this logic should definitely move to the database
+// this is only temporary because it was an easy solution
 void writeLastFreebieCardDate() async {
   final prefs = await SharedPreferences.getInstance();
   final key = "lastFreebieCardMonth" + databaseService.uid;
