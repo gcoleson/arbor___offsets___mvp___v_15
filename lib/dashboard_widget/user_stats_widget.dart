@@ -101,7 +101,7 @@ Container cardItemContainer(
               color: AppColors.transparentScreen,
               border: Border.all(
                 width: 1,
-                color: AppColors.borderGrey,
+                color: AppColors.darkGrey,
               ),
               boxShadow: [
                 BoxShadow(
@@ -120,6 +120,7 @@ Container cardItemContainer(
           child: Align(
               alignment: Alignment.center,
               child: IconButton(
+                padding: EdgeInsets.all(2),
                 iconSize: dummyCard ? 24 : 139,
                 icon: dummyCard
                     ? Image.asset("assets/images/icons8Lock100Copy3.png")
@@ -206,7 +207,7 @@ Container cardDialogue(Image image, String description, String funFact) {
           child: image,
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(11, 16, 11, 0),
+          padding: EdgeInsets.fromLTRB(11, 16, 11, 15),
           child: Text(
             description,
             maxLines: 2,
@@ -215,10 +216,9 @@ Container cardDialogue(Image image, String description, String funFact) {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(6, 11, 11, 120),
+          padding: EdgeInsets.fromLTRB(6, 11, 11, 15),
           child: Text(
             funFact,
-            maxLines: 2,
             textAlign: TextAlign.right,
             style: AppFonts.percentFunded,
           ),
