@@ -106,7 +106,7 @@ Container cardItemContainer(
               boxShadow: [
                 BoxShadow(
                   color: AppColors.boxShadow,
-                  offset: dummyCard ? Offset(0, 0) : Offset(0, 2),
+                  offset: dummyCard ? Offset(0, 1) : Offset(0, 2),
                   blurRadius: dummyCard ? 0 : 4,
                 ),
               ],
