@@ -106,8 +106,8 @@ Container cardItemContainer(
               boxShadow: [
                 BoxShadow(
                   color: AppColors.boxShadow,
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
+                  offset: dummyCard ? Offset(0, 0) : Offset(0, 2),
+                  blurRadius: dummyCard ? 0 : 4,
                 ),
               ],
             ),
@@ -120,7 +120,7 @@ Container cardItemContainer(
           child: Align(
               alignment: Alignment.center,
               child: IconButton(
-                padding: EdgeInsets.all(2),
+                padding: EdgeInsets.all(dummyCard ? 0 : 2),
                 iconSize: dummyCard ? 24 : 139,
                 icon: dummyCard
                     ? Image.asset("assets/images/icons8Lock100Copy3.png")
