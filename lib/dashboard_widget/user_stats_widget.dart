@@ -227,7 +227,7 @@ Container cardDialogue(Image image, String description, String funFact) {
           margin: EdgeInsets.only(bottom: 5),
           padding: EdgeInsets.fromLTRB(0, 11, 11, 0),
           child: Text(
-            "Tell your freinds how you're going climate positive:",
+            "Tell your friends how you're going climate positive:",
             textAlign: TextAlign.center,
             style: AppFonts.checkoutBodyText,
           ),
