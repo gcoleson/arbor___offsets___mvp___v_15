@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cloudFirestore;
+import '../main.dart' as main;
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -129,6 +130,10 @@ Container cardItemContainer(
                         loadingBuilder: loadingBuilder2,
                       ),
                 onPressed: () {
+                  main.analytics.logEvent(name: 'Reward_card_tap', parameters: {
+                    'reward_card_name': info.description,
+                    'reward_card_number': info.cardIndex
+                  });
                   if (!dummyCard)
                     cardDetailDialogue(
                         context,
