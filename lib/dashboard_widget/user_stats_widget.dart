@@ -107,8 +107,8 @@ Container cardItemContainer(
               boxShadow: [
                 BoxShadow(
                   color: AppColors.boxShadow,
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
+                  offset: dummyCard ? Offset(0, 1) : Offset(0, 2),
+                  blurRadius: dummyCard ? 0 : 4,
                 ),
               ],
             ),
@@ -121,7 +121,7 @@ Container cardItemContainer(
           child: Align(
               alignment: Alignment.center,
               child: IconButton(
-                padding: EdgeInsets.all(2),
+                padding: EdgeInsets.all(dummyCard ? 0 : 2),
                 iconSize: dummyCard ? 24 : 139,
                 icon: dummyCard
                     ? Image.asset("assets/images/icons8Lock100Copy3.png")
@@ -231,7 +231,7 @@ Container cardDialogue(Image image, String description, String funFact) {
           margin: EdgeInsets.only(bottom: 5),
           padding: EdgeInsets.fromLTRB(0, 11, 11, 0),
           child: Text(
-            "Tell your freinds how you're going climate positive:",
+            "Tell your friends how you're going climate positive:",
             textAlign: TextAlign.center,
             style: AppFonts.checkoutBodyText,
           ),
