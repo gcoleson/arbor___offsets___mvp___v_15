@@ -84,7 +84,11 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
       analytics.logEvent(name: 'ProjectScreen');
 
       return StreamBuilder<QuerySnapshot>(
-        stream: databaseReference.collection("projects").snapshots(),
+        stream: databaseReference
+            .collection("projects")
+            .orderBy('projectOrder')
+            .where('showProject', isEqualTo: true)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return LinearProgressIndicator();
 

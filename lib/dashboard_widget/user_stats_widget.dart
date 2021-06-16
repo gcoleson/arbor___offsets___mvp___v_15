@@ -215,7 +215,6 @@ Container cardDialogue(Image image, String description, String funFact) {
           padding: EdgeInsets.fromLTRB(11, 16, 11, 15),
           child: Text(
             description,
-            maxLines: 2,
             textAlign: TextAlign.left,
             style: AppFonts.RewardCaredDescriptionText,
           ),
