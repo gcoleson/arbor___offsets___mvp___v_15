@@ -510,12 +510,53 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                         String purchaseType = item.header;
                         print("found:" + purchaseType);
                         if (!isUserCardsActivated) {
-                          databaseService.addCard(
-                              dateId, purchaseType, isUserCardsActivated);
-                          isUserCardsActivated = true;
+                          //special logic for bundle purchases
+                          if (purchaseType == "Busy? Monthly Bundle") {
+                            databaseService.addCard(
+                                dateId,
+                                "Electrical Use (monthly)",
+                                isUserCardsActivated);
+
+                            isUserCardsActivated = true;
+
+                            databaseService.addCard(
+                                dateId,
+                                "Gas Purchase (per tank)",
+                                isUserCardsActivated);
+                            databaseService.addCard(
+                                dateId,
+                                "Natural Gas Use (monthly)",
+                                isUserCardsActivated);
+                            databaseService.addCard(
+                                dateId, purchaseType, isUserCardsActivated);
+                            // regular purchase logic
+                          } else {
+                            databaseService.addCard(
+                                dateId, purchaseType, isUserCardsActivated);
+                            isUserCardsActivated = true;
+                          }
                         } else {
-                          databaseService.addCard(
-                              dateId, purchaseType, isUserCardsActivated);
+                          //special logic for bundle purchases
+                          if (purchaseType == "Busy? Monthly Bundle") {
+                            databaseService.addCard(
+                                dateId,
+                                "Electrical Use (monthly)",
+                                isUserCardsActivated);
+                            databaseService.addCard(
+                                dateId,
+                                "Gas Purchase (per tank)",
+                                isUserCardsActivated);
+                            databaseService.addCard(
+                                dateId,
+                                "Natural Gas Use (monthly)",
+                                isUserCardsActivated);
+                            databaseService.addCard(
+                                dateId, purchaseType, isUserCardsActivated);
+                            // regular purchase logic
+                          } else {
+                            databaseService.addCard(
+                                dateId, purchaseType, isUserCardsActivated);
+                          }
                         }
                       }
                     }
