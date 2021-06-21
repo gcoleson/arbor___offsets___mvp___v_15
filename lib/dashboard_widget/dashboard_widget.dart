@@ -494,6 +494,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         return StreamBuilder<QuerySnapshot>(
           stream: databaseReference
               .collection("products")
+              .orderBy('productlineOrder')
+              .where('showProduct', isEqualTo: true)
               .snapshots(includeMetadataChanges: true),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
