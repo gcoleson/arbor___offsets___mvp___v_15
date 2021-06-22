@@ -948,6 +948,7 @@ Container successDialogue(
           await Share.share(
               'I’m fighting climate change—sign up here to join me! https://getarborapp.com/',
               subject: 'Arbor');
+          analytics.logEvent(name: 'Share_congrats');
         }),
       ],
     ),

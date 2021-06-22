@@ -9,6 +9,7 @@ import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import '../main.dart';
 import 'UserStats.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
@@ -240,6 +241,7 @@ Container cardDialogue(Image image, String description, String funFact) {
           await Share.share(
               'I’m fighting climate change—sign up here to join me! https://getarborapp.com/',
               subject: 'Arbor');
+          analytics.logEvent(name: 'Share_reward');
         }),
       ],
     ),
