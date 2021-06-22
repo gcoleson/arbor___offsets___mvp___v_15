@@ -382,12 +382,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   /*===============================================================================================
   ???
   ================================================================================================*/
-  Container buildGeneralAreaContainer({
-    @required String header,
-    @required String description,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required int itemCount,
-  }) {
+  Container buildGeneralAreaContainer(
+      {@required String header,
+      @required String description,
+      @required IndexedWidgetBuilder itemBuilder,
+      @required int itemCount}) {
     return Container(
       width: 416,
       //height: 190,
@@ -494,7 +493,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         return StreamBuilder<QuerySnapshot>(
           stream: databaseReference
               .collection("products")
-              .orderBy('productlineOrder')
+              // .orderBy('productlineOrder')
               .where('showProduct', isEqualTo: true)
               .snapshots(includeMetadataChanges: true),
           builder:
@@ -567,6 +566,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     //sort the list
     purchaseItemListItems.sort((a, b) => a.price.compareTo(b.price));
     purchaseItemListItems.sort((a, b) => a.header.compareTo(b.header));
+    // purchaseItemListItems
+    //     .sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
 
     for (var i = 0; i < purchaseItemListItems.length; i++) {
       //check to see that headers don't match, if so make another area in the cart
@@ -575,14 +576,21 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           (purchaseItemListItems[i].header !=
               purchaseItemListItems[i - 1].header)) {
         tempWidget = (buildGeneralAreaContainer(
-          itemCount: itemCountInArea(i, purchaseItemListItems[i].header),
-          header: purchaseItemListItems[i].header,
-          description: purchaseItemListItems[i].description,
-          itemBuilder: (context, index) => buildGeneralButtonItemWidget(context,
-              index, i, purchaseItemListItems, purchaseItemListItems[i].header),
-        ));
+            itemCount: itemCountInArea(i, purchaseItemListItems[i].header),
+            header: purchaseItemListItems[i].header,
+            description: purchaseItemListItems[i].description,
+            itemBuilder: (context, index) => buildGeneralButtonItemWidget(
+                context,
+                index,
+                i,
+                purchaseItemListItems,
+                purchaseItemListItems[i].header)));
 
-        returnList.add(tempWidget);
+        // returnList.add(tempWidget);
+        // print('productlineOrder: ' +
+        //     purchaseItemListItems[i].productlineOrder.toString());
+        returnList.insert(
+            purchaseItemListItems[i].productlineOrder, tempWidget);
       }
     }
 
