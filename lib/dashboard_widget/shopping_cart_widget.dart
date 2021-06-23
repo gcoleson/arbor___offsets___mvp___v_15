@@ -429,6 +429,12 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
                     // ),
                   );
+                  analytics
+                      .logEvent(name: 'Subscription_initiation', parameters: {
+                    'is_Existing': true,
+                    'projectTile': userdata.selectedProjectTitle,
+                    'userId': databaseService.uid
+                  });
                 } else {
                   print("this is incorrect");
                   response = await http.post(
@@ -449,6 +455,12 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
                     // ),
                   );
+                  analytics
+                      .logEvent(name: 'Subscription_initiation', parameters: {
+                    'is_Existing': false,
+                    'projectTile': userdata.selectedProjectTitle,
+                    'userId': databaseService.uid
+                  });
                 }
                 // First Ping Firebase for session ID for stripe checkout
                 Navigator.pop(context);
