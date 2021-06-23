@@ -586,13 +586,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 purchaseItemListItems,
                 purchaseItemListItems[i].header)));
 
-        // returnList.add(tempWidget);
+        returnList.add(tempWidget);
         // print('productlineOrder: ' +
         //     purchaseItemListItems[i].productlineOrder.toString());
-        returnList.insert(
-            purchaseItemListItems[i].productlineOrder, tempWidget);
+        // returnList.insert(
+        //     purchaseItemListItems[i].productlineOrder, tempWidget);
+        // returnList.sort((a, b) => purchaseItemListItems[i]
+        //     .productlineOrder
+        //     .compareTo(purchaseItemListItems[i].productlineOrder));
       }
     }
+    returnList.sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
 
     return returnList;
   }
