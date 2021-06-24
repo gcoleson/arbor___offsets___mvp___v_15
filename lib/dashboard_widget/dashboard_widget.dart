@@ -382,11 +382,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   /*===============================================================================================
   ???
   ================================================================================================*/
-  Container buildGeneralAreaContainer(
-      {@required String header,
-      @required String description,
-      @required IndexedWidgetBuilder itemBuilder,
-      @required int itemCount}) {
+  Container buildGeneralAreaContainer({
+    @required String header,
+    @required String description,
+    @required IndexedWidgetBuilder itemBuilder,
+    @required int itemCount,
+  }) {
     return Container(
       width: 416,
       //height: 190,
@@ -493,8 +494,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         return StreamBuilder<QuerySnapshot>(
           stream: databaseReference
               .collection("products")
-              // .orderBy('productlineOrder')
-              .where('showProduct', isEqualTo: true)
               .snapshots(includeMetadataChanges: true),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -522,6 +521,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               //item.coinCount = 5.0;
               item.coinCount = document['coincount'] + .0;
               item.boxSelected = false;
+              item.productlineOrder = document['productlineOrder'].toString();
 
               //check to make sure we have not added this document yet
               if (purchaseItemListItems.isNotEmpty) {
@@ -547,9 +547,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
   int itemCountInArea(int start, String header) {
     int i;
-    purchaseItemListItems.sort((a, b) => a.header.compareTo(b.header));
+    purchaseItemListItems
+        .sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
     for (i = 0; start < purchaseItemListItems.length; i++, start++) {
-      if (purchaseItemListItems[start].header != header) {
+      if (purchaseItemListItems[start].productlineOrder != header) {
         break;
       }
     }
@@ -565,38 +566,29 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
     //sort the list
     purchaseItemListItems.sort((a, b) => a.price.compareTo(b.price));
-    purchaseItemListItems.sort((a, b) => a.header.compareTo(b.header));
-    // purchaseItemListItems
-    //     .sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
+    purchaseItemListItems
+        .sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
 
     for (var i = 0; i < purchaseItemListItems.length; i++) {
+      //print(purchaseItemListItems[i].toString() + "\n\n\n");
+
       //check to see that headers don't match, if so make another area in the cart
       //always do the first one
       if (i == 0 ||
-          (purchaseItemListItems[i].header !=
-              purchaseItemListItems[i - 1].header)) {
+          (purchaseItemListItems[i].productlineOrder !=
+              purchaseItemListItems[i - 1].productlineOrder)) {
         tempWidget = (buildGeneralAreaContainer(
-            itemCount: itemCountInArea(i, purchaseItemListItems[i].header),
-            header: purchaseItemListItems[i].header,
-            description: purchaseItemListItems[i].description,
-            itemBuilder: (context, index) => buildGeneralButtonItemWidget(
-                context,
-                index,
-                i,
-                purchaseItemListItems,
-                purchaseItemListItems[i].header)));
+          itemCount:
+              itemCountInArea(i, purchaseItemListItems[i].productlineOrder),
+          header: purchaseItemListItems[i].header,
+          description: purchaseItemListItems[i].description,
+          itemBuilder: (context, index) => buildGeneralButtonItemWidget(context,
+              index, i, purchaseItemListItems, purchaseItemListItems[i].header),
+        ));
 
         returnList.add(tempWidget);
-        // print('productlineOrder: ' +
-        //     purchaseItemListItems[i].productlineOrder.toString());
-        // returnList.insert(
-        //     purchaseItemListItems[i].productlineOrder, tempWidget);
-        // returnList.sort((a, b) => purchaseItemListItems[i]
-        //     .productlineOrder
-        //     .compareTo(purchaseItemListItems[i].productlineOrder));
       }
     }
-    returnList.sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
 
     return returnList;
   }

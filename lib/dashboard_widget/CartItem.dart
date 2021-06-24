@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+
 class CartItem {
   String header;
   String description;
@@ -8,7 +10,7 @@ class CartItem {
   double coinCount;
   double treeCount;
   bool boxSelected;
-  int productlineOrder;
+  String productlineOrder;
 
   CartItem(
       {this.header = '',
@@ -20,5 +22,29 @@ class CartItem {
       this.coinCount = 0,
       this.treeCount = 0,
       this.boxSelected = false,
-      this.productlineOrder = 0});
+      this.productlineOrder = "0"});
+
+  @override
+  String toString() {
+    return "\n\nheader: " +
+        header +
+        "\ndescription: " +
+        description +
+        "\nimage text: " +
+        imageText +
+        "\nimage icon: " +
+        imageIcon +
+        "\ndocument id: " +
+        documentID +
+        "\nprice: " +
+        price.toString() +
+        "\ncoin count: " +
+        coinCount.toString() +
+        "\ntree count: " +
+        treeCount.toString() +
+        "\nbox selected: " +
+        boxSelected.toString() +
+        "\nproductline order: " +
+        productlineOrder;
+  }
 }
