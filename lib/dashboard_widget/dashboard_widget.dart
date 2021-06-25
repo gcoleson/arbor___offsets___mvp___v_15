@@ -23,6 +23,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/arbor_explanation.dart';
+import 'package:arbor___offsets___mvp___v_15/services/globals.dart' as globals;
 
 List<CartItem> purchaseItemListItems = List<CartItem>();
 UserStats userStats = new UserStats();
@@ -300,6 +301,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     analytics.logEvent(name: 'DashboardScreen');
 
     return Scaffold(
+      key: globals.scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
