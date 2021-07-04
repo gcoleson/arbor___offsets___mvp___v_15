@@ -134,18 +134,19 @@ Container cardItemContainer(
                     'reward_card_name': info.description,
                     'reward_card_number': info.cardIndex
                   });
-                  if (!dummyCard)
-                    cardDetailDialogue(
-                        context,
-                        dummyCard
-                            ? Image.asset(
-                                "assets/images/icons8Lock100Copy3.png")
-                            : Image.network(
-                                info.imageLink,
-                                loadingBuilder: loadingBuilder2,
-                              ),
-                        "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
-                        info.extraInfo);
+                  // if (!dummyCard)
+                  cardDetailDialogue(
+                      context,
+                      dummyCard
+                          ? Image.asset("assets/images/icons8Lock100Copy3.png")
+                          : Image.network(
+                              info.imageLink,
+                              loadingBuilder: loadingBuilder2,
+                            ),
+                      Image.asset("assets/images/Frame 4.png"),
+                      "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
+                      info.extraInfo,
+                      dummyCard);
                 },
               )),
         ),
@@ -155,8 +156,8 @@ Container cardItemContainer(
 }
 //var formattedDate = DateFormat.yMMMd().format(info.date);
 
-Future cardDetailDialogue(
-    BuildContext context, Image image, String description, String funFact) {
+Future cardDetailDialogue(BuildContext context, Image image, Image lockedImage,
+    String description, String funFact, bool lock) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -172,7 +173,10 @@ Future cardDetailDialogue(
         content: Stack(
           children: [
             SingleChildScrollView(
-                child: cardDialogue(image, description, funFact)),
+                child: lock
+                    ? lockedCardDialogue(lockedImage,
+                        'Unlock this by offsetting negative climate impacts!')
+                    : cardDialogue(image, description, funFact)),
             Positioned(
               right: 10,
               top: 10,
@@ -200,6 +204,26 @@ Future cardDetailDialogue(
       );
     },
   );
+}
+
+Container lockedCardDialogue(Image image, String desc) {
+  return Container(
+      color: AppColors.borderGrey,
+      padding: EdgeInsets.all(11),
+      child: Column(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: image,
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(11, 16, 11, 15),
+          child: Text(
+            desc,
+            textAlign: TextAlign.left,
+            style: AppFonts.RewardCaredDescriptionText,
+          ),
+        )
+      ]));
 }
 
 Container cardDialogue(Image image, String description, String funFact) {
