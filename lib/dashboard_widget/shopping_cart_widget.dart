@@ -1,15 +1,13 @@
 // @dart=2.9
 
-import 'package:arbor___offsets___mvp___v_15/main.dart' as main;
+import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/stripe/one_time_checkout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CartItem.dart';
-import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/user_stats_widget.dart';
@@ -167,7 +165,7 @@ Widget buildLineItems(List<CartItem> purchaseItemList)
     ),
   );
 
-  main.analytics.logEvent(name: 'begin_checkout', parameters: {
+  analytics.logEvent(name: 'begin_checkout', parameters: {
     'count': returnList.length,
     'total': totalCost.toStringAsFixed(2).padRight(4, '0'),
     'coins': totalCoins,
@@ -327,7 +325,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
             child: customButton(
               "Continue Checkout",
               () async {
-                main.analytics.logEvent(name: 'purchase');
+                analytics.logEvent(name: 'purchase');
                 onCheckoutLoading(context);
                 String sessionId = 'error';
                 //final sessionId = await Server().createCheckout();
@@ -430,7 +428,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
                     // ),
                   );
-                  main.analytics
+                  analytics
                       .logEvent(name: 'Subscription_initiation', parameters: {
                     'is_Existing': true,
                     'projectTile': userdata.selectedProjectTitle,
@@ -456,7 +454,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
                     // ),
                   );
-                  main.analytics
+                  analytics
                       .logEvent(name: 'Subscription_initiation', parameters: {
                     'is_Existing': false,
                     'projectTile': userdata.selectedProjectTitle,
@@ -472,7 +470,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                 if (response.body != null && response.body != 'error') {
                   sessionId = jsonDecode(response.body)['id'];
                   print('Checkout Success!!!!');
-                  main.analytics.logEvent(name: 'purchase', parameters: {
+                  analytics.logEvent(name: 'purchase', parameters: {
                     'items': widget.purchaseItemList.length,
                     'trees': totalTrees,
                     'coins': totalCoins,
@@ -488,8 +486,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                                 sessionId: sessionId,
                               )));
                   if (outcome == "success") {
-                    main.analytics
-                        .logEvent(name: 'purchase_complete', parameters: {
+                    analytics.logEvent(name: 'purchase_complete', parameters: {
                       'items': widget.purchaseItemList.length,
                       'trees': totalTrees,
                       'coins': totalCoins,
@@ -497,7 +494,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     });
                     // This part is analytics for subscription
                     if (isSubscription == true) {
-                      main.analytics
+                      analytics
                           .logEvent(name: 'subscription_start', parameters: {
                         'items': widget.purchaseItemList.length,
                         'trees': totalTrees,
@@ -590,7 +587,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                         context, totalCoins, totalTrees);
                   } else if (outcome == "failure") {
                     print("Payment was a failure");
-                    main.analytics.logEvent(name: 'purchase_failure');
+                    analytics.logEvent(name: 'purchase_failure');
 
                     Navigator.of(context).pop();
                     paymentFailureBuildDialogue(context);
@@ -600,7 +597,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   //Scaffold.of(context).showSnackBar(snackBar);
                   //_congratulationsDialogue();
                 } else {
-                  main.analytics.logEvent(name: 'purchase_checkout_fail');
+                  analytics.logEvent(name: 'purchase_checkout_fail');
                   print('Checkout Entry has failed');
                 }
               },
