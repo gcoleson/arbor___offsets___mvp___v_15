@@ -47,8 +47,7 @@ ios/Runner.xcworkspace/
 ios/Runner.xcodeproj/
 
 #android specific
-android/
-android/app/google-services.json
+android/build
 android/key.properties
 
 #project specific
