@@ -462,6 +462,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         );
         if (response.body != null && response.body != 'error') {
           records[i].isSelected = false;
+          analytics.logEvent(name: 'subscription_cancel', parameters: {
+            'SubscriptionId': records[i].subscriptionId,
+            'ProjectName': records[i].projectName,
+            'UserId': databaseService.uid
+          });
         }
       }
     }

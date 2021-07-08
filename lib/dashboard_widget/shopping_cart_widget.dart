@@ -9,9 +9,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CartItem.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
-import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/user_stats_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/services/globals.dart' as globals;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share/share.dart';
@@ -429,6 +429,12 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
                     // ),
                   );
+                  analytics
+                      .logEvent(name: 'Subscription_initiation', parameters: {
+                    'is_Existing': true,
+                    'projectTile': userdata.selectedProjectTitle,
+                    'userId': databaseService.uid
+                  });
                 } else {
                   print("this is incorrect");
                   response = await http.post(
@@ -449,6 +455,12 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     //   {'priceId': 'price_1ILfIoL6r6kEK5q6zRX4hDpk'},
                     // ),
                   );
+                  analytics
+                      .logEvent(name: 'Subscription_initiation', parameters: {
+                    'is_Existing': false,
+                    'projectTile': userdata.selectedProjectTitle,
+                    'userId': databaseService.uid
+                  });
                 }
                 // First Ping Firebase for session ID for stripe checkout
                 Navigator.pop(context);
@@ -481,6 +493,16 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                       'coins': totalCoins,
                       'total': totalMoney
                     });
+                    // This part is analytics for subscription
+                    if (isSubscription == true) {
+                      analytics
+                          .logEvent(name: 'subscription_start', parameters: {
+                        'items': widget.purchaseItemList.length,
+                        'trees': totalTrees,
+                        'coins': totalCoins,
+                        'total': totalMoney
+                      });
+                    }
 
                     FocusScope.of(context).unfocus();
                     Navigator.of(context).pop();
@@ -562,8 +584,10 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     }
 
                     refreshDashboard();
+                    print("=================checkpoint 1");
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);
+                    print("checkpoint 3");
                   } else if (outcome == "failure") {
                     print("Payment was a failure");
                     analytics.logEvent(name: 'purchase_failure');
@@ -768,7 +792,7 @@ Row customButton(String buttonText, Function onButtonPress) {
 Future paymentSuccessBuildDialogue(
     BuildContext context, double totalCoins, double totalTrees) {
   return showDialog(
-    context: context,
+    context: globals.scaffoldKey.currentContext,
     builder: (BuildContext context) {
       return AlertDialog(
         contentPadding: EdgeInsets.all(0.0),
@@ -948,6 +972,7 @@ Container successDialogue(
           await Share.share(
               'I’m fighting climate change—sign up here to join me! https://getarborapp.com/',
               subject: 'Arbor');
+          analytics.logEvent(name: 'Share_congrats');
         }),
       ],
     ),
