@@ -83,7 +83,7 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 }
 
 /*===============================================================================================
-  Container for squares that contain product
+  Build container reward cards
   ================================================================================================*/
 Container cardItemContainer(
     BuildContext context, int index, CardListDataClass info, bool dummyCard) {
@@ -154,7 +154,6 @@ Container cardItemContainer(
     ),
   );
 }
-//var formattedDate = DateFormat.yMMMd().format(info.date);
 
 Future cardDetailDialogue(BuildContext context, Image image, Image lockedImage,
     String description, String funFact, bool lock) {
@@ -206,6 +205,9 @@ Future cardDetailDialogue(BuildContext context, Image image, Image lockedImage,
   );
 }
 
+/*===============================================================================================
+  Build dialog for locked card 
+  ================================================================================================*/
 Container lockedCardDialogue(Image image, String desc) {
   return Container(
       color: AppColors.borderGrey,
@@ -226,6 +228,9 @@ Container lockedCardDialogue(Image image, String desc) {
       ]));
 }
 
+/*===============================================================================================
+  Build dialog for unlocked card 
+  ================================================================================================*/
 Container cardDialogue(Image image, String description, String funFact) {
   return Container(
     padding: EdgeInsets.all(11),
