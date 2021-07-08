@@ -11,6 +11,7 @@ import 'CartItem.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/user_stats_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/services/globals.dart' as globals;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share/share.dart';
@@ -583,8 +584,10 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                     }
 
                     refreshDashboard();
+                    print("=================checkpoint 1");
                     paymentSuccessBuildDialogue(
                         context, totalCoins, totalTrees);
+                    print("checkpoint 3");
                   } else if (outcome == "failure") {
                     print("Payment was a failure");
                     analytics.logEvent(name: 'purchase_failure');
@@ -789,7 +792,7 @@ Row customButton(String buttonText, Function onButtonPress) {
 Future paymentSuccessBuildDialogue(
     BuildContext context, double totalCoins, double totalTrees) {
   return showDialog(
-    context: context,
+    context: globals.scaffoldKey.currentContext,
     builder: (BuildContext context) {
       return AlertDialog(
         contentPadding: EdgeInsets.all(0.0),
