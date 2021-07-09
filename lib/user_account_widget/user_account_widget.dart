@@ -182,6 +182,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 GestureDetector(
                   onTap: () {
                     FirebaseAuth.instance.signOut();
+                    AlertDialog(
+                      title: Text('Logging Out'),
+                      content: Text('You are being logged out.'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
                   },
                   child: Container(
                     alignment: Alignment.center,
