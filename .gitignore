@@ -27,7 +27,6 @@ doc/api/
 .packages
 .pub/
 build/
-android/app/google-services.json
 .idea/
 android/key.properties
 pubspec.lock
