@@ -416,7 +416,8 @@ Row _customTextField(String imageFilePath, String customLabelText,
             controller: controller,
             decoration: new InputDecoration(
               filled: true,
-              fillColor: Colors.white.withOpacity(.8),
+              labelStyle: TextStyle(fontSize: 20.0, color: AppColors.primaryDarkGreen),
+              fillColor: Colors.white.withOpacity(.6),
               labelText: customLabelText,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4.0),
