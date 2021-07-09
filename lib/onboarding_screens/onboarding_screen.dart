@@ -416,10 +416,21 @@ Row _customTextField(String imageFilePath, String customLabelText,
             controller: controller,
             decoration: new InputDecoration(
               filled: true,
-              fillColor: AppColors.white,
+              fillColor: Colors.white.withOpacity(.8),
               labelText: customLabelText,
-              border: new OutlineInputBorder(
-                borderSide: new BorderSide(),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                borderSide: BorderSide(
+                  color: AppColors.borderGrey,
+                  width: 2.0,
+                ),
+              ),
+              focusedBorder:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                borderSide: BorderSide(
+                  color: AppColors.primaryDarkGreen,
+                  width: 3.0,
+                ),
               ),
             ),
             validator: (val) {
