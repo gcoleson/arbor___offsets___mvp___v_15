@@ -8,6 +8,7 @@
 // @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
@@ -182,18 +183,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 GestureDetector(
                   onTap: () {
                     FirebaseAuth.instance.signOut();
-                    AlertDialog(
-                      title: Text('Logging Out'),
-                      content: Text('You are being logged out.'),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text('Ok'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
+                    loggedOutSuccessDialogue();
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -450,6 +440,30 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             child: Text("Ok"),
             onPressed: () {
               Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Future loggedOutSuccessDialogue() async {
+    showDialog(
+      context: context,
+      builder: (_) => new CupertinoAlertDialog(
+        content: new Text("You have been logged out!"),
+        actions: [
+          CupertinoDialogAction(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyHomePage()
+                  ),
+                  ModalRoute.withName("/onboard")
+              );
             },
           ),
         ],
