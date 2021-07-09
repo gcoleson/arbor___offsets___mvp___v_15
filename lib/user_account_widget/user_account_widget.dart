@@ -8,6 +8,7 @@
 // @dart=2.9
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
+import 'package:arbor___offsets___mvp___v_15/entry_screens/login.dart';
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
@@ -461,7 +462,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => myPage5Widget(context)
+                      builder: (context) => LoginWidget(context)
                   ),
                   ModalRoute.withName("/login")
               );

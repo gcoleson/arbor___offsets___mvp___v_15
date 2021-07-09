@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'dart:math';
+import 'package:arbor___offsets___mvp___v_15/entry_screens/new_user.dart';
 import 'package:flutter/material.dart';
 import 'onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
@@ -89,9 +90,7 @@ class MyHomePageState extends State<MyHomePage> {
     var _onboardingScreens = [
       myPage1Widget(context),
       myPage2Widget(context),
-      myPage3Widget(context),
-      myPage4Widget(context, _controller),
-      //myPage5Widget(context, _controller)
+      myPage3Widget(context)
     ];
     return Material(
       type: MaterialType.transparency,
@@ -101,7 +100,7 @@ class MyHomePageState extends State<MyHomePage> {
             controller: _controller,
             children: _onboardingScreens,
             onPageChanged: (value) {
-              if (value >= _onboardingScreens.length - 1) {
+              if (value >= _onboardingScreens.length) {
                 setState(() {
                   isVisible = false;
                 });
@@ -124,7 +123,7 @@ class MyHomePageState extends State<MyHomePage> {
                 child: new Center(
                   child: new DotsIndicator(
                     controller: _controller,
-                    itemCount: _onboardingScreens.length - 1,
+                    itemCount: _onboardingScreens.length,
                     onPageSelected: (int page) {
                       print("========");
                       _controller.animateToPage(
