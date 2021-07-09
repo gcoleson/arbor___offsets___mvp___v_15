@@ -9,6 +9,7 @@
 
 import 'package:arbor___offsets___mvp___v_15/dashboard_widget/dashboard_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
@@ -460,9 +461,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => MyHomePage()
+                      builder: (context) => myPage5Widget(context)
                   ),
-                  ModalRoute.withName("/onboard")
+                  ModalRoute.withName("/login")
               );
             },
           ),
