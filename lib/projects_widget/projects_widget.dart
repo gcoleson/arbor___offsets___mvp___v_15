@@ -84,6 +84,7 @@ class _ProjectsWidgetState extends State<ProjectsWidget> {
       analytics.logEvent(name: 'ProjectScreen');
 
       return StreamBuilder<QuerySnapshot>(
+        // Sort project by projectOrder and then only show projects with showProject being true
         stream: databaseReference
             .collection("projects")
             .orderBy('projectOrder')
