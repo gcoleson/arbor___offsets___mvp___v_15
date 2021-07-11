@@ -1,8 +1,9 @@
 // @dart=2.9
 
+import 'dart:convert';
 import 'dart:math';
-import 'package:arbor___offsets___mvp___v_15/entry_screens/new_user.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
 import 'onboarding_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 
@@ -30,10 +31,10 @@ class DotsIndicator extends AnimatedWidget {
   final Color color;
 
   // The base size of the dots
-  static const double _kDotSize = 8.0;
+  static const double _kDotSize = 6.0;
 
   // The increase in the size of the selected dot
-  static const double _kMaxZoom = 2.0;
+  static const double _kMaxZoom = 1.5;
 
   // The distance between the center of each dot
   static const double _kDotSpacing = 25.0;
@@ -85,13 +86,28 @@ class MyHomePageState extends State<MyHomePage> {
 
   static const _kCurve = Curves.ease;
 
+  List<Widget> getOnboardingScreens(BuildContext context) {
+    List<Widget> onboardingScreens = <Widget>[];
+    final data = json.decode(remoteConfig.getString("onboarding_screens"));
+    for(var i = 0; i < data.length; i++){
+      var onscr = data[i];
+      try {
+        onboardingScreens.add(onboardingScreen(context,
+            onscr["analyticsName"], onscr["image"], onscr["headerText"],
+            onscr["footerText"]));
+      } catch (Exception) {}
+    }
+    return onboardingScreens;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _onboardingScreens = [
-      myPage1Widget(context),
-      myPage2Widget(context),
-      myPage3Widget(context)
-    ];
+    var _onboardingScreens = getOnboardingScreens(context);
+
+    if (_onboardingScreens.isEmpty) {
+      //Navigate to login / join
+    }
+
     return Material(
       type: MaterialType.transparency,
       child: Stack(
@@ -118,14 +134,12 @@ class MyHomePageState extends State<MyHomePage> {
             child: Visibility(
               visible: isVisible,
               child: new Container(
-                color: AppColors.transparentScreen,
                 padding: const EdgeInsets.all(20.0),
                 child: new Center(
                   child: new DotsIndicator(
                     controller: _controller,
                     itemCount: _onboardingScreens.length,
                     onPageSelected: (int page) {
-                      print("========");
                       _controller.animateToPage(
                         page,
                         duration: _kDuration,

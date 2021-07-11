@@ -89,8 +89,8 @@ abstract class AppFonts {
   static const TextStyle introScreenHeadlineText = TextStyle(
     fontFamily: 'Montserrat-ExtraBold',
     color: AppColors.backgroundGrey,
-    fontSize: 36,
-    fontWeight: FontWeight.w800,
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
     fontStyle: FontStyle.normal,
   );
   static const TextStyle navBarHeader = TextStyle(

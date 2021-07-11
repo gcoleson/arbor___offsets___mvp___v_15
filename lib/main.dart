@@ -7,12 +7,15 @@
     */
 // @dart=2.9
 
+import 'dart:convert';
+
 import 'package:arbor___offsets___mvp___v_15/onboarding_screens/onboard_main_screen.dart';
 import 'package:arbor___offsets___mvp___v_15/projects_widget/projects_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 import 'package:arbor___offsets___mvp___v_15/services/push_notifications.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +28,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '.1');
 const appDate = String.fromEnvironment('APP_DATE', defaultValue: 'none');
-FirebaseAnalytics analytics = FirebaseAnalytics();
+FirebaseAnalytics analytics;
+RemoteConfig remoteConfig;
 
 PackageInfo packageInfo;
 
@@ -46,6 +50,15 @@ void main() async {
       packageInfo.buildNumber);
 
   await Firebase.initializeApp();
+  analytics = FirebaseAnalytics();
+  remoteConfig = RemoteConfig.instance;
+  bool updated = await remoteConfig.fetchAndActivate();
+  if (updated) {
+    // the config has been updated, new parameter values are available.
+  } else {
+    // the config values were previously updated.
+  }
+
   print("Init Firebase");
 
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -88,6 +101,8 @@ class App extends StatelessWidget {
     analytics.setAnalyticsCollectionEnabled(true);
     print("Analytics Enabled");
     analytics.setCurrentScreen(screenName: 'StartScreen');
+
+
 
     if (databaseService?.uid == '') {
       print("uid null");
