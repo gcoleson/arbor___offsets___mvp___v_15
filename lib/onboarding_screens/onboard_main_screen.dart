@@ -79,7 +79,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  bool isVisible = true;
+  bool isFinalOnboarding = true;
   final _controller = new PageController();
 
   static const _kDuration = const Duration(milliseconds: 300);
@@ -89,12 +89,11 @@ class MyHomePageState extends State<MyHomePage> {
   List<Widget> getOnboardingScreens(BuildContext context) {
     List<Widget> onboardingScreens = <Widget>[];
     final data = json.decode(remoteConfig.getString("onboarding_screens"));
-    for(var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++) {
       var onscr = data[i];
       try {
-        onboardingScreens.add(onboardingScreen(context,
-            onscr["analyticsName"], onscr["image"], onscr["headerText"],
-            onscr["footerText"]));
+        onboardingScreens.add(onboardingScreen(context, onscr["analyticsName"],
+            onscr["image"], onscr["headerText"], onscr["footerText"]));
       } catch (Exception) {}
     }
     return onboardingScreens;
@@ -118,11 +117,11 @@ class MyHomePageState extends State<MyHomePage> {
             onPageChanged: (value) {
               if (value >= _onboardingScreens.length) {
                 setState(() {
-                  isVisible = false;
+                  isFinalOnboarding = false;
                 });
               } else {
                 setState(() {
-                  isVisible = true;
+                  isFinalOnboarding = true;
                 });
               }
             },
@@ -131,25 +130,28 @@ class MyHomePageState extends State<MyHomePage> {
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-            child: Visibility(
-              visible: isVisible,
-              child: new Container(
-                padding: const EdgeInsets.all(20.0),
-                child: new Center(
-                  child: new DotsIndicator(
-                    controller: _controller,
-                    itemCount: _onboardingScreens.length,
-                    onPageSelected: (int page) {
-                      _controller.animateToPage(
-                        page,
-                        duration: _kDuration,
-                        curve: _kCurve,
-                      );
-                    },
-                  ),
+            child: new Container(
+              padding: const EdgeInsets.all(20.0),
+              child: new Center(
+                child: new DotsIndicator(
+                  controller: _controller,
+                  itemCount: _onboardingScreens.length,
+                  onPageSelected: (int page) {
+                    _controller.animateToPage(
+                      page,
+                      duration: _kDuration,
+                      curve: _kCurve,
+                    );
+                  },
                 ),
               ),
             ),
+          ),
+          new Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: new Text("awefawefwaef"),
           ),
         ],
       ),
