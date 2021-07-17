@@ -17,6 +17,9 @@ void switchPage(PageController controller, int pageNum) {
   );
 }
 
+/*===============================================================================================
+  Build the first onboarding screen 
+  ================================================================================================*/
 Widget myPage1Widget(BuildContext context) {
   analytics.logEvent(name: 'Onboarding_1');
   return Container(
@@ -47,6 +50,9 @@ Widget myPage1Widget(BuildContext context) {
   );
 }
 
+/*===============================================================================================
+  Build the second onboarding screen 
+  ================================================================================================*/
 Widget myPage2Widget(BuildContext context) {
   analytics.logEvent(name: 'Onboarding_2');
   return Container(
@@ -77,6 +83,9 @@ Widget myPage2Widget(BuildContext context) {
   );
 }
 
+/*===============================================================================================
+  Build the third onboarding screen 
+  ================================================================================================*/
 Widget myPage3Widget(BuildContext context) {
   analytics.logEvent(name: 'Onboarding_3');
   return Container(
@@ -101,6 +110,9 @@ Widget myPage3Widget(BuildContext context) {
   );
 }
 
+/*===============================================================================================
+  Function that show dialog with error messages 
+  ================================================================================================*/
 Future<void> _showDialog1(BuildContext context, String errorMessage) {
   return showDialog<void>(
     context: context,
@@ -121,6 +133,9 @@ Future<void> _showDialog1(BuildContext context, String errorMessage) {
   );
 }
 
+/*===============================================================================================
+  Build sign up screen for the first time user 
+  ================================================================================================*/
 Widget myPage4Widget(BuildContext context, PageController controller) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
@@ -246,6 +261,9 @@ Widget myPage4Widget(BuildContext context, PageController controller) {
   ]));
 }
 
+/*===============================================================================================
+  Build sign in screen for the existing users
+  ================================================================================================*/
 Widget myPage5Widget(BuildContext context) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
@@ -374,6 +392,9 @@ Widget myPage5Widget(BuildContext context) {
   ));
 }
 
+/*===============================================================================================
+  Create custom button to be used throughout the app (social share, Got It, Sign Out...)
+  ================================================================================================*/
 Row customButton(String buttonText, Function onButtonPress) {
   return Row(
     children: [
@@ -401,6 +422,9 @@ Row customButton(String buttonText, Function onButtonPress) {
   );
 }
 
+/*===============================================================================================
+  Custom text field for user inputs such as their emails and passwords
+  ================================================================================================*/
 Row _customTextField(String imageFilePath, String customLabelText,
     TextEditingController controller, TextInputType inputType, bool isObscure) {
   return Row(
@@ -441,6 +465,9 @@ Row _customTextField(String imageFilePath, String customLabelText,
   );
 }
 
+/*===============================================================================================
+  Create dialog that is used when users forget their passwords
+  ================================================================================================*/
 Future passwordResetDialog(
     BuildContext context, TextEditingController controller) async {
   showDialog(

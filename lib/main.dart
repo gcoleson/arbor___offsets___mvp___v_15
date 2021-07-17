@@ -25,7 +25,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '.1');
 const appDate = String.fromEnvironment('APP_DATE', defaultValue: 'none');
-FirebaseAnalytics analytics = FirebaseAnalytics();
+FirebaseAnalytics analytics;
 
 PackageInfo packageInfo;
 
@@ -37,15 +37,8 @@ void main() async {
 
   packageInfo = await PackageInfo.fromPlatform();
 
-  print(packageInfo.appName +
-      ',' +
-      packageInfo.packageName +
-      ',' +
-      packageInfo.version +
-      ',' +
-      packageInfo.buildNumber);
-
   await Firebase.initializeApp();
+  analytics = FirebaseAnalytics();
   print("Init Firebase");
 
   FirebaseAuth auth = FirebaseAuth.instance;
