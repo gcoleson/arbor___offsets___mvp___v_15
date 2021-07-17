@@ -334,6 +334,9 @@ String collectionName = "";
 DateTime cardDateKey = DateTime.now();
 String cardKeyMax = DateTime.now().year.toString() +
     DateTime.now().month.toString().padLeft(2, "0");
+bool isEndLeft = false;
+bool isEndRight = true;
+String dateTitle = "This Month's Collection:";
 
 getCardsHttpResponse(http.Response response) {
   print(jsonDecode(response.body));
@@ -374,6 +377,57 @@ getCardsHttpResponse(http.Response response) {
   localcallSetState();
 }
 
+void loadPrevMonthCards() {
+  DateTime tempDateTime = new DateTime(cardDateKey.year, cardDateKey.month - 1);
+  int tempYearKey = tempDateTime.year;
+  int tempMonthKey = tempDateTime.month;
+  String tempKey =
+      tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
+  if (tempKey.compareTo(cardKeyMin) > -1) {
+    dateKey = tempKey;
+    cardDateKey = tempDateTime;
+    isEndRight = false;
+  }
+
+  if (tempKey.compareTo(cardKeyMin) <= 0) {
+    isEndLeft = true;
+    dateTitle =
+        months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
+  } else {
+    isEndLeft = false;
+  }
+  print("Queried Card Collection is: " + dateKey);
+  refreshDashboard();
+}
+
+void loadNextMonthCards() {
+  DateTime tempDateTime = new DateTime(cardDateKey.year, cardDateKey.month + 1);
+  int tempYearKey = tempDateTime.year;
+  int tempMonthKey = tempDateTime.month;
+  String tempKey =
+      tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
+  print("temp key value is: " + tempKey);
+  print("max value is: " + cardKeyMax);
+  if (tempKey.compareTo(cardKeyMax) < 1) {
+    dateKey = tempKey;
+    cardDateKey = tempDateTime;
+    isEndLeft = false;
+  }
+
+  if (tempKey.compareTo(cardKeyMax) == 0) {
+    isEndRight = true;
+    dateTitle = "This Month's Collection:";
+  } else if (tempKey.compareTo(cardKeyMax) == 1) {
+    isEndRight = true;
+    dateTitle =
+        months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
+  } else {
+    isEndRight = false;
+  }
+  print("Queried Card Collection is: " + dateKey);
+  refreshDashboard();
+}
+
 Container buildCardsContainer() {
   return Container(
     width: 416,
@@ -382,81 +436,60 @@ Container buildCardsContainer() {
       children: [
         Row(
           children: [
-            Flexible(
-              //alignment: Alignment.centerLeft,
-              child: TextButton(
-                onPressed: () {
-                  DateTime tempDateTime =
-                      new DateTime(cardDateKey.year, cardDateKey.month - 1);
-                  int tempYearKey = tempDateTime.year;
-                  int tempMonthKey = tempDateTime.month;
-                  String tempKey = tempYearKey.toString() +
-                      tempMonthKey.toString().padLeft(2, "0");
-                  if (tempKey.compareTo(cardKeyMin) > -1) {
-                    dateKey = tempKey;
-                    cardDateKey = tempDateTime;
-                  }
-                  print("Queried Card Collection is: " + dateKey);
-
-                  refreshDashboard();
-                },
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
-                ),
-                child: Text(
-                  "<",
-                  style: TextStyle(
-                    color: AppColors.primaryDarkGreen,
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w500,
-                    fontSize: 28,
-                  ),
-                ),
+            TextButton(
+              onPressed: isEndLeft ? null : loadPrevMonthCards,
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
               ),
+              child: isEndLeft
+                  ? null
+                  : Container(
+                      width: 30,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "<",
+                        style: TextStyle(
+                          color: AppColors.primaryDarkGreen,
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w800,
+                          fontSize: 28,
+                        ),
+                      ),
+                    ),
             ),
-            Spacer(),
-            Container(
-              //alignment: Alignment.center,
-              //margin: EdgeInsets.only(left: 20, right: 20),
+
+            //alignment: Alignment.center,
+            //margin: EdgeInsets.only(left: 20, right: 20),
+            Flexible(
+              fit: FlexFit.tight,
               child: AutoSizeText(
-                "This Month's Collection:",
+                dateTitle,
                 maxLines: 1,
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.center,
                 style: AppFonts.screenSubhead,
               ),
             ),
-            Spacer(),
-            Flexible(
-              child: TextButton(
-                onPressed: () {
-                  DateTime tempDateTime =
-                      new DateTime(cardDateKey.year, cardDateKey.month + 1);
-                  int tempYearKey = tempDateTime.year;
-                  int tempMonthKey = tempDateTime.month;
-                  String tempKey = tempYearKey.toString() +
-                      tempMonthKey.toString().padLeft(2, "0");
-                  print("temp key value is: " + tempKey);
-                  print("max value is: " + cardKeyMax);
-                  if (tempKey.compareTo(cardKeyMax) < 1) {
-                    dateKey = tempKey;
-                    cardDateKey = tempDateTime;
-                  }
-                  print("Queried Card Collection is: " + dateKey);
-                  refreshDashboard();
-                },
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
-                ),
-                child: Text(
-                  ">",
-                  style: TextStyle(
-                    color: AppColors.primaryDarkGreen,
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w500,
-                    fontSize: 28,
-                  ),
-                ),
+
+            TextButton(
+              onPressed: isEndRight ? null : loadNextMonthCards,
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
               ),
+              child: isEndRight
+                  ? null
+                  : Container(
+                      width: 30,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        ">",
+                        style: TextStyle(
+                          color: AppColors.primaryDarkGreen,
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w800,
+                          fontSize: 28,
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),
