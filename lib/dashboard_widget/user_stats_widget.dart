@@ -476,12 +476,7 @@ Container buildCardsContainer() {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "<",
-                        style: TextStyle(
-                          color: AppColors.primaryDarkGreen,
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w800,
-                          fontSize: 28,
-                        ),
+                        style: AppFonts.treeImpactText,
                       ),
                     ),
             ),
@@ -510,12 +505,7 @@ Container buildCardsContainer() {
                       alignment: Alignment.centerRight,
                       child: Text(
                         ">",
-                        style: TextStyle(
-                          color: AppColors.primaryDarkGreen,
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w800,
-                          fontSize: 28,
-                        ),
+                        style: AppFonts.treeImpactText,
                       ),
                     ),
             ),
