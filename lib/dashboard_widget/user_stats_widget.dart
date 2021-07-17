@@ -303,8 +303,7 @@ getCardsHttp(String uid, String dateKeyCustom) {
   String dateKey = curYear.toString() + curMonth.toString().padLeft(2, "0");
   Future<http.Response> response = http.post(
       Uri.parse(
-          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCardsTest'),
-      //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
+          'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
       body: json.encode(
         {'userId': uid, 'date': dateKeyCustom},
       ));
