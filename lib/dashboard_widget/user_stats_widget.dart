@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cloudFirestore;
 import '../main.dart' as main;
+import 'package:arbor___offsets___mvp___v_15/values/constants.dart';
 
 /*===============================================================================================
   Stream Builder for User Data
@@ -84,7 +85,7 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 }
 
 /*===============================================================================================
-  Container for squares that contain product
+  Build container reward cards
   ================================================================================================*/
 Container cardItemContainer(
     BuildContext context, int index, CardListDataClass info, bool dummyCard) {
@@ -135,18 +136,19 @@ Container cardItemContainer(
                     'reward_card_name': info.description,
                     'reward_card_number': info.cardIndex
                   });
-                  if (!dummyCard)
-                    cardDetailDialogue(
-                        context,
-                        dummyCard
-                            ? Image.asset(
-                                "assets/images/icons8Lock100Copy3.png")
-                            : Image.network(
-                                info.imageLink,
-                                loadingBuilder: loadingBuilder2,
-                              ),
-                        "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
-                        info.extraInfo);
+                  // if (!dummyCard)
+                  cardDetailDialogue(
+                      context,
+                      dummyCard
+                          ? Image.asset("assets/images/icons8Lock100Copy3.png")
+                          : Image.network(
+                              info.imageLink,
+                              loadingBuilder: loadingBuilder2,
+                            ),
+                      Image.asset("assets/images/Frame 4.png"),
+                      "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
+                      info.extraInfo,
+                      dummyCard);
                 },
               )),
         ),
@@ -154,10 +156,9 @@ Container cardItemContainer(
     ),
   );
 }
-//var formattedDate = DateFormat.yMMMd().format(info.date);
 
-Future cardDetailDialogue(
-    BuildContext context, Image image, String description, String funFact) {
+Future cardDetailDialogue(BuildContext context, Image image, Image lockedImage,
+    String description, String funFact, bool lock) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -173,7 +174,10 @@ Future cardDetailDialogue(
         content: Stack(
           children: [
             SingleChildScrollView(
-                child: cardDialogue(image, description, funFact)),
+                child: lock
+                    ? lockedCardDialogue(lockedImage,
+                        'Unlock this by offsetting negative climate impacts!')
+                    : cardDialogue(image, description, funFact)),
             Positioned(
               right: 10,
               top: 10,
@@ -203,6 +207,32 @@ Future cardDetailDialogue(
   );
 }
 
+/*===============================================================================================
+  Build dialog for locked card 
+  ================================================================================================*/
+Container lockedCardDialogue(Image image, String desc) {
+  return Container(
+      color: AppColors.borderGrey,
+      padding: EdgeInsets.all(11),
+      child: Column(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: image,
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(11, 16, 11, 15),
+          child: Text(
+            desc,
+            textAlign: TextAlign.left,
+            style: AppFonts.RewardCaredDescriptionText,
+          ),
+        )
+      ]));
+}
+
+/*===============================================================================================
+  Build dialog for unlocked card 
+  ================================================================================================*/
 Container cardDialogue(Image image, String description, String funFact) {
   return Container(
     padding: EdgeInsets.all(11),
@@ -264,8 +294,9 @@ void refreshDashboard() {
 }
 
 List<dynamic> cardList = [];
+String dateKey = "202107";
 
-getCardsHttp(String uid) {
+getCardsHttp(String uid, String dateKeyCustom) {
   //don't get cards if we already have them
 
   print("getCardHttp:${cardList.length}:${cardListData.length}");
@@ -296,14 +327,14 @@ getCardsHttp(String uid) {
     return;
   }
 
+  int curMonth = DateTime.now().month;
+  int curYear = DateTime.now().year;
+  String dateKey = curYear.toString() + curMonth.toString().padLeft(2, "0");
   Future<http.Response> response = http.post(
       Uri.parse(
           'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
-      //'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testCards'),
       body: json.encode(
-        {
-          'userId': uid,
-        },
+        {'userId': uid, 'date': dateKeyCustom},
       ));
 
   response.then((value) {
@@ -328,6 +359,12 @@ class CardListDataClass {
 List<CardListDataClass> cardListData = [];
 int maxCardIndex = 0;
 String collectionName = "";
+DateTime cardDateKey = DateTime.now();
+String cardKeyMax = DateTime.now().year.toString() +
+    DateTime.now().month.toString().padLeft(2, "0");
+bool isEndLeft = false;
+bool isEndRight = true;
+String dateTitle = "This Month's Collection:";
 
 getCardsHttpResponse(http.Response response) {
   print(jsonDecode(response.body));
@@ -368,6 +405,57 @@ getCardsHttpResponse(http.Response response) {
   localcallSetState();
 }
 
+void loadPrevMonthCards() {
+  DateTime tempDateTime = new DateTime(cardDateKey.year, cardDateKey.month - 1);
+  int tempYearKey = tempDateTime.year;
+  int tempMonthKey = tempDateTime.month;
+  String tempKey =
+      tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
+  if (tempKey.compareTo(cardKeyMin) > -1) {
+    dateKey = tempKey;
+    cardDateKey = tempDateTime;
+    isEndRight = false;
+  }
+
+  if (tempKey.compareTo(cardKeyMin) <= 0) {
+    isEndLeft = true;
+    dateTitle =
+        months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
+  } else {
+    isEndLeft = false;
+  }
+  print("Queried Card Collection is: " + dateKey);
+  refreshDashboard();
+}
+
+void loadNextMonthCards() {
+  DateTime tempDateTime = new DateTime(cardDateKey.year, cardDateKey.month + 1);
+  int tempYearKey = tempDateTime.year;
+  int tempMonthKey = tempDateTime.month;
+  String tempKey =
+      tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
+  print("temp key value is: " + tempKey);
+  print("max value is: " + cardKeyMax);
+  if (tempKey.compareTo(cardKeyMax) < 1) {
+    dateKey = tempKey;
+    cardDateKey = tempDateTime;
+    isEndLeft = false;
+  }
+
+  if (tempKey.compareTo(cardKeyMax) == 0) {
+    isEndRight = true;
+    dateTitle = "This Month's Collection:";
+  } else if (tempKey.compareTo(cardKeyMax) == 1) {
+    isEndRight = true;
+    dateTitle =
+        months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
+  } else {
+    isEndRight = false;
+  }
+  print("Queried Card Collection is: " + dateKey);
+  refreshDashboard();
+}
+
 Container buildCardsContainer() {
   return Container(
     width: 416,
@@ -376,46 +464,51 @@ Container buildCardsContainer() {
       children: [
         Row(
           children: [
-            /* Container(
-              alignment: Alignment.centerLeft,
-              child: AutoSizeText(
-                "<",
-                maxLines: 1,
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
+            TextButton(
+              onPressed: isEndLeft ? null : loadPrevMonthCards,
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
               ),
-            ), 
-            Spacer(),*/
-            Container(
-              alignment: Alignment.center,
-              //margin: EdgeInsets.only(left: 20, right: 20),
+              child: isEndLeft
+                  ? null
+                  : Container(
+                      width: 30,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "<",
+                        style: AppFonts.treeImpactText,
+                      ),
+                    ),
+            ),
+
+            //alignment: Alignment.center,
+            //margin: EdgeInsets.only(left: 20, right: 20),
+            Flexible(
+              fit: FlexFit.tight,
               child: AutoSizeText(
-                "This Month's Collection:",
+                dateTitle,
                 maxLines: 1,
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.center,
                 style: AppFonts.screenSubhead,
               ),
             ),
-            /* Spacer(),
-            Container(
-              alignment: Alignment.centerRight,
-              child: AutoSizeText(
-                ">",
-                maxLines: 1,
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: AppColors.primaryDarkGreen,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
+
+            TextButton(
+              onPressed: isEndRight ? null : loadNextMonthCards,
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
               ),
-            ), */
+              child: isEndRight
+                  ? null
+                  : Container(
+                      width: 30,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        ">",
+                        style: AppFonts.treeImpactText,
+                      ),
+                    ),
+            ),
           ],
         ),
         Container(
@@ -625,7 +718,7 @@ Container buildMonthsInARowContainer(int consecutiveMonths) {
   ================================================================================================*/
 Container buildImpactContainer(UserStats stats) {
   activateFirstCard();
-  getCardsHttp(databaseService.uid);
+  getCardsHttp(databaseService.uid, dateKey);
   return Container(
     margin: EdgeInsets.only(left: 5, top: 5, right: 5),
     child: Column(

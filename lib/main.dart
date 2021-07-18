@@ -29,7 +29,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '.1');
 const appDate = String.fromEnvironment('APP_DATE', defaultValue: 'none');
 FirebaseAnalytics analytics;
+<<<<<<< HEAD
 RemoteConfig remoteConfig;
+=======
+>>>>>>> develop
 
 PackageInfo packageInfo;
 
@@ -41,16 +44,9 @@ void main() async {
 
   packageInfo = await PackageInfo.fromPlatform();
 
-  print(packageInfo.appName +
-      ',' +
-      packageInfo.packageName +
-      ',' +
-      packageInfo.version +
-      ',' +
-      packageInfo.buildNumber);
-
   await Firebase.initializeApp();
   analytics = FirebaseAnalytics();
+<<<<<<< HEAD
   remoteConfig = RemoteConfig.instance;
   bool updated = await remoteConfig.fetchAndActivate();
   if (updated) {
@@ -59,6 +55,8 @@ void main() async {
     // the config values were previously updated.
   }
 
+=======
+>>>>>>> develop
   print("Init Firebase");
 
   FirebaseAuth auth = FirebaseAuth.instance;
