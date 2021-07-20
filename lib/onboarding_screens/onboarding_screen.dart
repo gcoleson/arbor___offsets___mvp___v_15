@@ -1,16 +1,9 @@
 // @dart=2.9
 
-import 'package:arbor___offsets___mvp___v_15/entry_screens/login.dart';
 import 'package:arbor___offsets___mvp___v_15/main.dart';
-import 'package:arbor___offsets___mvp___v_15/services/database.dart';
-import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
-import 'package:arbor___offsets___mvp___v_15/util/CustomButton.dart';
-import 'package:arbor___offsets___mvp___v_15/util/ImageTextField.dart';
 import 'package:arbor___offsets___mvp___v_15/util/OutlinedText.dart';
-import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 
 void switchPage(PageController controller, int pageNum) {
@@ -30,6 +23,7 @@ Widget onboardingScreen(BuildContext context, String analyticsName, String asset
   })
   );
   return Container(
+    padding: const EdgeInsets.all(10.0),
     child: Stack(fit: StackFit.expand, children: [
       Image.asset(assetLocation, fit: BoxFit.fill),
       Align(

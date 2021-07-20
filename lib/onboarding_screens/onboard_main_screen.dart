@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 import 'dart:math';
+import 'package:arbor___offsets___mvp___v_15/util/OutlinedText.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'onboarding_screen.dart';
@@ -103,6 +105,8 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var _onboardingScreens = getOnboardingScreens(context);
 
+    var textStyle = AppFonts.introScreenHeadlineText.copyWith(shadows: outlinedText(strokeColor: Colors.black));
+
     if (_onboardingScreens.isEmpty) {
       //Navigate to login / join
     }
@@ -115,7 +119,7 @@ class MyHomePageState extends State<MyHomePage> {
             controller: _controller,
             children: _onboardingScreens,
             onPageChanged: (value) {
-              if (value >= _onboardingScreens.length) {
+              if (value >= _onboardingScreens.length - 1) {
                 setState(() {
                   isFinalOnboarding = false;
                 });
@@ -130,9 +134,10 @@ class MyHomePageState extends State<MyHomePage> {
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-            child: new Container(
-              padding: const EdgeInsets.all(20.0),
-              child: new Center(
+            child: new Column(
+              //padding: const EdgeInsets.all(20.0),
+              children: [
+                new Center(
                 child: new DotsIndicator(
                   controller: _controller,
                   itemCount: _onboardingScreens.length,
@@ -145,13 +150,13 @@ class MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
+                new Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.all(10.0),
+                    child: isFinalOnboarding ? new Text("Skip", style: textStyle) : new Text("Done", style: textStyle),
+                )
+              ],
             ),
-          ),
-          new Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: new Text("awefawefwaef"),
           ),
         ],
       ),
