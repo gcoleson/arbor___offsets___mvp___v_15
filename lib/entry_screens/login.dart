@@ -11,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor___offsets___mvp___v_15/services/database.dart';
 
+import 'new_user.dart';
+
 Widget LoginWidget(BuildContext context) {
   // Variables used to get text from textfields
   final _emailController = TextEditingController();
@@ -116,8 +118,12 @@ Widget LoginWidget(BuildContext context) {
                     ),
                   ),
                   FlatButton(
-                      onPressed: () =>
-                          Navigator.pop(context),
+                      onPressed: () => Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NewUserWidget(context)
+                      ),
+                      ModalRoute.withName("/new_user")),
                       child: Text(
                         "Join",
                         style: AppFonts.bodyTextGold,

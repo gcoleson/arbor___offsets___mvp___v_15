@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:math';
+import 'package:arbor___offsets___mvp___v_15/entry_screens/login.dart';
 import 'package:arbor___offsets___mvp___v_15/util/OutlinedText.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:flutter/material.dart';
@@ -150,11 +151,21 @@ class MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
-                new Container(
+                new InkWell(
+                  child: new Container(
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.all(10.0),
                     child: isFinalOnboarding ? new Text("Skip", style: textStyle) : new Text("Done", style: textStyle),
+                  ),
+                  onTap: () => Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginWidget(context)
+                      ),
+                      ModalRoute.withName("/login")
+                  )
                 )
+
               ],
             ),
           ),
