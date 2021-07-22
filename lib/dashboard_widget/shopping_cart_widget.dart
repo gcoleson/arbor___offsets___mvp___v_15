@@ -394,7 +394,7 @@ class _CheckoutCartContentsState extends State<CheckoutCartContents> {
                   // First Ping Firebase for session ID for stripe checkout
                   response = await http.post(
                     Uri.parse(
-                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/payment_1_1'),
+                        'https://us-central1-financeapp-2c7b8.cloudfunctions.net/testPayment'),
                     body: json.encode(
                       {
                         'items': checkoutList,
