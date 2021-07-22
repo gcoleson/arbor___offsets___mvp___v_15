@@ -106,7 +106,10 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var _onboardingScreens = getOnboardingScreens(context);
 
-    var textStyle = AppFonts.introScreenHeadlineText.copyWith(shadows: outlinedText(strokeColor: Colors.black));
+    var textStyle = AppFonts.introScreenHeadlineText
+        .copyWith(shadows: outlinedText(strokeColor: Colors.black));
+
+    var skipTextStyle = textStyle.copyWith(fontSize: 16);
 
     if (_onboardingScreens.isEmpty) {
       //Navigate to login / join
@@ -135,37 +138,39 @@ class MyHomePageState extends State<MyHomePage> {
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-            child: new Column(
-              //padding: const EdgeInsets.all(20.0),
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                new Center(
-                child: new DotsIndicator(
-                  controller: _controller,
-                  itemCount: _onboardingScreens.length,
-                  onPageSelected: (int page) {
-                    _controller.animateToPage(
-                      page,
-                      duration: _kDuration,
-                      curve: _kCurve,
-                    );
-                  },
-                ),
-              ),
-                new InkWell(
-                  child: new Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.all(10.0),
-                    child: isFinalOnboarding ? new Text("Skip", style: textStyle) : new Text("Done", style: textStyle),
+                Expanded(
+                    child: Align(
+                  alignment: Alignment.center,
+                  child: new DotsIndicator(
+                    controller: _controller,
+                    itemCount: _onboardingScreens.length,
+                    onPageSelected: (int page) {
+                      _controller.animateToPage(
+                        page,
+                        duration: _kDuration,
+                        curve: _kCurve,
+                      );
+                    },
                   ),
-                  onTap: () => Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginWidget(context)
-                      ),
-                      ModalRoute.withName("/login")
-                  )
-                )
-
+                )),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    child: new Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.all(20.0),
+                      child: isFinalOnboarding
+                          ? new Text("Skip", style: skipTextStyle)
+                          : new Text("Done", style: skipTextStyle),
+                    ),
+                    onTap: () => Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginWidget(context)),
+                        ModalRoute.withName("/login"))))
               ],
             ),
           ),

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 /// Outlines a text using shadows.
 List<Shadow> outlinedText(
-    {double strokeWidth = 1,
+    {double strokeWidth = .5,
     Color strokeColor = Colors.black,
     int precision = 5}) {
   Set<Shadow> result = HashSet();

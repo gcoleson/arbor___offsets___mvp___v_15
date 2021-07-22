@@ -23,9 +23,8 @@ Widget onboardingScreen(BuildContext context, String analyticsName, String asset
   })
   );
   return Container(
-    padding: const EdgeInsets.all(10.0),
     child: Stack(fit: StackFit.expand, children: [
-      Image.asset(assetLocation, fit: BoxFit.fill),
+      Image.asset(assetLocation, fit: BoxFit.fitWidth),
       Align(
         alignment: Alignment.topCenter,
         child: Container(
