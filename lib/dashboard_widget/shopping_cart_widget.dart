@@ -795,6 +795,7 @@ Future paymentSuccessBuildDialogue(
     context: globals.scaffoldKey.currentContext,
     builder: (BuildContext context) {
       return AlertDialog(
+        scrollable: true,
         contentPadding: EdgeInsets.all(0.0),
         insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
         shape: RoundedRectangleBorder(
@@ -806,7 +807,9 @@ Future paymentSuccessBuildDialogue(
           overflow: Overflow.visible,
           fit: StackFit.expand,
           children: [
-            successDialogue(context, totalCoins.toInt(), totalTrees.toInt()),
+            SingleChildScrollView(
+                child: successDialogue(
+                    context, totalCoins.toInt(), totalTrees.toInt())),
             Positioned(
               right: 10,
               top: 10,
@@ -859,7 +862,11 @@ Container successDialogue(
               String imageLink = snapshot.data.docs[0].data()['image-main'];
               projectName = snapshot.data.docs[0].data()['title'];
               projectName = projectName.split(":")[1];
-              return Column(
+              return
+                  // Stack(
+                  //   child: SingleChildScrollView(
+                  //     child:
+                  Column(
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
@@ -960,8 +967,28 @@ Container successDialogue(
             )
           ],
         ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 3.0),
+                    child: Text(
+                      "Remind me to repeat next month:",
+                      textAlign: TextAlign.left,
+                      style: AppFonts.impactHead,
+                    ))),
+            Align(
+              child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Switch.adaptive(
+                      activeColor: Colors.green, value: null, onChanged: null)),
+            )
+          ],
+        ),
         Container(
-          margin: EdgeInsets.only(bottom: 5),
+          margin: EdgeInsets.only(bottom: 3),
           child: Text(
             "Tell your freinds how you're going climate positive:",
             textAlign: TextAlign.center,
