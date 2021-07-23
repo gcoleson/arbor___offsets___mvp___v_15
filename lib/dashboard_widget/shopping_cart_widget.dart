@@ -795,7 +795,7 @@ Future paymentSuccessBuildDialogue(
     context: globals.scaffoldKey.currentContext,
     builder: (BuildContext context) {
       return AlertDialog(
-        scrollable: true,
+        //scrollable: true,
         contentPadding: EdgeInsets.all(0.0),
         insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
         shape: RoundedRectangleBorder(
