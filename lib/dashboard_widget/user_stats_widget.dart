@@ -411,13 +411,20 @@ void loadPrevMonthCards() {
   int tempMonthKey = tempDateTime.month;
   String tempKey =
       tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
-  if (tempKey.compareTo(cardKeyMin) > -1) {
+  String userCreationDate;
+  if (!databaseService.isUserDateExist()) {
+    databaseService.setUserCreationDate();
+  }
+  userCreationDate = databaseService.creationDate.year.toString() +
+      databaseService.creationDate.month.toString().padLeft(2, "0");
+
+  if (tempKey.compareTo(userCreationDate) > -1) {
     dateKey = tempKey;
     cardDateKey = tempDateTime;
     isEndRight = false;
   }
 
-  if (tempKey.compareTo(cardKeyMin) <= 0) {
+  if (tempKey.compareTo(userCreationDate) <= 0) {
     isEndLeft = true;
     dateTitle =
         months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
