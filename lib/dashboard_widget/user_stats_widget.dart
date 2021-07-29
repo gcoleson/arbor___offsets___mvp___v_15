@@ -435,6 +435,23 @@ void loadPrevMonthCards() {
   refreshDashboard();
 }
 
+void isPrevMonthCardsExist() {
+  DateTime tempDateTime = new DateTime(cardDateKey.year, cardDateKey.month);
+  int tempYearKey = tempDateTime.year;
+  int tempMonthKey = tempDateTime.month;
+  String tempKey =
+      tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
+  String userCreationDate;
+  if (!databaseService.isUserDateExist()) {
+    databaseService.setUserCreationDate();
+  }
+  userCreationDate = databaseService.creationDate.year.toString() +
+      databaseService.creationDate.month.toString().padLeft(2, "0");
+  if (tempKey.compareTo(userCreationDate) == 0) {
+    isEndLeft = true;
+  }
+}
+
 void loadNextMonthCards() {
   DateTime tempDateTime = new DateTime(cardDateKey.year, cardDateKey.month + 1);
   int tempYearKey = tempDateTime.year;
@@ -464,6 +481,7 @@ void loadNextMonthCards() {
 }
 
 Container buildCardsContainer() {
+  isPrevMonthCardsExist();
   return Container(
     width: 416,
     child: Column(
@@ -471,54 +489,61 @@ Container buildCardsContainer() {
       children: [
         Row(
           children: [
-            TextButton(
-              onPressed: isEndLeft ? null : loadPrevMonthCards,
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: isEndLeft
-                  ? null
-                  : Container(
-                      width: 30,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "<",
-                        style: AppFonts.treeImpactText,
+            isEndLeft
+                ? Container()
+                : Container(
+                    width: 20,
+                    child: TextButton(
+                      onPressed: isEndLeft ? null : loadPrevMonthCards,
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      child: Container(
+                        width: 30,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "<",
+                          style: AppFonts.treeImpactText,
+                        ),
                       ),
                     ),
+                  ),
+            Container(
+              width: 15,
             ),
-
-            //alignment: Alignment.center,
-            //margin: EdgeInsets.only(left: 20, right: 20),
+            AutoSizeText(
+              dateTitle,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: AppFonts.screenSubhead,
+            ),
             Flexible(
               fit: FlexFit.tight,
-              child: AutoSizeText(
-                dateTitle,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: AppFonts.screenSubhead,
-              ),
+              child: Container(),
             ),
-
-            TextButton(
-              onPressed: isEndRight ? null : loadNextMonthCards,
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: isEndRight
-                  ? null
-                  : Container(
-                      width: 30,
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        ">",
-                        style: AppFonts.treeImpactText,
+            isEndRight
+                ? Container()
+                : Container(
+                    width: 30,
+                    child: TextButton(
+                      onPressed: isEndRight ? null : loadNextMonthCards,
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      child: Container(
+                        width: 30,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          ">",
+                          style: AppFonts.treeImpactText,
+                        ),
                       ),
                     ),
-            ),
+                  ),
           ],
         ),
         Container(
+          height: 72,
           width: 382,
           margin: EdgeInsets.only(left: 4, top: 2),
           child: AutoSizeText(
