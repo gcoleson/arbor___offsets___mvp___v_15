@@ -145,7 +145,7 @@ Container cardItemContainer(
                               info.imageLink,
                               loadingBuilder: loadingBuilder2,
                             ),
-                      Image.asset("assets/images/Frame 4.png"),
+                      Image.asset("assets/images/locked-image-no-border.png"),
                       "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
                       info.extraInfo,
                       dummyCard);
@@ -212,7 +212,7 @@ Future cardDetailDialogue(BuildContext context, Image image, Image lockedImage,
   ================================================================================================*/
 Container lockedCardDialogue(Image image, String desc) {
   return Container(
-      color: AppColors.borderGrey,
+      color: AppColors.transparentScreen,
       padding: EdgeInsets.all(11),
       child: Column(children: [
         ClipRRect(
