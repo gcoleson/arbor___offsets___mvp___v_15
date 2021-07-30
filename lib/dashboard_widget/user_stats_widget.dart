@@ -294,7 +294,9 @@ void refreshDashboard() {
 }
 
 List<dynamic> cardList = [];
-String dateKey = "202107";
+int curMonth = DateTime.now().month;
+int curYear = DateTime.now().year;
+String dateKey = curYear.toString() + curMonth.toString().padLeft(2, "0");
 
 getCardsHttp(String uid, String dateKeyCustom) {
   //don't get cards if we already have them
@@ -327,9 +329,6 @@ getCardsHttp(String uid, String dateKeyCustom) {
     return;
   }
 
-  int curMonth = DateTime.now().month;
-  int curYear = DateTime.now().year;
-  String dateKey = curYear.toString() + curMonth.toString().padLeft(2, "0");
   Future<http.Response> response = http.post(
       Uri.parse(
           'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
