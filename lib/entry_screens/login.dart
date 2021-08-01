@@ -3,6 +3,7 @@ import 'package:arbor___offsets___mvp___v_15/main.dart';
 import 'package:arbor___offsets___mvp___v_15/tab_group_one_tab_bar_widget/tab_group_one_tab_bar_widget.dart';
 import 'package:arbor___offsets___mvp___v_15/util/CustomButton.dart';
 import 'package:arbor___offsets___mvp___v_15/util/ImageTextField.dart';
+import 'package:arbor___offsets___mvp___v_15/util/OutlinedText.dart';
 import 'package:arbor___offsets___mvp___v_15/util/StandardAlert.dart';
 import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
@@ -48,8 +49,10 @@ Widget LoginWidget(BuildContext context) {
 
   analytics.logEvent(name: 'Signin');
 
+  var textStyle = AppFonts.introScreenHeadlineText
+      .copyWith(shadows: outlinedText(strokeColor: Colors.black));
+
   return Scaffold(
-    //resizeToAvoidBottomPadding: false,
       body: Container(
         child: Stack(
           fit: StackFit.expand,
@@ -60,7 +63,6 @@ Widget LoginWidget(BuildContext context) {
             ),
             Column(
               children: [
-                Spacer(flex: 75),
                 Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
@@ -88,51 +90,44 @@ Widget LoginWidget(BuildContext context) {
                     )
                   ],
                 ),
-                SizedBox(height: 47),
+                Spacer(flex: 1),
                 Container(
-                    height: 44,
                     child: ImageTextField("assets/images/UserIcon.png", "Email",
                         _emailController, TextInputType.emailAddress, false)),
                 Container(
                     margin: EdgeInsets.only(top: 14, bottom: 22),
-                    height: 44,
                     child: ImageTextField("assets/images/PasswordIcon.png",
                         "Password", _passwordController, TextInputType.text, true)),
+                Spacer(flex: 4),
                 CustomButton("Sign In", signIn),
-                FlatButton(
-                    onPressed: () {
-                      passwordResetDialog(context, _passwirdResetController);
-                    },
-                    child: Text(
-                      "Forgot Password?",
-                      style: AppFonts.bodyTextGold,
-                    )),
-                Spacer(flex: 334),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Container(
-                    height: 21,
-                    child: Text(
-                      "Need an account? ",
-                      textAlign: TextAlign.center,
-                      style: AppFonts.bodyTextWhite,
-                    ),
-                  ),
-                  FlatButton(
-                      onPressed: () => Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NewUserWidget(context)
-                      ),
-                      ModalRoute.withName("/new_user")),
-                      child: Text(
-                        "Join",
-                        style: AppFonts.bodyTextGold,
-                      )),
-                ]),
-                Spacer(flex: 47)
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FlatButton(
+                        onPressed: () {
+                          passwordResetDialog(context, _passwirdResetController);
+                        },
+                        child: Text(
+                          "Forgot Password?",
+                          style: AppFonts.bodyTextGold,
+                        )),
+                    Text("/", style: textStyle),
+                    FlatButton(
+                        onPressed: () => Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewUserWidget(context)
+                            ),
+                            ModalRoute.withName("/new_user")),
+                        child: Text(
+                          "Join",
+                          style: AppFonts.bodyTextGold,
+                        ))
+                  ]
+                ),
               ],
             )
-          ],
+             ],
         ),
       ));
 }

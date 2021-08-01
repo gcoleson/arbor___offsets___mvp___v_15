@@ -141,8 +141,7 @@ class MyHomePageState extends State<MyHomePage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Expanded(
-                    child: Align(
+                    Align(
                   alignment: Alignment.center,
                   child: new DotsIndicator(
                     controller: _controller,
@@ -155,7 +154,7 @@ class MyHomePageState extends State<MyHomePage> {
                       );
                     },
                   ),
-                )),
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: InkWell(
