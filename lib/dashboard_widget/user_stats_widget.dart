@@ -42,8 +42,14 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
         //      and make sure this logic is sound
         cloudFirestore.Timestamp prevMonthPurchaseStamp =
             snapshot.data["prevMonthOfPurchase"];
-        DateTime prevMonthPurchase = prevMonthPurchaseStamp.toDate();
-        if (prevMonthPurchase.compareTo(DateTime.now()) >= 0) {
+
+        DateTime prevMonthPurchase = DateTime(
+            prevMonthPurchaseStamp.toDate().year,
+            prevMonthPurchaseStamp.toDate().month);
+        DateTime curMonthDate = DateTime.now();
+        curMonthDate = DateTime(curMonthDate.year, curMonthDate.month);
+
+        if (prevMonthPurchase.compareTo(curMonthDate) >= 0) {
           var dummy2;
           dummy2 = snapshot.data["treesThisMonth"];
 
