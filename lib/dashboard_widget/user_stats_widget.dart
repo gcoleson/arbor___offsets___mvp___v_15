@@ -38,6 +38,24 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 
         userStats.totalMonths = snapshot.data["totalMonths"];
 
+        //TODO: quick fix to get current trees earned this month please revisit
+        //      and make sure this logic is sound
+        cloudFirestore.Timestamp prevMonthPurchaseStamp =
+            snapshot.data["prevMonthOfPurchase"];
+        DateTime prevMonthPurchase = prevMonthPurchaseStamp.toDate();
+        if (prevMonthPurchase.compareTo(DateTime.now()) >= 0) {
+          var dummy2;
+          dummy2 = snapshot.data["treesThisMonth"];
+
+          if (dummy2 is int) {
+            userStats.treesThisMonth = dummy2;
+          } else {
+            userStats.treesThisMonth = dummy2.toInt();
+          }
+        } else {
+          userStats.treesThisMonth = 0;
+        }
+
         var dummy1;
 
         dummy1 = snapshot.data["totalTrees"];
@@ -46,15 +64,6 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
           userStats.totalTrees = dummy1;
         } else {
           userStats.totalTrees = dummy1.toInt();
-        }
-
-        var dummy2;
-        dummy2 = snapshot.data["treesThisMonth"];
-
-        if (dummy2 is int) {
-          userStats.treesThisMonth = dummy2;
-        } else {
-          userStats.treesThisMonth = dummy2.toInt();
         }
 
         userStats.totalCoins =
