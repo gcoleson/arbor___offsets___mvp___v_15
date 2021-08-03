@@ -38,6 +38,30 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
 
         userStats.totalMonths = snapshot.data["totalMonths"];
 
+        //TODO: quick fix to get current trees earned this month please revisit
+        //      and make sure this logic is sound
+        cloudFirestore.Timestamp prevMonthPurchaseStamp =
+            snapshot.data["prevMonthOfPurchase"];
+
+        DateTime prevMonthPurchase = DateTime(
+            prevMonthPurchaseStamp.toDate().year,
+            prevMonthPurchaseStamp.toDate().month);
+        DateTime curMonthDate = DateTime.now();
+        curMonthDate = DateTime(curMonthDate.year, curMonthDate.month);
+
+        if (prevMonthPurchase.compareTo(curMonthDate) >= 0) {
+          var dummy2;
+          dummy2 = snapshot.data["treesThisMonth"];
+
+          if (dummy2 is int) {
+            userStats.treesThisMonth = dummy2;
+          } else {
+            userStats.treesThisMonth = dummy2.toInt();
+          }
+        } else {
+          userStats.treesThisMonth = 0;
+        }
+
         var dummy1;
 
         dummy1 = snapshot.data["totalTrees"];
@@ -46,15 +70,6 @@ StreamBuilder buildUserStats(BuildContext context, UserStats userStats) {
           userStats.totalTrees = dummy1;
         } else {
           userStats.totalTrees = dummy1.toInt();
-        }
-
-        var dummy2;
-        dummy2 = snapshot.data["treesThisMonth"];
-
-        if (dummy2 is int) {
-          userStats.treesThisMonth = dummy2;
-        } else {
-          userStats.treesThisMonth = dummy2.toInt();
         }
 
         userStats.totalCoins =
@@ -145,7 +160,7 @@ Container cardItemContainer(
                               info.imageLink,
                               loadingBuilder: loadingBuilder2,
                             ),
-                      Image.asset("assets/images/Frame 4.png"),
+                      Image.asset("assets/images/locked-image-no-border.png"),
                       "Discovered ${DateFormat.yMMMd().format(info.date)} for ${info.description}",
                       info.extraInfo,
                       dummyCard);
@@ -212,7 +227,7 @@ Future cardDetailDialogue(BuildContext context, Image image, Image lockedImage,
   ================================================================================================*/
 Container lockedCardDialogue(Image image, String desc) {
   return Container(
-      color: AppColors.borderGrey,
+      color: AppColors.transparentScreen,
       padding: EdgeInsets.all(11),
       child: Column(children: [
         ClipRRect(
@@ -294,7 +309,9 @@ void refreshDashboard() {
 }
 
 List<dynamic> cardList = [];
-String dateKey = "202107";
+int curMonth = DateTime.now().month;
+int curYear = DateTime.now().year;
+String dateKey = curYear.toString() + curMonth.toString().padLeft(2, "0");
 
 getCardsHttp(String uid, String dateKeyCustom) {
   //don't get cards if we already have them
@@ -327,9 +344,6 @@ getCardsHttp(String uid, String dateKeyCustom) {
     return;
   }
 
-  int curMonth = DateTime.now().month;
-  int curYear = DateTime.now().year;
-  String dateKey = curYear.toString() + curMonth.toString().padLeft(2, "0");
   Future<http.Response> response = http.post(
       Uri.parse(
           'https://us-central1-financeapp-2c7b8.cloudfunctions.net/getCards'),
@@ -411,13 +425,20 @@ void loadPrevMonthCards() {
   int tempMonthKey = tempDateTime.month;
   String tempKey =
       tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
-  if (tempKey.compareTo(cardKeyMin) > -1) {
+  String userCreationDate;
+  if (!databaseService.isUserDateExist()) {
+    databaseService.setUserCreationDate();
+  }
+  userCreationDate = databaseService.creationDate.year.toString() +
+      databaseService.creationDate.month.toString().padLeft(2, "0");
+
+  if (tempKey.compareTo(userCreationDate) > -1) {
     dateKey = tempKey;
     cardDateKey = tempDateTime;
     isEndRight = false;
   }
 
-  if (tempKey.compareTo(cardKeyMin) <= 0) {
+  if (tempKey.compareTo(userCreationDate) <= 0) {
     isEndLeft = true;
     dateTitle =
         months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
@@ -426,6 +447,23 @@ void loadPrevMonthCards() {
   }
   print("Queried Card Collection is: " + dateKey);
   refreshDashboard();
+}
+
+void isPrevMonthCardsExist() {
+  DateTime tempDateTime = new DateTime(cardDateKey.year, cardDateKey.month);
+  int tempYearKey = tempDateTime.year;
+  int tempMonthKey = tempDateTime.month;
+  String tempKey =
+      tempYearKey.toString() + tempMonthKey.toString().padLeft(2, "0");
+  String userCreationDate;
+  if (!databaseService.isUserDateExist()) {
+    databaseService.setUserCreationDate();
+  }
+  userCreationDate = databaseService.creationDate.year.toString() +
+      databaseService.creationDate.month.toString().padLeft(2, "0");
+  if (tempKey.compareTo(userCreationDate) == 0) {
+    isEndLeft = true;
+  }
 }
 
 void loadNextMonthCards() {
@@ -457,6 +495,7 @@ void loadNextMonthCards() {
 }
 
 Container buildCardsContainer() {
+  isPrevMonthCardsExist();
   return Container(
     width: 416,
     child: Column(
@@ -464,54 +503,61 @@ Container buildCardsContainer() {
       children: [
         Row(
           children: [
-            TextButton(
-              onPressed: isEndLeft ? null : loadPrevMonthCards,
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: isEndLeft
-                  ? null
-                  : Container(
-                      width: 30,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "<",
-                        style: AppFonts.treeImpactText,
+            isEndLeft
+                ? Container()
+                : Container(
+                    width: 20,
+                    child: TextButton(
+                      onPressed: isEndLeft ? null : loadPrevMonthCards,
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      child: Container(
+                        width: 30,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "<",
+                          style: AppFonts.treeImpactText,
+                        ),
                       ),
                     ),
+                  ),
+            Container(
+              width: 15,
             ),
-
-            //alignment: Alignment.center,
-            //margin: EdgeInsets.only(left: 20, right: 20),
+            AutoSizeText(
+              dateTitle,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: AppFonts.screenSubhead,
+            ),
             Flexible(
               fit: FlexFit.tight,
-              child: AutoSizeText(
-                dateTitle,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: AppFonts.screenSubhead,
-              ),
+              child: Container(),
             ),
-
-            TextButton(
-              onPressed: isEndRight ? null : loadNextMonthCards,
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: isEndRight
-                  ? null
-                  : Container(
-                      width: 30,
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        ">",
-                        style: AppFonts.treeImpactText,
+            isEndRight
+                ? Container()
+                : Container(
+                    width: 30,
+                    child: TextButton(
+                      onPressed: isEndRight ? null : loadNextMonthCards,
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      child: Container(
+                        width: 30,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          ">",
+                          style: AppFonts.treeImpactText,
+                        ),
                       ),
                     ),
-            ),
+                  ),
           ],
         ),
         Container(
+          height: 72,
           width: 382,
           margin: EdgeInsets.only(left: 4, top: 2),
           child: AutoSizeText(

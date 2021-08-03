@@ -1,6 +1,7 @@
 //import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:flutter/material.dart';
 
 FirebaseFirestore databaseReference = FirebaseFirestore.instance;
@@ -70,6 +71,7 @@ dynamic testDBForField(DocumentSnapshot doc, String field) {
 }
 
 class DatabaseService {
+  DateTime creationDate = DateTime(0, 0, 0);
   String uid = '';
 
   //DatabaseService({this.uid});
@@ -214,5 +216,15 @@ class DatabaseService {
           .then((value) => print("Card successfully added"))
           .catchError((e) => print("Failed to add card: $e"));
     }
+  }
+
+  void setUserCreationDate() {
+    creationDate = FirebaseAuth.instance.currentUser?.metadata.creationTime ??
+        DateTime(0, 0, 0);
+  }
+
+  bool isUserDateExist() {
+    // TODO: This value should be using a constant for when arbor was founded
+    return creationDate.compareTo(DateTime(0, 0, 0)) != 0;
   }
 }
