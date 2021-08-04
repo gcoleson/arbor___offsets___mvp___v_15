@@ -417,17 +417,21 @@ void loadPrevMonthCards() {
   userCreationDate = databaseService.creationDate.year.toString() +
       databaseService.creationDate.month.toString().padLeft(2, "0");
 
-  if (tempKey.compareTo(userCreationDate) > -1) {
+  if (tempKey.compareTo(userCreationDate) > -1 ||
+      tempKey.compareTo(cardKeyMin) > -1) {
     dateKey = tempKey;
     cardDateKey = tempDateTime;
     isEndRight = false;
   }
 
-  if (tempKey.compareTo(userCreationDate) <= 0) {
+  if (tempKey.compareTo(userCreationDate) <= 0 ||
+      tempKey.compareTo(cardKeyMin) <= 0) {
     isEndLeft = true;
     dateTitle =
         months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
   } else {
+    dateTitle =
+        months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
     isEndLeft = false;
   }
   print("Queried Card Collection is: " + dateKey);
@@ -473,6 +477,8 @@ void loadNextMonthCards() {
     dateTitle =
         months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
   } else {
+    dateTitle =
+        months[cardDateKey.month - 1] + " " + cardDateKey.year.toString();
     isEndRight = false;
   }
   print("Queried Card Collection is: " + dateKey);
@@ -489,16 +495,17 @@ Container buildCardsContainer() {
         Row(
           children: [
             isEndLeft
-                ? Container()
+                ? Container(
+                    width: 10,
+                  )
                 : Container(
-                    width: 20,
+                    width: 40,
                     child: TextButton(
                       onPressed: isEndLeft ? null : loadPrevMonthCards,
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 20),
                       ),
                       child: Container(
-                        width: 30,
                         alignment: Alignment.centerLeft,
                         child: Text(
                           "<",
@@ -507,30 +514,24 @@ Container buildCardsContainer() {
                       ),
                     ),
                   ),
-            Container(
-              width: 15,
-            ),
-            AutoSizeText(
-              dateTitle,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              style: AppFonts.screenSubhead,
-            ),
-            Flexible(
-              fit: FlexFit.tight,
-              child: Container(),
+            Expanded(
+              child: AutoSizeText(
+                dateTitle,
+                maxLines: 1,
+                //textAlign: TextAlign.center,
+                style: AppFonts.screenSubhead,
+              ),
             ),
             isEndRight
                 ? Container()
                 : Container(
-                    width: 30,
+                    width: 40,
                     child: TextButton(
                       onPressed: isEndRight ? null : loadNextMonthCards,
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 20),
                       ),
                       child: Container(
-                        width: 30,
                         alignment: Alignment.centerRight,
                         child: Text(
                           ">",
