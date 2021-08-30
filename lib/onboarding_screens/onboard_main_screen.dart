@@ -1,7 +1,9 @@
+// @dart=2.9
+
 import 'dart:math';
 import 'package:flutter/material.dart';
-
 import 'onboarding_screen.dart';
+import 'package:arbor___offsets___mvp___v_15/values/colors.dart';
 
 /// An indicator showing the currently selected page of a PageController
 class DotsIndicator extends AnimatedWidget {
@@ -9,7 +11,7 @@ class DotsIndicator extends AnimatedWidget {
     this.controller,
     this.itemCount,
     this.onPageSelected,
-    this.color: Colors.white,
+    this.color: AppColors.white,
   }) : super(listenable: controller);
 
   /// The PageController that this DotsIndicator is representing.
@@ -75,69 +77,63 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  bool isVisible = true;
   final _controller = new PageController();
 
   static const _kDuration = const Duration(milliseconds: 300);
 
   static const _kCurve = Curves.ease;
 
-  final _kArrowColor = Colors.black.withOpacity(0.8);
-
-  final List<Widget> _pages = <Widget>[
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(textColor: Colors.blue),
-    ),
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(
-          style: FlutterLogoStyle.stacked, textColor: Colors.red),
-    ),
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(
-          style: FlutterLogoStyle.horizontal, textColor: Colors.green),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    var _onboardingScreens = [
+      myPage1Widget(context),
+      myPage2Widget(context),
+      myPage3Widget(context),
+      myPage4Widget(context, _controller),
+      //myPage5Widget(context, _controller)
+    ];
     return Material(
       type: MaterialType.transparency,
       child: Stack(
         children: <Widget>[
-          PageView(controller: _controller, children: [
-            MyPage1Widget(context),
-            MyPage2Widget(context),
-            MyPage3Widget(context),
-            MyPage4Widget(context),
-          ])
-          /* new PageView.builder(
-              physics: new AlwaysScrollableScrollPhysics(),
-              controller: _controller,
-              itemBuilder: (BuildContext context, int index) {
-                return _pages[index % _pages.length];
-              },
-            ) */
-          ,
+          PageView(
+            controller: _controller,
+            children: _onboardingScreens,
+            onPageChanged: (value) {
+              if (value >= _onboardingScreens.length - 1) {
+                setState(() {
+                  isVisible = false;
+                });
+              } else {
+                setState(() {
+                  isVisible = true;
+                });
+              }
+            },
+          ),
           new Positioned(
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-            child: new Container(
-              color: Colors.grey[800].withOpacity(0.5),
-              padding: const EdgeInsets.all(20.0),
-              child: new Center(
-                child: new DotsIndicator(
-                  controller: _controller,
-                  itemCount: _pages.length,
-                  onPageSelected: (int page) {
-                    _controller.animateToPage(
-                      page,
-                      duration: _kDuration,
-                      curve: _kCurve,
-                    );
-                  },
+            child: Visibility(
+              visible: isVisible,
+              child: new Container(
+                color: AppColors.transparentScreen,
+                padding: const EdgeInsets.all(20.0),
+                child: new Center(
+                  child: new DotsIndicator(
+                    controller: _controller,
+                    itemCount: _onboardingScreens.length - 1,
+                    onPageSelected: (int page) {
+                      print("========");
+                      _controller.animateToPage(
+                        page,
+                        duration: _kDuration,
+                        curve: _kCurve,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

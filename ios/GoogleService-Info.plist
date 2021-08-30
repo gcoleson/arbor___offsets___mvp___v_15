@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1020699306187-uvqjt6b66if10nmfb3ividm9aatheujt.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1020699306187-uvqjt6b66if10nmfb3ividm9aatheujt</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1020699306187-ko3s87590fshpf1ar9u7jpgeo8u43c6p.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBDrGYDYQvZRYyHRkc2EFjXvuYpKAMI-PA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1020699306187</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.412technology.arboroffsetsmvpv1</string>
+	<key>PROJECT_ID</key>
+	<string>financeapp-2c7b8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>financeapp-2c7b8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1020699306187:ios:a293f14de51a8fba47d34e</string>
+	<key>DATABASE_URL</key>
+	<string>https://financeapp-2c7b8.firebaseio.com</string>
+</dict>
+</plist>

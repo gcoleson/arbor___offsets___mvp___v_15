@@ -6,85 +6,82 @@
 *  Copyright © 2018 412 Technology. All rights reserved.
     */
 
-//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/general_cart_item_widget.dart';
-//import 'package:arbor___offsets___mvp___v_15/dashboard_widget/shopping_cart_widget.dart';
+// @dart=2.9
+
+import 'package:arbor___offsets___mvp___v_15/services/database.dart';
+import 'package:arbor___offsets___mvp___v_15/values/fonts.dart';
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
+import 'CartItem.dart';
+import 'shopping_cart_widget.dart';
+import 'UserStats.dart';
+import 'user_stats_widget.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:arbor___offsets___mvp___v_15/projects_widget/arbor_explanation.dart';
+import 'package:arbor___offsets___mvp___v_15/services/globals.dart' as globals;
 
-class CartItem {
-  final String header;
-  final String description;
-  final String imageText;
-  final String imageIcon;
-  bool boxSelected;
+List<CartItem> purchaseItemListItems = List<CartItem>();
+UserStats userStats = new UserStats();
 
-  CartItem(
-      {this.header,
-      this.description,
-      this.imageText,
-      this.imageIcon,
-      this.boxSelected});
+Widget loadUserData(BuildContext context) {
+  // final FirebaseAuth auth = FirebaseAuth.instance;
+  // final User user = auth.currentUser;
+
+  // TODO: Name should be used instead, email address is used temporarily
+  // if (user != null) {
+  //   return Text(user.email,
+  //       textAlign: TextAlign.left,
+  //       style: TextStyle(
+  //         color: Color.fromARGB(255, 2, 2, 2),
+  //         fontFamily: "Raleway",
+  //         fontWeight: FontWeight.w700,
+  //         fontSize: 21,
+  //       ));
+  // }
+
+  if (userdata.dataLoadedFromDB) {
+    return SizedBox.shrink();
+  } else
+    return new StreamBuilder(
+      stream: databaseService.getUserData(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return SizedBox.shrink();
+        }
+        var userDocument = snapshot.data;
+
+        try {
+          userdata.firstName = userDocument['firstname'];
+          userdata.lastName = userDocument['lastname'];
+          userdata.createtimestamp = userDocument['createtimestamp'];
+          userdata.selectedprojectnumber =
+              userDocument['selectedprojectnumber'];
+
+          userdata.selectedProjectId =
+              testDBForField(userDocument, 'selectedProjectId');
+          userdata.selectedProjectTitle =
+              testDBForField(userDocument, 'selectedProjectTitle');
+
+          userdata.dataLoadedFromDB = true;
+          return SizedBox.shrink();
+        } catch (error) {
+          print('Get user data error 1');
+          print(error.toString());
+          return SizedBox.shrink();
+        }
+      },
+    );
 }
 
-List<CartItem> purchaseItemListTest = [
-  CartItem(
-      header: "Eliminate Fuel Impact:",
-      description: "Remove climate impact from an average tank of gas for:",
-      imageIcon: "assets/images/icons8-gas-station-100.png",
-      imageText: 'Hybrid 0',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Fuel Impact:",
-      description: "Remove climate impact from an average tank of gas for:",
-      imageIcon: "assets/images/icons8-gas-station-100.png",
-      imageText: 'Hybrid 1',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Fuel Impact:",
-      description: "Remove climate impact from an average tank of gas for:",
-      imageIcon: "assets/images/icons8-gas-station-100.png",
-      imageText: 'Hybrid 2',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Travel Impact:",
-      description: "Remove climate impact from an average flight between:",
-      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-      imageText: 'New York & Chicago (2 hrs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Travel Impact:",
-      description: "Remove climate impact from an average flight between:",
-      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-      imageText: 'New York & Chicago (4 hrs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Travel Impact:",
-      description: "Remove climate impact from an average flight between:",
-      imageIcon: "assets/images/icons8-airplane-take-off-100-copy.png",
-      imageText: 'New York & Chicago (6 hrs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Package Delivery:",
-      description: "Remove climate impact from a typical shipment that is:",
-      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-      imageText: 'Small (under 5lbs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Package Delivery:",
-      description: "Remove climate impact from a typical shipment that is:",
-      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-      imageText: 'Medium (under 5lbs)',
-      boxSelected: false),
-  CartItem(
-      header: "Eliminate Package Delivery:",
-      description: "Remove climate impact from a typical shipment that is:",
-      imageIcon: "assets/images/icons8-in-transit-100-copy-3.png",
-      imageText: 'Large (under 5lbs)',
-      boxSelected: false),
-];
-
 class DashboardWidget extends StatefulWidget {
+  final VoidCallback onUserIconPressed;
+  DashboardWidget(this.onUserIconPressed);
+
   @override
   _DashboardWidgetState createState() => _DashboardWidgetState();
 }
@@ -92,23 +89,86 @@ class DashboardWidget extends StatefulWidget {
 class _DashboardWidgetState extends State<DashboardWidget> {
   void onItemPressed(BuildContext context) {}
 
-  Color getBorderSelectColor(int index) {
-    if (purchaseItemListTest[index].boxSelected == false) {
+  //TODO: Make the screens dynamic and not overflow for all typoes of screen resolutions
+  Future checkoutCartBuildDialogue(
+      BuildContext context, List<CartItem> purchaseItemList) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
+          insetPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+          content: Stack(
+            overflow: Overflow.visible,
+            fit: StackFit.expand,
+            children: [
+              CheckoutCartContents(purchaseItemList),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: Container(
+                  color: Color.fromARGB(0, 0, 0, 0),
+                  height: 40,
+                  width: 40,
+                  child: FlatButton(
+                    onPressed: () {
+                      clearCheckoutHighlights();
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.transparent,
+                    child: Text(
+                      "X",
+                      style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 28,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Color getProductBorderSelectColor(int index) {
+    if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
-      return Color.fromARGB(255, 0, 0, 0);
+      return AppColors.Black;
     } else {
       //turn border off
-      return Color.fromARGB(255, 250, 195, 21);
+      return AppColors.highlightYellow;
     }
   }
 
   void toggleItemSelected(int index) {
-    if (purchaseItemListTest[index].boxSelected == false) {
+    if (purchaseItemListItems[index].boxSelected == false) {
       //turn border on
-      purchaseItemListTest[index].boxSelected = true;
+      purchaseItemListItems[index].boxSelected = true;
+
+      analytics.logEvent(name: 'add_to_cart', parameters: {
+        'imageText': purchaseItemListItems[index].imageText,
+        'header': purchaseItemListItems[index].header,
+        'price': purchaseItemListItems[index].price,
+        'coincount': purchaseItemListItems[index].coinCount,
+      });
     } else {
       //turn border off
-      purchaseItemListTest[index].boxSelected = false;
+      purchaseItemListItems[index].boxSelected = false;
+      analytics.logEvent(name: 'remove_from_cart', parameters: {
+        'imageText': purchaseItemListItems[index].imageText,
+        'header': purchaseItemListItems[index].header,
+        'price': purchaseItemListItems[index].price,
+        'coincount': purchaseItemListItems[index].coinCount,
+      });
     }
   }
 
@@ -122,19 +182,27 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         child: generalButtonItemContainer(index, iconName, iconText));
   }
 
+  void clearCheckoutHighlights() {
+    setState(() {
+      for (var i = 0; i < purchaseItemListItems.length; i++) {
+        purchaseItemListItems[i].boxSelected = false;
+      }
+    });
+  }
+
   Widget buildHighlightedCartItems()
   //loop through all items and make into a grid 2x
   {
     List<Widget> returnList = new List();
 
-    for (var i = 0; i < purchaseItemListTest.length; i++) {
+    for (var i = 0; i < purchaseItemListItems.length; i++) {
       //check to see that headers don't match, if so make another area in the cart
       //always do the first one
-      if (purchaseItemListTest[i].boxSelected == true) {
-        returnList.add(generalButtonItemContainer(
-            0,
-            purchaseItemListTest[i].imageIcon,
-            purchaseItemListTest[i].imageText));
+      if (purchaseItemListItems[i].boxSelected == true) {
+        returnList.add(
+          generalButtonItemContainer(0, purchaseItemListItems[i].imageIcon,
+              purchaseItemListItems[i].imageText),
+        );
       }
     }
 
@@ -142,143 +210,22 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       return Spacer();
     else
       return Container(
-          height: 400,
-          width: 200,
-          child: GridView.count(
-            crossAxisCount: 2,
-            children: returnList,
-          ));
-    //return returnList[0];
+        height: 400,
+        width: 200,
+        child: GridView.count(
+          crossAxisCount: 2,
+          children: returnList,
+        ),
+      );
   }
 
   Color blueHighlight = Color.fromARGB(255, 18, 115, 211);
   var primaryAccentGreen = Color.fromARGB(255, 65, 127, 69);
   var iOsSystemBackgroundsLightSystemBack2 = Color.fromARGB(255, 255, 255, 255);
 
-  Future buildShowDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Positioned(
-                  right: -40.0,
-                  top: -40.0,
-                  child: InkResponse(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: CircleAvatar(
-                      child: Icon(Icons.close),
-                      backgroundColor: Colors.red,
-                    ),
-                  ),
-                ),
-                form(),
-              ],
-            ),
-          );
-        });
-  }
-
-//Form form() {
-  Container form() {
-    return Container(
-        width: 381,
-        height: 700,
-        decoration: new BoxDecoration(
-            color: blueHighlight, borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            new Text("Congratulations!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: Color(0xfffafcfd),
-                  fontSize: 36,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                )),
-            new Text(
-                "By eliminating your climate impact, you’re helping reversing climate change!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Raleway',
-                  color: Color(0xff010101),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.normal,
-                )),
-            new Text("You just eliminated the climate impact of:",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: iOsSystemBackgroundsLightSystemBack2,
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
-                )),
-            buildHighlightedCartItems(),
-            new Text("Tell your friends how you’re going climate positive:",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Raleway',
-                  color: Color(0xff010101),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.normal,
-                )),
-            new Container(
-              width: 344,
-              height: 50,
-              decoration: new BoxDecoration(
-                  color: primaryAccentGreen,
-                  borderRadius: BorderRadius.circular(8)),
-              child: new Text("Share",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'SFProText',
-                    color: iOsSystemBackgroundsLightSystemBack2,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                    letterSpacing: -0.408,
-                  )),
-            )
-          ],
-        ));
-
-    /*return Form(
-    //key: _formKey,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: TextFormField(),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: TextFormField(),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            child: Text("Submitß"),
-            onPressed: () {
-              /*(if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                        }*/
-            },
-          ),
-        )
-      ],
-    ),
-  );*/
-  }
-
+  /*===============================================================================================
+  Container for squares that contain product
+  ================================================================================================*/
   Container generalButtonItemContainer(
       int index, String iconName, String iconText) {
     return Container(
@@ -293,10 +240,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               width: 95,
               height: 107,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 216, 216, 216),
+                color: AppColors.transparentScreen,
                 border: Border.all(
                   width: 3,
-                  color: getBorderSelectColor(index),
+                  color: getProductBorderSelectColor(index),
                 ),
               ),
               child: Container(),
@@ -308,18 +255,19 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               Align(
                   alignment: Alignment.center,
                   child: IconButton(
-                    icon: Image.asset(iconName, fit: BoxFit.fill),
-                    onPressed: () {},
+                    icon: Image.network(iconName, fit: BoxFit.fill),
+                    onPressed: () {
+                      //todo remove hack to get the icon to be clickable
+                      //whole button should be clickable
+                      setState(() {
+                        toggleItemSelected(index);
+                      });
+                    },
                   )),
-              Text(iconText,
+              AutoSizeText(iconText,
+                  maxLines: 3,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 65, 127, 69),
-                    fontFamily: "Raleway",
-                    fontWeight: FontWeight.w800,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 14,
-                  )),
+                  style: AppFonts.offsetButtonLabels),
             ],
           ),
         ],
@@ -327,42 +275,67 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
+  void callSetState() {
+    setState(() {});
+  }
+
+  /*===============================================================================================
+  Building Widget
+  ================================================================================================*/
+  @override
+  void initState() {
+    super.initState();
+    sendCallSetState(callSetState);
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkFirstTimeOpen().then((value) {
+      if (value == "error") {
+        firstTimeOpen("opened", context);
+      } else {
+        //print(value);
+      }
+    });
+    // user statistics
+    analytics.logEvent(name: 'DashboardScreen');
+
     return Scaffold(
+      key: globals.scaffoldKey,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Arbor",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
+          style: AppFonts.navBarHeader,
         ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () => this.onItemPressed(context),
+            onPressed: this
+                .widget
+                .onUserIconPressed, // this is a void callback to tab group one tab bar
             icon: Image.asset(
-              "assets/images/icons8-account-100.png",
+              "assets/images/UserIcon.png",
             ),
           ),
         ],
-        backgroundColor: Color.fromARGB(255, 65, 127, 69),
+        backgroundColor: AppColors.primaryDarkGreen,
       ),
       body: ListView(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              buildImpactContainer(),
-              buildMonthsInARowContainer(),
-              buildTotalMonthsContainer(),
+              loadUserData(context),
+              buildUserStats(context, userStats),
               buildLiveClimatePositveAlign(),
-              buildOffsetPurchaseListContainer(),
+              buildOffsetPurchaseListContainer(context),
               buildCheckoutButtonContainer(),
+              //add some space below the checkout button
+              Container(
+                height: 20,
+              )
             ],
           )
         ],
@@ -370,58 +343,64 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Container buildCheckoutButtonContainer() {
-    return Container(
-      width: 300,
-      height: 50,
-      margin: EdgeInsets.only(left: 20, right: 20),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryBackground,
-        borderRadius: Radii.k8pxRadius,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-              onTap: () {
-                buildShowDialog(context);
-              },
-              child: Container(
-                alignment: Alignment.center,
-                child: AutoSizeText(
-                  "Checkout",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    fontFamily: "SF Pro Text",
-                    fontWeight: FontWeight.w400,
-                    fontSize: 17,
-                    letterSpacing: -0.408,
-                    height: 1.29412,
-                  ),
-                ),
-              )),
-        ],
-      ),
-    );
+  /*===============================================================================================
+  Checkout Button
+  ================================================================================================*/
+  Widget buildCheckoutButtonContainer() {
+    return GestureDetector(
+        onTap: () {
+          checkoutCartBuildDialogue(context, purchaseItemListItems);
+          //paymentSuccessBuildDialogue(context, 500, 500);
+        },
+        child: Container(
+          width: 300,
+          height: 50,
+          margin: EdgeInsets.only(left: 20, right: 20),
+          decoration: BoxDecoration(
+            color: AppColors.primaryDarkGreen,
+            borderRadius: Radii.k8pxRadius,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    alignment: Alignment.center,
+                    child: AutoSizeText(
+                      "Checkout",
+                      textAlign: TextAlign.center,
+                      style: AppFonts.iOSSystemTextCenterAlignWhite,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ));
   }
 
+  /*===============================================================================================
+  ???
+  ================================================================================================*/
   Container buildGeneralAreaContainer({
     @required String header,
     @required String description,
     @required IndexedWidgetBuilder itemBuilder,
+    @required int itemCount,
   }) {
     return Container(
       width: 416,
-      height: 190,
+      //height: 190,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             margin: EdgeInsets.only(left: 4),
-            child: Text(
+            child: AutoSizeText(
               header,
+              maxLines: 1,
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(255, 2, 2, 2),
@@ -434,8 +413,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           Container(
             width: 382,
             margin: EdgeInsets.only(left: 4, top: 2),
-            child: Text(
+            child: AutoSizeText(
               description,
+              maxLines: 2,
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(255, 2, 2, 2),
@@ -452,10 +432,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             margin: EdgeInsets.only(left: 14, top: 9),
             child: GridView.builder(
               scrollDirection: Axis.horizontal,
+              itemCount: itemCount,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 108,
                 childAspectRatio: 1.13684,
-                mainAxisSpacing: 30,
+                mainAxisSpacing: 18,
               ),
               itemBuilder: itemBuilder,
             ),
@@ -465,50 +446,149 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-  Container buildOffsetPurchaseListContainer() {
-    return Container(
-      height: 601,
-      margin: EdgeInsets.only(left: 1, top: 16, right: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: purchaseItemList(),
-      ),
-    );
+  /*===============================================================================================
+  ???
+  ================================================================================================*/
+  Widget buildOffsetPurchaseListContainer(BuildContext context) {
+    return Scrollbar(
+        thickness: 5,
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(left: 1, top: 8, right: 5, bottom: 8),
+            child: buildProductsListWidget(context),
+          ),
+        ));
   }
 
+  /*===============================================================================================
+  Building Squares for each item to purchase
+  ================================================================================================*/
   Widget buildGeneralButtonItemWidget(BuildContext context, int index,
       int startIndex, List<CartItem> cartList, String header) {
     //keep returning widgets until the headers don't match
 
     if (((startIndex + index) < cartList.length) &&
-        (cartList[startIndex + index].header == header))
+        (cartList[startIndex + index].header == header)) {
       return generalButtonItemWidget(
           startIndex + index,
           cartList[startIndex + index].imageIcon,
           cartList[startIndex + index].imageText);
-    else
+    } else
       return null;
   }
 
+  /*===============================================================================================
+  Count the Building Squares for each item to purchase
+  ================================================================================================*/
+
+  /*===============================================================================================
+  Stream Builder for Products
+  ================================================================================================*/
+  Widget buildProductsListWidget(BuildContext context) {
+    try {
+      if (purchaseItemList().isNotEmpty) {
+        print('PurchaseItemList not empty');
+        return Column(
+          children: purchaseItemList(),
+          crossAxisAlignment: CrossAxisAlignment.start,
+        );
+      } else {
+        return StreamBuilder<QuerySnapshot>(
+          stream: databaseReference
+              .collection("products")
+              .orderBy("productlineOrder")
+              .where("showProduct", isEqualTo: true)
+              .snapshots(includeMetadataChanges: true),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) return LinearProgressIndicator();
+
+            /*print(snapshot.data.metadata.isFromCache
+                ? "NOT FROM NETWORK"
+                : "FROM NETWORK");*/
+
+            final int productCount = snapshot.data.docs.length;
+
+            for (var i = 0; i < productCount; i++) {
+              //loop through all records
+              DocumentSnapshot document = snapshot.data.docs[i];
+
+              CartItem item = new CartItem();
+
+              item.description = document['description'];
+              item.header = document['header'];
+              item.imageText = document['imagetext'];
+              item.imageIcon = document['imageicon'];
+              item.documentID = document.id;
+              item.price = document['price'] + .0;
+              item.treeCount = document['treecount'] + .0;
+              //item.coinCount = 5.0;
+              item.coinCount = document['coincount'] + .0;
+              item.boxSelected = false;
+              item.productlineOrder = document['productlineOrder'].toString();
+
+              //check to make sure we have not added this document yet
+              if (purchaseItemListItems.isNotEmpty) {
+                purchaseItemListItems.removeWhere(
+                    (element) => element.documentID == item.documentID);
+              }
+
+              purchaseItemListItems.add(item);
+            }
+            return Column(
+              children: purchaseItemList(),
+              crossAxisAlignment: CrossAxisAlignment.start,
+            );
+          },
+        );
+      }
+    } catch (error) {
+      print('product db error');
+      print(error.toString());
+      return Container();
+    }
+  }
+
+  int itemCountInArea(int start, String header) {
+    int i;
+    purchaseItemListItems
+        .sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
+    for (i = 0; start < purchaseItemListItems.length; i++, start++) {
+      if (purchaseItemListItems[start].productlineOrder != header) {
+        break;
+      }
+    }
+    return i;
+  }
+
+  /*===============================================================================================
+  Calculating all the items needed to go into each row
+  ================================================================================================*/
   List<Widget> purchaseItemList() {
     List<Widget> returnList = new List();
     Widget tempWidget;
 
-    for (var i = 0; i < purchaseItemListTest.length; i++) {
+    //sort the list
+    purchaseItemListItems.sort((a, b) => a.price.compareTo(b.price));
+    purchaseItemListItems
+        .sort((a, b) => a.productlineOrder.compareTo(b.productlineOrder));
+
+    for (var i = 0; i < purchaseItemListItems.length; i++) {
+      //print(purchaseItemListItems[i].toString() + "\n\n\n");
+
       //check to see that headers don't match, if so make another area in the cart
       //always do the first one
       if (i == 0 ||
-          (purchaseItemListTest[i].header !=
-              purchaseItemListTest[i - 1].header)) {
+          (purchaseItemListItems[i].productlineOrder !=
+              purchaseItemListItems[i - 1].productlineOrder)) {
         tempWidget = (buildGeneralAreaContainer(
-            header: purchaseItemListTest[i].header,
-            description: purchaseItemListTest[i].description,
-            itemBuilder: (context, index) => buildGeneralButtonItemWidget(
-                context,
-                index,
-                i,
-                purchaseItemListTest,
-                purchaseItemListTest[i].header)));
+          itemCount:
+              itemCountInArea(i, purchaseItemListItems[i].productlineOrder),
+          header: purchaseItemListItems[i].header,
+          description: purchaseItemListItems[i].description,
+          itemBuilder: (context, index) => buildGeneralButtonItemWidget(context,
+              index, i, purchaseItemListItems, purchaseItemListItems[i].header),
+        ));
 
         returnList.add(tempWidget);
       }
@@ -517,6 +597,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     return returnList;
   }
 
+  /*===============================================================================================
+  Title above the product list
+  ================================================================================================*/
   Align buildLiveClimatePositveAlign() {
     return Align(
       alignment: Alignment.topLeft,
@@ -525,242 +608,50 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         child: Text(
           "Live Climate Positive: ",
           textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Color.fromARGB(255, 65, 127, 69),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w500,
-            fontSize: 28,
-          ),
+          style: AppFonts.screenSubhead,
         ),
       ),
     );
   }
+}
 
-  Container buildTotalMonthsContainer() {
-    return Container(
-      height: 57,
-      margin: EdgeInsets.only(right: 1),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Positioned(
-            left: 0,
-            top: 8,
-            right: 0,
-            child: Container(
-              height: 48,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 93, 187, 71),
-                border: Border.all(
-                  width: 1,
-                  color: Color.fromARGB(255, 151, 151, 151),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(128, 0, 0, 0),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
-              child: Container(),
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 8,
-            right: 8,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "5",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 250, 195, 21),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 36,
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 7),
-                    child: Text(
-                      "total months of impact",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+Future<String> checkFirstTimeOpen() async {
+  String value;
+  try {
+    final directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/data2.txt');
+    value = await file.readAsString();
+  } catch (e) {
+    value = "error";
   }
+  return value;
+}
 
-  Container buildMonthsInARowContainer() {
-    return Container(
-      height: 50,
-      margin: EdgeInsets.only(left: 1, top: 20),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Positioned(
-            left: 0,
-            top: -0,
-            right: 0,
-            child: Container(
-              height: 48,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 93, 187, 71),
-                border: Border.all(
-                  width: 1,
-                  color: Color.fromARGB(255, 151, 151, 151),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(128, 0, 0, 0),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
-              child: Container(),
-            ),
-          ),
-          Positioned(
-            left: 22,
-            top: -1,
-            right: 11,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "2",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 250, 195, 21),
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 36,
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 7),
-                    child: Text(
-                      "months in a row of impact",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 2, 2, 2),
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container buildImpactContainer() {
-    return Container(
-        //height: 400,
-        margin: EdgeInsets.only(left: 5, top: 5, right: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 30,
-              alignment: Alignment.topLeft,
-              child: Text(
-                "Your Impact:",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 65, 127, 69),
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28,
-                ),
-              ),
-            ),
-            Row(children: [
-              Container(
-                  height: 90,
-                  width: 90,
-                  margin: EdgeInsets.only(left: 5, top: 5, right: 5),
-                  child: GridView.count(
-                      // Create a grid with 2 columns. If you change the scrollDirection to
-                      // horizontal, this produces 2 rows.
-                      crossAxisCount: 3,
-                      // Generate 100 widgets that display their index in the List.
-                      children: List.generate(9, (index) {
-                        return Center(
-                          child: Image.asset(
-                            "assets/images/icons8-oak-tree-100-2-copy-9.png",
-                            //fit: BoxFit.,
-                          ),
-                        );
-                      }))),
-              Container(
-                  height: 90,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(5),
-                          child: AutoSizeText(
-                            "9 trees earned this month.",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 250, 195, 21),
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Container(
-                            margin: EdgeInsets.all(5),
-                            child: AutoSizeText(
-                              "38 all-time!",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 250, 195, 21),
-                                fontFamily: "Raleway",
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        )
-                      ]))
-            ])
-          ],
-        ));
-  }
+Future firstTimeOpen(String text, BuildContext context) async {
+  showDialog(
+    context: context,
+    builder: (_) => new CupertinoAlertDialog(
+      title: new Text("Select an Activity"),
+      content: new Text(
+          "Pick an activity to reverse its climate impact. Arbor automatically calculates the cost of undoing its negative impact."),
+      actions: [
+        CupertinoDialogAction(
+          child: Text("Got it"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        CupertinoDialogAction(
+          child: Text("Tell Me More"),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => arborExplanation()));
+          },
+        ),
+      ],
+    ),
+  );
+  final Directory directory = await getApplicationDocumentsDirectory();
+  final File file = File('${directory.path}/data2.txt');
+  await file.writeAsString(text);
 }

@@ -1,34 +1,25 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'cart.dart';
 import 'dish_object.dart';
 
-/*
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: MyHomePage(title: 'Place order'),
-    );
-  }
-}
-*/
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class ShoppingCartPage extends StatefulWidget {
+  ShoppingCartPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _ShoppingCartPageState createState() => _ShoppingCartPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ShoppingCartPageState extends State<ShoppingCartPage> {
+  bool value = false;
+
+  void onChanged(bool value) {
+    setState(() {
+      value = value;
+    });
+  }
+
   List<Dish> _dishes = List<Dish>();
 
   List<Dish> _cartList = List<Dish>();
