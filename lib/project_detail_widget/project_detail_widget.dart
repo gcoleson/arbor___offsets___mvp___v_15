@@ -4,8 +4,8 @@
 *  project_detail_widget.dart
 *  Arbor - Offsets - MVP - v.1
 *
-*  Created by Ed.
-*  Copyright © 2018 412 Technology. All rights reserved.
+*  Created by Greg
+*  Copyright © 2020 412 Technology. All rights reserved.
     */
 
 import 'package:arbor___offsets___mvp___v_15/projects_widget/project_blandfill_gas_item_widget.dart';
