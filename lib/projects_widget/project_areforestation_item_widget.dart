@@ -2,8 +2,8 @@
 *  project_areforestation_item_widget.dart
 *  Arbor - Offsets - MVP - v.1
 *
-*  Created by Ed.
-*  Copyright © 2018 412 Technology. All rights reserved.
+*  Created by gregc
+*  Copyright © 2020 412 Technology. All rights reserved.
     */
 
 import 'package:arbor___offsets___mvp___v_15/project_detail_widget/project_detail_widget.dart';

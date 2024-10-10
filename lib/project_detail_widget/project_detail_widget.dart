@@ -2,12 +2,11 @@
 *  project_detail_widget.dart
 *  Arbor - Offsets - MVP - v.1
 *
-*  Created by Ed.
-*  Copyright © 2018 412 Technology. All rights reserved.
+*  Created by gregc
+*  Copyright © 2020 412 Technology. All rights reserved.
     */
 
 import 'package:arbor___offsets___mvp___v_15/values/values.dart';
-//import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
